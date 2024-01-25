@@ -164,7 +164,7 @@ class LeadinAdmin {
 		if ( Connection::is_connected() && Routing::has_review_request() ) {
 			User_Metadata::set_skip_review( time() );
 			if ( Routing::is_review_request() ) {
-				header( 'Location: https://survey.hsforms.com/16PVNb9nvT3SjO5uYt956lg1h' );
+				header( 'Location: https://survey.hsforms.com/1ILAEu_k_Ttiy344dpHM--w1h' );
 				exit();
 			}
 		}

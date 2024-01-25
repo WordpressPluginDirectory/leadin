@@ -1,3 +1,6 @@
+= 10.2.23 (2024-01-24) =
+* Update link of the review survey
+
 = 10.2.17 (2023-12-13) =
 * Change minimum required version in plugin listing
 
@@ -303,7 +306,4 @@
 
 = 7.52.168 (2021-04-12) =
 * Generates an array with the query parameters needed for the signup instead of a URL
-
-= 7.52.105 (2021-03-26) =
-* Updated the query parameters sent to the UI. These parameters will be used for OAuth2 authorisation flow.
 
