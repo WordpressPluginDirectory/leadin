@@ -4,7 +4,7 @@ namespace Leadin\admin;
 
 use Leadin\data\User;
 use Leadin\admin\Connection;
-use Leadin\admin\ReviewController;
+use Leadin\data\User_Metadata;
 use Leadin\admin\AdminConstants;
 use Leadin\admin\ReviewBanner;
 
@@ -68,11 +68,24 @@ class NoticeManager {
 	 * Find if review notice should be shown
 	 */
 	public function should_show_review_notice() {
-		$current_screen = get_current_screen();
-		$is_dashboard   = 'index' === $current_screen->parent_base;
-		return $is_dashboard && Connection::is_connected() &&
-		! ReviewController::is_reviewed_or_skipped() && ReviewController::is_after_introductary_period()
-		&& ReviewController::has_contacts_created_since_activation();
+		$current_screen        = get_current_screen();
+		$is_dashboard          = 'index' === $current_screen->parent_base;
+		$is_not_skipped        = empty( User_Metadata::get_skip_review() );
+		$last_call_ts          = User_Metadata::get_review_banner_last_call();
+		$has_last_call_timeout = empty( $last_call_ts );
+
+		if ( ! $has_last_call_timeout ) {
+			$last_call_date = new \DateTime();
+			$last_call_date->setTimestamp( $last_call_ts );
+			$diff                  = $last_call_date->diff( new \DateTime() );
+			$has_last_call_timeout = $diff->days >= 1;
+		}
+
+		if ( $has_last_call_timeout ) {
+			User_Metadata::set_review_banner_last_call( time() );
+		}
+
+		return $is_dashboard && Connection::is_connected() && $is_not_skipped && $has_last_call_timeout;
 	}
 
 }

@@ -4,9 +4,8 @@ namespace Leadin\admin;
 
 use Leadin\data\Filters;
 
-const IMPACT_BASE_URL = 'https://hubspot.sjv.io/';
-const IR_CLICK_ID     = 'irclickid';
-const MPID            = 'mpid';
+const IR_CLICK_ID = 'irclickid';
+const MPID        = 'mpid';
 
 /**
  * Class containing the logic to get Impact affiliate information when necessary
@@ -16,16 +15,7 @@ class Impact {
 	 * Apply leadin_impact_code filter.
 	 */
 	public static function get_affiliate_link() {
-		$link   = null;
-		$params = self::get_params();
-
-		$code = Filters::apply_impact_code_filters();
-
-		if ( ! empty( $code ) ) {
-			$link = IMPACT_BASE_URL . $code;
-		}
-
-		return $link;
+		return Filters::apply_impact_code_filters();
 	}
 
 	/**

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import UIOverlay from '../UIComponents/UIOverlay';
 import { formsScriptPayload, hublet } from '../../constants/leadinConfig';
-import useFormScript from './useFormsScript';
+import useFormScript from './hooks/useFormsScript';
 
 export default function PreviewForm({
   portalId,

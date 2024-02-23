@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef } from 'react';
 import UIOverlay from '../UIComponents/UIOverlay';
-import useMeetingsScript from './useMeetingsScript';
+import useMeetingsScript from './hooks/useMeetingsScript';
 
 interface IPreviewForm {
   url: string;

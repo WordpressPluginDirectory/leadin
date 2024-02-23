@@ -3,7 +3,6 @@
 namespace Leadin;
 
 use Leadin\api\Healthcheck_Api_Controller;
-use Leadin\api\Proxy_Api_Controller;
 use Leadin\api\OAuth_Api_Controller;
 
 use Leadin\admin\api\Internal_Tracking_Api_Controller;
@@ -20,7 +19,6 @@ add_action(
  * Register api endpoints.
  */
 function leadin_register_routes() {
-	new Proxy_Api_Controller();
 	new Healthcheck_Api_Controller();
 	new OAuth_Api_Controller();
 	// Admin routes.

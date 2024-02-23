@@ -45,53 +45,6 @@ function makeRequest(
   });
 }
 
-export function makeProxyRequest(
-  method: string,
-  hubspotApiPath: string,
-  data: any,
-  queryParamsObject = {}
-): Promise<any> {
-  const proxyApiPath = `/proxy`;
-  // eslint-disable-next-line compat/compat
-  const proxyQueryParams = new URLSearchParams(queryParamsObject).toString();
-  const proxyUrl = `${hubspotApiPath}?${proxyQueryParams}`;
-
-  return makeRequest(method, proxyApiPath, data, { proxyUrl });
-}
-
-export function fetchOAuthToken() {
-  return makeRequest('GET', '/oauth-token').catch(err => {
-    return { status: err.status, message: err.responseText };
-  });
-}
-
-export function fetchRefreshToken() {
-  return makeRequest('GET', '/refresh-token').catch(err => {
-    return { status: err.status, message: err.responseText };
-  });
-}
-
-/**
- * To surface errors to the interframe, we need to catch the error
- * and return it to through penpal as a normal message, which the iframe
- * can check for and re-throw.
- */
-export function makeInterframeProxyRequest(
-  method: string,
-  hubspotApiPath: string,
-  data: any,
-  queryParamsObject = {}
-) {
-  return makeProxyRequest(
-    method,
-    hubspotApiPath,
-    data,
-    queryParamsObject
-  ).catch(err => {
-    return { status: err.status, message: err.responseText };
-  });
-}
-
 export function healthcheckRestApi() {
   return makeRequest('get', '/healthcheck');
 }
@@ -120,22 +73,10 @@ export function trackConsent(canTrack: boolean) {
   }));
 }
 
-export function leadinDisconnectPortal() {
-  return makeRequest('delete', '/portal');
-}
-
 export function setBusinessUnitId(businessUnitId: number) {
   return makeRequest('put', '/business-unit', { businessUnitId });
 }
 
 export function getBusinessUnitId() {
   return makeRequest('get', '/business-unit');
-}
-
-export function getBusinessUnits() {
-  return makeProxyRequest(
-    'get',
-    '/integrations-proxy/v1/forms/business-units',
-    {}
-  );
 }

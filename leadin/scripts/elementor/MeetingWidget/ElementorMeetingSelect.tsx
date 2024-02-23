@@ -1,26 +1,50 @@
-import React, { useContext, Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import ElementorBanner from '../Common/ElementorBanner';
 import UISpinner from '../../shared/UIComponents/UISpinner';
 import ElementorMeetingWarning from './ElementorMeetingWarning';
-import { MeetingsContext } from '../../shared/Meeting/MeetingsContext';
 import useMeetings, {
   useSelectedMeetingCalendar,
-} from '../../shared/Meeting/useMeetings';
+} from '../../shared/Meeting/hooks/useMeetings';
 import { __ } from '@wordpress/i18n';
+import Raven from 'raven-js';
+import {
+  BackgroudAppContext,
+  useBackgroundAppContext,
+} from '../../iframe/useBackgroundApp';
+import { refreshToken } from '../../constants/leadinConfig';
+import { getOrCreateBackgroundApp } from '../../utils/backgroundAppUtils';
 
 interface IElementorMeetingSelectProps {
   url: string;
   setAttributes: Function;
 }
 
-export default function ElementorMeetingSelect({
+function ElementorMeetingSelect({
   url,
   setAttributes,
 }: IElementorMeetingSelectProps) {
-  const { loading, error, reload } = useContext(MeetingsContext);
-  const meetings = useMeetings();
-  const selectedMeetingCalendar = useSelectedMeetingCalendar();
+  const {
+    mappedMeetings: meetings,
+    loading,
+    error,
+    reload,
+    connectCalendar,
+  } = useMeetings();
+  const selectedMeetingCalendar = useSelectedMeetingCalendar(url);
   const [localUrl, setLocalUrl] = useState(url);
+
+  const handleConnectCalendar = () => {
+    return connectCalendar()
+      .then(() => {
+        reload();
+      })
+      .catch(error => {
+        Raven.captureMessage('Unable to connect calendar', {
+          extra: { error },
+        });
+      });
+  };
+
   return (
     <Fragment>
       {loading ? (
@@ -39,7 +63,7 @@ export default function ElementorMeetingSelect({
           {selectedMeetingCalendar && (
             <ElementorMeetingWarning
               status={selectedMeetingCalendar}
-              triggerReload={() => reload()}
+              onConnectCalendar={connectCalendar}
             />
           )}
           {meetings.length > 1 && (
@@ -66,5 +90,33 @@ export default function ElementorMeetingSelect({
         </Fragment>
       )}
     </Fragment>
+  );
+}
+
+function ElementorMeetingSelectWrapper(props: IElementorMeetingSelectProps) {
+  const isBackgroundAppReady = useBackgroundAppContext();
+
+  return (
+    <Fragment>
+      {!isBackgroundAppReady ? (
+        <div>
+          <UISpinner />
+        </div>
+      ) : (
+        <ElementorMeetingSelect {...props} />
+      )}
+    </Fragment>
+  );
+}
+
+export default function ElementorMeetingsSelectContainer(
+  props: IElementorMeetingSelectProps
+) {
+  return (
+    <BackgroudAppContext.Provider
+      value={refreshToken && getOrCreateBackgroundApp(refreshToken)}
+    >
+      <ElementorMeetingSelectWrapper {...props} />
+    </BackgroudAppContext.Provider>
   );
 }

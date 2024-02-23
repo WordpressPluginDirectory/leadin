@@ -1,53 +1,52 @@
 import $ from 'jquery';
-import { initBackgroundApp } from '../utils/backgroundAppUtils';
 import {
-  monitorReviewBannerRendered,
-  monitorReviewBannerLinkClicked,
-  monitorReviewBannerDismissed,
-} from '../api/hubspotPluginApi';
+  getOrCreateBackgroundApp,
+  initBackgroundApp,
+} from '../utils/backgroundAppUtils';
 import { domElements } from '../constants/selectors';
+import { refreshToken, activationTime } from '../constants/leadinConfig';
+import { ProxyMessages } from '../iframe/integratedMessages';
 
 /**
  * Adds some methods to window when review banner is
  * displayed to monitor events
  */
 export function initMonitorReviewBanner() {
-  //@ts-expect-error global
-  if (!window.reviewBannerTracking) {
-    //@ts-expect-error global
-    window.reviewBannerTracking = {
-      monitorReviewBannerRendered,
-      monitorReviewBannerLinkClicked,
-      monitorReviewBannerDismissed,
-    };
-  }
+  if (refreshToken) {
+    const embedder = getOrCreateBackgroundApp(refreshToken);
+    const container = $(domElements.reviewBannerContainer);
+    if (container) {
+      $(domElements.reviewBannerLeaveReviewLink)
+        .off('click')
+        .on('click', () => {
+          embedder.postMessage({
+            key: ProxyMessages.TrackReviewBannerInteraction,
+          });
+        });
 
-  function reviewLinkClickHandler() {
-    const reviewBanner = document.getElementById('leadin-review-banner');
+      $(domElements.reviewBannerDismissButton)
+        .off('click')
+        .on('click', () => {
+          embedder.postMessage({
+            key: ProxyMessages.TrackReviewBannerDismissed,
+          });
+        });
 
-    if (reviewBanner) {
-      reviewBanner.classList.add('leadin-review-banner--hide');
-      //@ts-expect-error global
-      window.reviewBannerTracking.monitorReviewBannerLinkClicked();
+      embedder
+        .postAsyncMessage({
+          key: ProxyMessages.FetchContactsCreateSinceActivation,
+          payload: +activationTime * 1000,
+        })
+        .then(({ total }: any) => {
+          if (total >= 5) {
+            container.removeClass('leadin-review-banner--hide');
+            embedder.postMessage({
+              key: ProxyMessages.TrackReviewBannerRender,
+            });
+          }
+        });
     }
   }
-
-  function dismissBtnClickHandler() {
-    //@ts-expect-error global
-    window.reviewBannerTracking.monitorReviewBannerDismissed();
-  }
-
-  $(domElements.reviewBannerLeaveReviewLink)
-    .off('click')
-    .on('click', reviewLinkClickHandler);
-
-  $(domElements.reviewBannerDismissButton)
-    .off('click')
-    .on('click', dismissBtnClickHandler);
-
-  $('#leadin-iframe').ready(() => {
-    monitorReviewBannerRendered();
-  });
 }
 
 initBackgroundApp(initMonitorReviewBanner);

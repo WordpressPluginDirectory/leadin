@@ -1,6 +1,15 @@
-export const Apps = {
-  Forms: 'integrated-form-app',
-  LiveChat: 'integrated-livechat-app',
-} as const;
+export enum App {
+  Forms,
+  LiveChat,
+  Plugin,
+  PluginSettings,
+  Background,
+}
 
-export type AppType = typeof Apps[keyof typeof Apps];
+export const AppIframe = {
+  [App.Forms]: 'integrated-form-app',
+  [App.LiveChat]: 'integrated-livechat-app',
+  [App.Plugin]: 'integrated-plugin-app',
+  [App.PluginSettings]: 'integrated-plugin-app',
+  [App.Background]: 'integrated-plugin-proxy',
+} as const;

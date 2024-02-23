@@ -1,7 +1,7 @@
 {
   "name": "leadin",
   "scripts": {
-    "start": "wp-scripts start --stats=summary",
+    "start": "wp-scripts start",
     "build": "wp-scripts build",
     "test-e2e": "wp-scripts test-e2e",
     "test-e2e:debug": "wp-scripts test-e2e --puppeteer-devtools",

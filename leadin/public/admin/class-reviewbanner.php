@@ -33,7 +33,7 @@ class ReviewBanner {
 		$from_hubspot_text   = __( 'HubSpot for WordPress Team', 'leadin' );
 		$thanks_message      = __( 'Thanks,', 'leadin' );
 		?>
-			<div id="leadin-review-banner" class="leadin-banner leadin-review-banner notice notice-warning">
+			<div id="leadin-review-banner" class="leadin-banner leadin-review-banner leadin-review-banner--hide notice notice-warning">
 
 				<a href="?leadin_review=false&_wpnonce=<?php echo esc_html( $nonce ); ?>"
 					id="dismiss-review-banner-button">

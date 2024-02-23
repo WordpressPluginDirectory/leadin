@@ -29,7 +29,7 @@ class Connection {
 	 * Returns true if a portal has been connected to the plugin
 	 */
 	public static function is_connected() {
-		return ! empty( Portal_Options::get_portal_id() );
+		return ! empty( Portal_Options::get_portal_id() ) && ! empty( OAuth::get_refresh_token() );
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Connection {
 			$connect_params['hublet']
 		);
 
-		OAuth::authorize( $connect_params['access_token'], $connect_params['refresh_token'], $connect_params['expires_in'] );
+		OAuth::authorize( $connect_params['refresh_token'] );
 	}
 
 	/**

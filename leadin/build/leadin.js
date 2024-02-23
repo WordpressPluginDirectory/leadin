@@ -67,14 +67,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "disableInternalTracking": () => (/* binding */ disableInternalTracking),
 /* harmony export */   "fetchDisableInternalTracking": () => (/* binding */ fetchDisableInternalTracking),
-/* harmony export */   "fetchOAuthToken": () => (/* binding */ fetchOAuthToken),
-/* harmony export */   "fetchRefreshToken": () => (/* binding */ fetchRefreshToken),
 /* harmony export */   "getBusinessUnitId": () => (/* binding */ getBusinessUnitId),
-/* harmony export */   "getBusinessUnits": () => (/* binding */ getBusinessUnits),
 /* harmony export */   "healthcheckRestApi": () => (/* binding */ healthcheckRestApi),
-/* harmony export */   "leadinDisconnectPortal": () => (/* binding */ leadinDisconnectPortal),
-/* harmony export */   "makeInterframeProxyRequest": () => (/* binding */ makeInterframeProxyRequest),
-/* harmony export */   "makeProxyRequest": () => (/* binding */ makeProxyRequest),
 /* harmony export */   "setBusinessUnitId": () => (/* binding */ setBusinessUnitId),
 /* harmony export */   "skipReview": () => (/* binding */ skipReview),
 /* harmony export */   "trackConsent": () => (/* binding */ trackConsent),
@@ -121,47 +115,6 @@ function makeRequest(method, path) {
   });
 }
 
-function makeProxyRequest(method, hubspotApiPath, data) {
-  var queryParamsObject = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-  var proxyApiPath = "/proxy"; // eslint-disable-next-line compat/compat
-
-  var proxyQueryParams = new URLSearchParams(queryParamsObject).toString();
-  var proxyUrl = "".concat(hubspotApiPath, "?").concat(proxyQueryParams);
-  return makeRequest(method, proxyApiPath, data, {
-    proxyUrl: proxyUrl
-  });
-}
-function fetchOAuthToken() {
-  return makeRequest('GET', '/oauth-token')["catch"](function (err) {
-    return {
-      status: err.status,
-      message: err.responseText
-    };
-  });
-}
-function fetchRefreshToken() {
-  return makeRequest('GET', '/refresh-token')["catch"](function (err) {
-    return {
-      status: err.status,
-      message: err.responseText
-    };
-  });
-}
-/**
- * To surface errors to the interframe, we need to catch the error
- * and return it to through penpal as a normal message, which the iframe
- * can check for and re-throw.
- */
-
-function makeInterframeProxyRequest(method, hubspotApiPath, data) {
-  var queryParamsObject = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-  return makeProxyRequest(method, hubspotApiPath, data, queryParamsObject)["catch"](function (err) {
-    return {
-      status: err.status,
-      message: err.responseText
-    };
-  });
-}
 function healthcheckRestApi() {
   return makeRequest('get', '/healthcheck');
 }
@@ -192,9 +145,6 @@ function trackConsent(canTrack) {
     };
   });
 }
-function leadinDisconnectPortal() {
-  return makeRequest('delete', '/portal');
-}
 function setBusinessUnitId(businessUnitId) {
   return makeRequest('put', '/business-unit', {
     businessUnitId: businessUnitId
@@ -202,9 +152,6 @@ function setBusinessUnitId(businessUnitId) {
 }
 function getBusinessUnitId() {
   return makeRequest('get', '/business-unit');
-}
-function getBusinessUnits() {
-  return makeProxyRequest('get', '/integrations-proxy/v1/forms/business-units', {});
 }
 
 /***/ }),
@@ -219,8 +166,8 @@ function getBusinessUnits() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "accountName": () => (/* binding */ accountName),
+/* harmony export */   "activationTime": () => (/* binding */ activationTime),
 /* harmony export */   "adminUrl": () => (/* binding */ adminUrl),
-/* harmony export */   "backgroundIframeUrl": () => (/* binding */ backgroundIframeUrl),
 /* harmony export */   "connectionStatus": () => (/* binding */ connectionStatus),
 /* harmony export */   "deviceId": () => (/* binding */ deviceId),
 /* harmony export */   "didDisconnect": () => (/* binding */ didDisconnect),
@@ -229,14 +176,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "formsScriptPayload": () => (/* binding */ formsScriptPayload),
 /* harmony export */   "hublet": () => (/* binding */ hublet),
 /* harmony export */   "hubspotBaseUrl": () => (/* binding */ hubspotBaseUrl),
+/* harmony export */   "hubspotNonce": () => (/* binding */ hubspotNonce),
 /* harmony export */   "iframeUrl": () => (/* binding */ iframeUrl),
 /* harmony export */   "impactLink": () => (/* binding */ impactLink),
 /* harmony export */   "leadinPluginVersion": () => (/* binding */ leadinPluginVersion),
-/* harmony export */   "leadinQueryParamsKeys": () => (/* binding */ leadinQueryParamsKeys),
+/* harmony export */   "leadinQueryParams": () => (/* binding */ leadinQueryParams),
 /* harmony export */   "locale": () => (/* binding */ locale),
 /* harmony export */   "loginUrl": () => (/* binding */ loginUrl),
 /* harmony export */   "meetingsScript": () => (/* binding */ meetingsScript),
-/* harmony export */   "oauth": () => (/* binding */ oauth),
 /* harmony export */   "phpVersion": () => (/* binding */ phpVersion),
 /* harmony export */   "pluginPath": () => (/* binding */ pluginPath),
 /* harmony export */   "plugins": () => (/* binding */ plugins),
@@ -244,11 +191,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "portalEmail": () => (/* binding */ portalEmail),
 /* harmony export */   "portalId": () => (/* binding */ portalId),
 /* harmony export */   "redirectNonce": () => (/* binding */ redirectNonce),
+/* harmony export */   "refreshToken": () => (/* binding */ refreshToken),
 /* harmony export */   "restNonce": () => (/* binding */ restNonce),
 /* harmony export */   "restUrl": () => (/* binding */ restUrl),
 /* harmony export */   "reviewSkippedDate": () => (/* binding */ reviewSkippedDate),
-/* harmony export */   "routeNonce": () => (/* binding */ routeNonce),
-/* harmony export */   "routes": () => (/* binding */ routes),
 /* harmony export */   "theme": () => (/* binding */ theme),
 /* harmony export */   "trackConsent": () => (/* binding */ trackConsent),
 /* harmony export */   "wpVersion": () => (/* binding */ wpVersion)
@@ -256,7 +202,7 @@ __webpack_require__.r(__webpack_exports__);
 var _window$leadinConfig = window.leadinConfig,
     accountName = _window$leadinConfig.accountName,
     adminUrl = _window$leadinConfig.adminUrl,
-    backgroundIframeUrl = _window$leadinConfig.backgroundIframeUrl,
+    activationTime = _window$leadinConfig.activationTime,
     connectionStatus = _window$leadinConfig.connectionStatus,
     deviceId = _window$leadinConfig.deviceId,
     didDisconnect = _window$leadinConfig.didDisconnect,
@@ -266,13 +212,13 @@ var _window$leadinConfig = window.leadinConfig,
     formsScriptPayload = _window$leadinConfig.formsScriptPayload,
     hublet = _window$leadinConfig.hublet,
     hubspotBaseUrl = _window$leadinConfig.hubspotBaseUrl,
+    hubspotNonce = _window$leadinConfig.hubspotNonce,
     iframeUrl = _window$leadinConfig.iframeUrl,
     impactLink = _window$leadinConfig.impactLink,
     leadinPluginVersion = _window$leadinConfig.leadinPluginVersion,
-    leadinQueryParamsKeys = _window$leadinConfig.leadinQueryParamsKeys,
+    leadinQueryParams = _window$leadinConfig.leadinQueryParams,
     locale = _window$leadinConfig.locale,
     loginUrl = _window$leadinConfig.loginUrl,
-    oauth = _window$leadinConfig.oauth,
     phpVersion = _window$leadinConfig.phpVersion,
     pluginPath = _window$leadinConfig.pluginPath,
     plugins = _window$leadinConfig.plugins,
@@ -282,9 +228,8 @@ var _window$leadinConfig = window.leadinConfig,
     redirectNonce = _window$leadinConfig.redirectNonce,
     restNonce = _window$leadinConfig.restNonce,
     restUrl = _window$leadinConfig.restUrl,
+    refreshToken = _window$leadinConfig.refreshToken,
     reviewSkippedDate = _window$leadinConfig.reviewSkippedDate,
-    routeNonce = _window$leadinConfig.routeNonce,
-    routes = _window$leadinConfig.routes,
     theme = _window$leadinConfig.theme,
     trackConsent = _window$leadinConfig.trackConsent,
     wpVersion = _window$leadinConfig.wpVersion;
@@ -315,165 +260,12 @@ var domElements = {
   thickboxModalClose: '.leadin-modal-close',
   thickboxModalWindow: 'div#TB_window.thickbox-loading',
   thickboxModalContent: 'div#TB_ajaxContent.TB_modal',
+  reviewBannerContainer: '#leadin-review-banner',
   reviewBannerLeaveReviewLink: 'a#leave-review-button',
   reviewBannerDismissButton: 'a#dismiss-review-banner-button',
   leadinIframeContainer: 'leadin-iframe-container',
   leadinIframe: 'leadin-iframe',
   leadinIframeFallbackContainer: 'leadin-iframe-fallback-container'
-};
-
-/***/ }),
-
-/***/ "./scripts/constants/urlsMap.ts":
-/*!**************************************!*\
-  !*** ./scripts/constants/urlsMap.ts ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _leadinConfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./leadinConfig */ "./scripts/constants/leadinConfig.ts");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-var flatUrls = function flatUrls(key, route) {
-  if (typeof route === 'string') {
-    return _defineProperty({}, key, route);
-  }
-
-  return Object.keys(route).reduce(function (agg, childKey) {
-    var childRoute = route[childKey];
-    return _objectSpread(_objectSpread({}, agg), flatUrls(key + childKey, childRoute));
-  }, {});
-};
-
-var urlsMap = Object.keys(_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.routes).reduce(function (agg, key) {
-  return _objectSpread(_objectSpread({}, agg), flatUrls(key, _leadinConfig__WEBPACK_IMPORTED_MODULE_0__.routes[key]));
-}, {});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (urlsMap);
-
-/***/ }),
-
-/***/ "./scripts/gutenberg/MeetingsBlock/MeetingGutenbergInterframe.ts":
-/*!***********************************************************************!*\
-  !*** ./scripts/gutenberg/MeetingsBlock/MeetingGutenbergInterframe.ts ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "gutenbergTriggerConnectCalendarRefresh": () => (/* binding */ gutenbergTriggerConnectCalendarRefresh),
-/* harmony export */   "meetingsGutenbergInterframe": () => (/* binding */ meetingsGutenbergInterframe)
-/* harmony export */ });
-/* harmony import */ var raven_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! raven-js */ "./node_modules/raven-js/src/singleton.js");
-/* harmony import */ var raven_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(raven_js__WEBPACK_IMPORTED_MODULE_0__);
-
-var meetingsGutenbergInterframe = function () {
-  var callback;
-  return {
-    executeCallback: function executeCallback(args) {
-      if (callback) {
-        raven_js__WEBPACK_IMPORTED_MODULE_0___default().context(callback, args);
-      }
-    },
-    setCallback: function setCallback(callbackFunc) {
-      callback = callbackFunc;
-    }
-  };
-}();
-function gutenbergTriggerConnectCalendarRefresh(args) {
-  meetingsGutenbergInterframe.executeCallback(args);
-}
-
-/***/ }),
-
-/***/ "./scripts/iframe/IframeApp.tsx":
-/*!**************************************!*\
-  !*** ./scripts/iframe/IframeApp.tsx ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "IframePortal": () => (/* binding */ IframePortal),
-/* harmony export */   "renderIframeApp": () => (/* binding */ renderIframeApp)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib/Raven */ "./scripts/lib/Raven.ts");
-/* harmony import */ var _constants_selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../constants/selectors */ "./scripts/constants/selectors.ts");
-/* harmony import */ var _iframeUtils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./iframeUtils */ "./scripts/iframe/iframeUtils.ts");
-/* harmony import */ var _IframeErrorPage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./IframeErrorPage */ "./scripts/iframe/IframeErrorPage.tsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-var IFRAME_DISPLAY_TIMEOUT = 5000;
-var IframePortal = function IframePortal(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      iframeNotRendered = _useState2[0],
-      setIframeNotRendered = _useState2[1];
-
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    var timer = setTimeout(function () {
-      var iframe = document.getElementById(_constants_selectors__WEBPACK_IMPORTED_MODULE_4__.domElements.leadinIframe);
-
-      if (!iframe) {
-        _lib_Raven__WEBPACK_IMPORTED_MODULE_3__["default"].captureException(new Error("Leadin Iframe blocked"), {
-          fingerprint: ['IFRAME_SETUP_ERROR']
-        });
-        setIframeNotRendered(true);
-      }
-    }, IFRAME_DISPLAY_TIMEOUT);
-    return function () {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, []);
-  var iframe = (0,_iframeUtils__WEBPACK_IMPORTED_MODULE_5__.createIframe)();
-  var container = document.getElementById(_constants_selectors__WEBPACK_IMPORTED_MODULE_4__.domElements.leadinIframeContainer);
-
-  if (container && !iframeNotRendered) {
-    return /*#__PURE__*/react_dom__WEBPACK_IMPORTED_MODULE_2___default().createPortal(props.children, container.appendChild(iframe));
-  }
-
-  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-    children: (!container || iframeNotRendered) && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_IframeErrorPage__WEBPACK_IMPORTED_MODULE_6__.IframeErrorPage, {})
-  });
-};
-var renderIframeApp = function renderIframeApp() {
-  var iframeFallbackContainer = document.getElementById(_constants_selectors__WEBPACK_IMPORTED_MODULE_4__.domElements.leadinIframeFallbackContainer);
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default().render((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(IframePortal, {}), iframeFallbackContainer);
 };
 
 /***/ }),
@@ -526,262 +318,472 @@ __webpack_require__(/*! ./IframeErrorPage.linaria.css!=!../../node_modules/@lina
 
 /***/ }),
 
-/***/ "./scripts/iframe/iframeUtils.ts":
-/*!***************************************!*\
-  !*** ./scripts/iframe/iframeUtils.ts ***!
-  \***************************************/
+/***/ "./scripts/iframe/constants.ts":
+/*!*************************************!*\
+  !*** ./scripts/iframe/constants.ts ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createBackgroundIframe": () => (/* binding */ createBackgroundIframe),
-/* harmony export */   "createIframe": () => (/* binding */ createIframe)
+/* harmony export */   "App": () => (/* binding */ App),
+/* harmony export */   "AppIframe": () => (/* binding */ AppIframe)
 /* harmony export */ });
-/* harmony import */ var _lib_Interframe__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../lib/Interframe */ "./scripts/lib/Interframe.ts");
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/urlsMap */ "./scripts/constants/urlsMap.ts");
-var _excluded = ["page"];
+var _AppIframe;
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+var App;
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+(function (App) {
+  App[App["Forms"] = 0] = "Forms";
+  App[App["LiveChat"] = 1] = "LiveChat";
+  App[App["Plugin"] = 2] = "Plugin";
+  App[App["PluginSettings"] = 3] = "PluginSettings";
+  App[App["Background"] = 4] = "Background";
+})(App || (App = {}));
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-
-
-
-
-function getIframeHeight() {
-  var adminMenuWrap = document.getElementById('adminmenuwrap');
-  var sideMenuHeight = adminMenuWrap ? adminMenuWrap.offsetHeight : 0;
-  var adminBar = document.getElementById('wpadminbar');
-  var adminBarHeight = adminBar && adminBar.offsetHeight || 0;
-
-  if (window.innerHeight < sideMenuHeight) {
-    return sideMenuHeight;
-  } else {
-    return window.innerHeight - adminBarHeight;
-  }
-}
-
-function addIframeResizeEvent(iframe) {
-  var animationFrame;
-  window.addEventListener('resize', function () {
-    if (animationFrame) {
-      cancelAnimationFrame(animationFrame);
-    }
-
-    animationFrame = requestAnimationFrame(function () {
-      iframe.style.minHeight = "".concat(getIframeHeight(), "px");
-    });
-  }, true);
-}
-
-function createIframeElement(iframeSrc) {
-  var iframe = document.createElement('iframe');
-  iframe.id = 'leadin-iframe';
-  iframe.src = iframeSrc;
-  iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-  iframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-popups allow-top-navigation allow-same-origin');
-  iframe.style.minHeight = "".concat(getIframeHeight(), "px");
-  addIframeResizeEvent(iframe);
-  return iframe;
-}
-
-function createSpinnerImage() {
-  var img = document.createElement('img');
-  img.src = "".concat(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.pluginPath, "/public/assets/images/loading-dots.svg");
-  img.id = 'hs-plugin-loader';
-  img.style.cssText = " top: 50%;\n                        left: 50%;\n                        margin-left: -41px;\n                        margin-top: -37;\n                        display: block;\n                        position: absolute;\n                        z-index: 900;";
-  return img;
-}
-
-function addIframeLoadEvent(iframeContainer, img, iframe) {
-  iframe.addEventListener('load', function () {
-    if (img && document.getElementById(img.id)) {
-      img.remove();
-    }
-  }, true);
-}
-
-function withLoadingSpinner(iframe) {
-  var iframeContainer = document.createElement('div');
-  var img = createSpinnerImage();
-  iframeContainer.appendChild(img);
-  iframeContainer.appendChild(iframe);
-  addIframeLoadEvent(iframeContainer, img, iframe);
-  return iframeContainer;
-}
-
-function createIframe() {
-  var _Object$fromEntries = Object.fromEntries(new URLSearchParams(window.location.search)),
-      page = _Object$fromEntries.page,
-      query = _objectWithoutProperties(_Object$fromEntries, _excluded);
-
-  var iframeSrcUrl = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.iframeUrl;
-  var tourId = query['leadin_tour_id'];
-  var justConnected = query['leadin_just_connected'];
-  var routeKey = "".concat(page).concat(Object.entries(query).reduce(function (agg, _ref) {
-    var _ref2 = _slicedToArray(_ref, 2),
-        key = _ref2[0],
-        value = _ref2[1];
-
-    if (key.includes('leadin_route')) {
-      return "".concat(agg).concat(value);
-    }
-
-    return agg;
-  }, ''));
-  var routeValue = _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__["default"][routeKey];
-
-  if (routeValue && !justConnected) {
-    var urlObject = new URL(iframeSrcUrl);
-    urlObject.pathname = routeValue;
-
-    if (tourId) {
-      urlObject.searchParams.append('tourId', tourId);
-    }
-
-    iframeSrcUrl = urlObject.toString();
-  }
-
-  var link = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.impactLink ? "".concat(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.impactLink, "?u=").concat(encodeURIComponent("".concat(iframeSrcUrl)), "&trackConsent=0") : iframeSrcUrl;
-  var iframe = createIframeElement(link);
-  (0,_lib_Interframe__WEBPACK_IMPORTED_MODULE_0__.initInterframe)(iframe);
-  return withLoadingSpinner(iframe);
-}
-function createBackgroundIframe() {
-  var iframe = createIframeElement(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.backgroundIframeUrl);
-  iframe.style.display = 'none';
-  (0,_lib_Interframe__WEBPACK_IMPORTED_MODULE_0__.initInterframe)(iframe);
-  document.body.appendChild(iframe);
-}
+var AppIframe = (_AppIframe = {}, _defineProperty(_AppIframe, App.Forms, 'integrated-form-app'), _defineProperty(_AppIframe, App.LiveChat, 'integrated-livechat-app'), _defineProperty(_AppIframe, App.Plugin, 'integrated-plugin-app'), _defineProperty(_AppIframe, App.PluginSettings, 'integrated-plugin-app'), _defineProperty(_AppIframe, App.Background, 'integrated-plugin-proxy'), _AppIframe);
 
 /***/ }),
 
-/***/ "./scripts/lib/Interframe.ts":
-/*!***********************************!*\
-  !*** ./scripts/lib/Interframe.ts ***!
-  \***********************************/
+/***/ "./scripts/iframe/integratedMessages/core/CoreMessages.ts":
+/*!****************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/core/CoreMessages.ts ***!
+  \****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "initInterframe": () => (/* binding */ initInterframe)
+/* harmony export */   "CoreMessages": () => (/* binding */ CoreMessages)
 /* harmony export */ });
-/* harmony import */ var penpal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! penpal */ "./node_modules/penpal/lib/index.js");
-/* harmony import */ var _Raven__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Raven */ "./scripts/lib/Raven.ts");
-/* harmony import */ var _navigation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../navigation */ "./scripts/navigation.ts");
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _utils_queryParams__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/queryParams */ "./scripts/utils/queryParams.ts");
-/* harmony import */ var _utils_portalInfo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/portalInfo */ "./scripts/utils/portalInfo.ts");
-/* harmony import */ var _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../api/wordpressApiClient */ "./scripts/api/wordpressApiClient.ts");
-/* harmony import */ var _utils_sideNav__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/sideNav */ "./scripts/utils/sideNav.ts");
-/* harmony import */ var _gutenberg_MeetingsBlock_MeetingGutenbergInterframe__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../gutenberg/MeetingsBlock/MeetingGutenbergInterframe */ "./scripts/gutenberg/MeetingsBlock/MeetingGutenbergInterframe.ts");
-
-
-
-
-
-
-
-
-
-var methods = {
-  leadinClearQueryParam: _utils_queryParams__WEBPACK_IMPORTED_MODULE_4__.leadinClearQueryParam,
-  leadinPageReload: _navigation__WEBPACK_IMPORTED_MODULE_2__.leadinPageReload,
-  leadinPageRedirect: _navigation__WEBPACK_IMPORTED_MODULE_2__.leadinPageRedirect,
-  leadinGetPortalInfo: _utils_portalInfo__WEBPACK_IMPORTED_MODULE_5__.leadinGetPortalInfo,
-  leadinDisconnectPortal: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.leadinDisconnectPortal,
-  getLeadinConfig: function getLeadinConfig() {
-    return _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__;
-  },
-  setLeadinUnAuthedNavigation: _utils_sideNav__WEBPACK_IMPORTED_MODULE_7__.setLeadinUnAuthedNavigation,
-  makeInterframeProxyRequest: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.makeInterframeProxyRequest,
-  fetchOAuthToken: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.fetchOAuthToken,
-  fetchRefreshToken: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.fetchRefreshToken,
-  skipReview: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.skipReview,
-  updateHublet: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.updateHublet,
-  trackConsent: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.trackConsent,
-  disableInternalTracking: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.disableInternalTracking,
-  fetchDisableInternalTracking: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.fetchDisableInternalTracking,
-  gutenbergTriggerConnectCalendarRefresh: _gutenberg_MeetingsBlock_MeetingGutenbergInterframe__WEBPACK_IMPORTED_MODULE_8__.gutenbergTriggerConnectCalendarRefresh,
-  setBusinessUnitId: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.setBusinessUnitId,
-  getBusinessUnitId: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.getBusinessUnitId,
-  getBusinessUnits: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.getBusinessUnits
+var CoreMessages = {
+  HandshakeReceive: 'INTEGRATED_APP_EMBEDDER_HANDSHAKE_RECEIVED',
+  SendRefreshToken: 'INTEGRATED_APP_EMBEDDER_SEND_REFRESH_TOKEN',
+  ReloadParentFrame: 'INTEGRATED_APP_EMBEDDER_RELOAD_PARENT_FRAME',
+  RedirectParentFrame: 'INTEGRATED_APP_EMBEDDER_REDIRECT_PARENT_FRAME',
+  SendLocale: 'INTEGRATED_APP_EMBEDDER_SEND_LOCALE',
+  SendDeviceId: 'INTEGRATED_APP_EMBEDDER_SEND_DEVICE_ID'
 };
-var UNAUTHORIZED = 'unauthorized';
-var REDIRECT = 'REDIRECT';
-var hubspotBaseUrl = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__.hubspotBaseUrl;
 
-function createConnectionToIframe(iframe) {
-  return penpal__WEBPACK_IMPORTED_MODULE_0__["default"].connectToChild({
-    url: iframe.src,
-    // The iframe to which a connection should be made
-    iframe: iframe,
-    // Methods the parent is exposing to the child
-    methods: methods
-  });
-}
+/***/ }),
 
-function initInterframe(iframe) {
-  //@ts-expect-error global
-  if (!window.leadinChildFrameConnection) {
-    //@ts-expect-error global
-    window.leadinChildFrameConnection = createConnectionToIframe(iframe); //@ts-expect-error global
+/***/ "./scripts/iframe/integratedMessages/forms/FormsMessages.ts":
+/*!******************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/forms/FormsMessages.ts ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-    window.leadinChildFrameConnection.promise["catch"](function (error) {
-      _Raven__WEBPACK_IMPORTED_MODULE_1__["default"].captureException(error, {
-        fingerprint: ['INTERFRAME_CONNECTION_ERROR']
-      });
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "FormMessages": () => (/* binding */ FormMessages)
+/* harmony export */ });
+var FormMessages = {
+  CreateFormAppNavigation: 'CREATE_FORM_APP_NAVIGATION'
+};
+
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/index.ts":
+/*!****************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/index.ts ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CoreMessages": () => (/* reexport safe */ _core_CoreMessages__WEBPACK_IMPORTED_MODULE_0__.CoreMessages),
+/* harmony export */   "FormMessages": () => (/* reexport safe */ _forms_FormsMessages__WEBPACK_IMPORTED_MODULE_1__.FormMessages),
+/* harmony export */   "LiveChatMessages": () => (/* reexport safe */ _livechat_LiveChatMessages__WEBPACK_IMPORTED_MODULE_2__.LiveChatMessages),
+/* harmony export */   "PluginMessages": () => (/* reexport safe */ _plugin_PluginMessages__WEBPACK_IMPORTED_MODULE_3__.PluginMessages),
+/* harmony export */   "ProxyMessages": () => (/* reexport safe */ _proxy_ProxyMessages__WEBPACK_IMPORTED_MODULE_4__.ProxyMessages)
+/* harmony export */ });
+/* harmony import */ var _core_CoreMessages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/CoreMessages */ "./scripts/iframe/integratedMessages/core/CoreMessages.ts");
+/* harmony import */ var _forms_FormsMessages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./forms/FormsMessages */ "./scripts/iframe/integratedMessages/forms/FormsMessages.ts");
+/* harmony import */ var _livechat_LiveChatMessages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./livechat/LiveChatMessages */ "./scripts/iframe/integratedMessages/livechat/LiveChatMessages.ts");
+/* harmony import */ var _plugin_PluginMessages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugin/PluginMessages */ "./scripts/iframe/integratedMessages/plugin/PluginMessages.ts");
+/* harmony import */ var _proxy_ProxyMessages__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./proxy/ProxyMessages */ "./scripts/iframe/integratedMessages/proxy/ProxyMessages.ts");
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/livechat/LiveChatMessages.ts":
+/*!************************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/livechat/LiveChatMessages.ts ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "LiveChatMessages": () => (/* binding */ LiveChatMessages)
+/* harmony export */ });
+var LiveChatMessages = {
+  CreateLiveChatAppNavigation: 'CREATE_LIVE_CHAT_APP_NAVIGATION'
+};
+
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/plugin/PluginMessages.ts":
+/*!********************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/plugin/PluginMessages.ts ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PluginMessages": () => (/* binding */ PluginMessages)
+/* harmony export */ });
+var PluginMessages = {
+  PluginSettingsNavigation: 'PLUGIN_SETTINGS_NAVIGATION',
+  PluginLeadinConfig: 'PLUGIN_LEADIN_CONFIG',
+  TrackConsent: 'INTEGRATED_APP_EMBEDDER_TRACK_CONSENT',
+  InternalTrackingFetchRequest: 'INTEGRATED_TRACKING_FETCH_REQUEST',
+  InternalTrackingFetchResponse: 'INTEGRATED_TRACKING_FETCH_RESPONSE',
+  InternalTrackingFetchError: 'INTEGRATED_TRACKING_FETCH_ERROR',
+  InternalTrackingChangeRequest: 'INTEGRATED_TRACKING_CHANGE_REQUEST',
+  InternalTrackingChangeError: 'INTEGRATED_TRACKING_CHANGE_ERROR',
+  BusinessUnitFetchRequest: 'BUSINESS_UNIT_FETCH_REQUEST',
+  BusinessUnitFetchResponse: 'BUSINESS_UNIT_FETCH_FETCH_RESPONSE',
+  BusinessUnitFetchError: 'BUSINESS_UNIT_FETCH_FETCH_ERROR',
+  BusinessUnitChangeRequest: 'BUSINESS_UNIT_CHANGE_REQUEST',
+  BusinessUnitChangeError: 'BUSINESS_UNIT_CHANGE_ERROR',
+  SkipReviewRequest: 'SKIP_REVIEW_REQUEST',
+  SkipReviewResponse: 'SKIP_REVIEW_RESPONSE',
+  SkipReviewError: 'SKIP_REVIEW_ERROR'
+};
+
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/proxy/ProxyMessages.ts":
+/*!******************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/proxy/ProxyMessages.ts ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ProxyMessages": () => (/* binding */ ProxyMessages)
+/* harmony export */ });
+var ProxyMessages = {
+  FetchForms: 'FETCH_FORMS',
+  FetchForm: 'FETCH_FORM',
+  CreateFormFromTemplate: 'CREATE_FORM_FROM_TEMPLATE',
+  FetchAuth: 'FETCH_AUTH',
+  FetchMeetingsAndUsers: 'FETCH_MEETINGS_AND_USERS',
+  FetchContactsCreateSinceActivation: 'FETCH_CONTACTS_CREATED_SINCE_ACTIVATION',
+  FetchOrCreateMeetingUser: 'FETCH_OR_CREATE_MEETING_USER',
+  ConnectMeetingsCalendar: 'CONNECT_MEETINGS_CALENDAR',
+  TrackFormPreviewRender: 'TRACK_FORM_PREVIEW_RENDER',
+  TrackFormCreatedFromTemplate: 'TRACK_FORM_CREATED_FROM_TEMPLATE',
+  TrackFormCreationFailed: 'TRACK_FORM_CREATION_FAILED',
+  TrackMeetingPreviewRender: 'TRACK_MEETING_PREVIEW_RENDER',
+  TrackSidebarMetaChange: 'TRACK_SIDEBAR_META_CHANGE',
+  TrackReviewBannerRender: 'TRACK_REVIEW_BANNER_RENDER',
+  TrackReviewBannerInteraction: 'TRACK_REVIEW_BANNER_INTERACTION',
+  TrackReviewBannerDismissed: 'TRACK_REVIEW_BANNER_DISMISSED',
+  TrackPluginDeactivation: 'TRACK_PLUGIN_DEACTIVATION'
+};
+
+/***/ }),
+
+/***/ "./scripts/iframe/messageMiddleware.ts":
+/*!*********************************************!*\
+  !*** ./scripts/iframe/messageMiddleware.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "messageMiddleware": () => (/* binding */ messageMiddleware)
+/* harmony export */ });
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
+/* harmony import */ var _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/wordpressApiClient */ "./scripts/api/wordpressApiClient.ts");
+
+
+var messageMapper = new Map([[_iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.TrackConsent, function (message) {
+  (0,_api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_1__.trackConsent)(message.payload);
+}], [_iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.InternalTrackingChangeRequest, function (message, embedder) {
+  (0,_api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_1__.disableInternalTracking)(message.payload).then(function () {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.InternalTrackingFetchResponse,
+      payload: message.payload
     });
-  }
+  })["catch"](function (payload) {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.InternalTrackingChangeError,
+      payload: payload
+    });
+  });
+}], [_iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.InternalTrackingFetchRequest, function (__message, embedder) {
+  (0,_api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_1__.fetchDisableInternalTracking)().then(function (_ref) {
+    var payload = _ref.message;
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.InternalTrackingFetchResponse,
+      payload: payload
+    });
+  })["catch"](function (payload) {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.InternalTrackingFetchError,
+      payload: payload
+    });
+  });
+}], [_iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.BusinessUnitFetchRequest, function (__message, embedder) {
+  (0,_api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_1__.getBusinessUnitId)().then(function (payload) {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.BusinessUnitFetchResponse,
+      payload: payload
+    });
+  })["catch"](function (payload) {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.BusinessUnitFetchError,
+      payload: payload
+    });
+  });
+}], [_iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.BusinessUnitChangeRequest, function (message, embedder) {
+  (0,_api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_1__.setBusinessUnitId)(message.payload).then(function (payload) {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.BusinessUnitFetchResponse,
+      payload: payload
+    });
+  })["catch"](function (payload) {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.BusinessUnitChangeError,
+      payload: payload
+    });
+  });
+}], [_iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.SkipReviewRequest, function (__message, embedder) {
+  (0,_api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_1__.skipReview)().then(function (payload) {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.SkipReviewResponse,
+      payload: payload
+    });
+  })["catch"](function (payload) {
+    embedder.postMessage({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.SkipReviewError,
+      payload: payload
+    });
+  });
+}]]);
+var messageMiddleware = function messageMiddleware(embedder) {
+  return function (message) {
+    var next = messageMapper.get(message.key);
 
-  var redirectToLogin = function redirectToLogin(event) {
-    if (event.data === UNAUTHORIZED) {
-      window.removeEventListener('message', redirectToLogin);
-      iframe.src = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__.loginUrl;
-      (0,_utils_sideNav__WEBPACK_IMPORTED_MODULE_7__.setLeadinUnAuthedNavigation)();
+    if (next) {
+      next(message, embedder);
     }
   };
+};
 
-  var handleNavigation = function handleNavigation(event) {
-    if (event.origin !== hubspotBaseUrl) return;
+/***/ }),
 
-    try {
-      var data = JSON.parse(event.data);
+/***/ "./scripts/iframe/renderIframeApp.tsx":
+/*!********************************************!*\
+  !*** ./scripts/iframe/renderIframeApp.tsx ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-      if (data['leadin_sync_route']) {
-        var route = data['leadin_sync_route'];
-        var search = data['leadin_sync_search'];
-        (0,_navigation__WEBPACK_IMPORTED_MODULE_2__.syncRoute)(route, (0,_utils_queryParams__WEBPACK_IMPORTED_MODULE_4__.filterLeadinQueryParams)(search));
-      } else if (data['message'] === REDIRECT) {
-        window.location.href = data['url'];
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _constants_selectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants/selectors */ "./scripts/constants/selectors.ts");
+/* harmony import */ var _useAppEmbedder__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./useAppEmbedder */ "./scripts/iframe/useAppEmbedder.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./constants */ "./scripts/iframe/constants.ts");
+/* harmony import */ var _IframeErrorPage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./IframeErrorPage */ "./scripts/iframe/IframeErrorPage.tsx");
+
+
+
+
+
+
+
+
+var IntegratedIframePortal = function IntegratedIframePortal(props) {
+  var container = document.getElementById(_constants_selectors__WEBPACK_IMPORTED_MODULE_3__.domElements.leadinIframeContainer);
+  var iframeNotRendered = (0,_useAppEmbedder__WEBPACK_IMPORTED_MODULE_4__["default"])(props.app, props.createRoute, container);
+
+  if (container && !iframeNotRendered) {
+    return /*#__PURE__*/react_dom__WEBPACK_IMPORTED_MODULE_2___default().createPortal(props.children, container);
+  }
+
+  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: (!container || iframeNotRendered) && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_IframeErrorPage__WEBPACK_IMPORTED_MODULE_6__.IframeErrorPage, {})
+  });
+};
+
+var renderIframeApp = function renderIframeApp() {
+  var iframeFallbackContainer = document.getElementById(_constants_selectors__WEBPACK_IMPORTED_MODULE_3__.domElements.leadinIframeContainer);
+  var app;
+  var queryParams = new URLSearchParams(location.search);
+  var page = queryParams.get('page');
+  var createRoute = queryParams.get('leadin_route[0]') === 'create';
+
+  switch (page) {
+    case 'leadin_forms':
+      app = _constants__WEBPACK_IMPORTED_MODULE_5__.App.Forms;
+      break;
+
+    case 'leadin_chatflows':
+      app = _constants__WEBPACK_IMPORTED_MODULE_5__.App.LiveChat;
+      break;
+
+    case 'leadin_settings':
+      app = _constants__WEBPACK_IMPORTED_MODULE_5__.App.PluginSettings;
+      break;
+
+    case 'leadin_user_guide':
+    default:
+      app = _constants__WEBPACK_IMPORTED_MODULE_5__.App.Plugin;
+      break;
+  }
+
+  react_dom__WEBPACK_IMPORTED_MODULE_2___default().render((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(IntegratedIframePortal, {
+    app: app,
+    createRoute: createRoute
+  }), iframeFallbackContainer);
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (renderIframeApp);
+
+/***/ }),
+
+/***/ "./scripts/iframe/useAppEmbedder.ts":
+/*!******************************************!*\
+  !*** ./scripts/iframe/useAppEmbedder.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ useAppEmbedder)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./scripts/iframe/constants.ts");
+/* harmony import */ var _messageMiddleware__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./messageMiddleware */ "./scripts/iframe/messageMiddleware.ts");
+/* harmony import */ var _utils_iframe__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/iframe */ "./scripts/utils/iframe.ts");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+var getLeadinConfig = function getLeadinConfig() {
+  var utm_query_params = Object.keys(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams).filter(function (x) {
+    return /^utm/.test(x);
+  }).reduce(function (p, c) {
+    return _objectSpread(_defineProperty({}, c, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams[c]), p);
+  }, {});
+  return _objectSpread({
+    accountName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.accountName,
+    adminUrl: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.adminUrl,
+    company: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.company,
+    deviceId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.deviceId,
+    email: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.email,
+    firstName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.firstName,
+    irclickid: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.irclickid,
+    lastName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.lastName,
+    mpid: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.mpid,
+    nonce: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.nonce,
+    plugins: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.plugins,
+    portalDomain: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalDomain,
+    portalEmail: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalEmail,
+    portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalId,
+    reviewSkippedDate: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.reviewSkippedDate,
+    theme: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.theme,
+    trackConsent: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.trackConsent,
+    websiteName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.websiteName,
+    admin: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.admin,
+    justConnected: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.justConnected
+  }, utm_query_params);
+};
+
+var getAppOptions = function getAppOptions(app) {
+  var createRoute = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var _window = window,
+      IntegratedAppOptions = _window.IntegratedAppOptions,
+      FormsAppOptions = _window.FormsAppOptions,
+      LiveChatAppOptions = _window.LiveChatAppOptions,
+      PluginAppOptions = _window.PluginAppOptions;
+  var options;
+
+  switch (app) {
+    case _constants__WEBPACK_IMPORTED_MODULE_2__.App.Plugin:
+      options = new PluginAppOptions().setLeadinConfig(getLeadinConfig());
+      break;
+
+    case _constants__WEBPACK_IMPORTED_MODULE_2__.App.PluginSettings:
+      options = new PluginAppOptions().setLeadinConfig(getLeadinConfig()).setPluginSettingsInit();
+      break;
+
+    case _constants__WEBPACK_IMPORTED_MODULE_2__.App.Forms:
+      options = new FormsAppOptions();
+
+      if (createRoute) {
+        options = options.setCreateFormAppInit();
       }
-    } catch (e) {// Error in parsing message
-    }
-  };
 
-  var currentPage = (0,_utils_queryParams__WEBPACK_IMPORTED_MODULE_4__.getQueryParam)('page');
+      break;
 
-  if (currentPage !== 'leadin_settings' && currentPage !== 'leadin' && currentPage !== 'leadin_user_guide') {
-    window.addEventListener('message', redirectToLogin);
+    case _constants__WEBPACK_IMPORTED_MODULE_2__.App.LiveChat:
+      options = new LiveChatAppOptions();
+
+      if (createRoute) {
+        options = options.setCreateLiveChatAppInit();
+      }
+
+      break;
+
+    default:
+      options = new IntegratedAppOptions();
   }
 
-  window.addEventListener('message', handleNavigation);
+  return options;
+};
+
+function useAppEmbedder(app, createRoute, container) {
+  var iframeNotRendered = (0,_utils_iframe__WEBPACK_IMPORTED_MODULE_4__.useIframeNotRendered)(_constants__WEBPACK_IMPORTED_MODULE_2__.AppIframe[app]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var _window2 = window,
+        IntegratedAppEmbedder = _window2.IntegratedAppEmbedder;
+
+    if (IntegratedAppEmbedder) {
+      var options = getAppOptions(app, createRoute).setLocale(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.locale).setDeviceId(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.deviceId).setRefreshToken(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.refreshToken);
+      var embedder = new IntegratedAppEmbedder(_constants__WEBPACK_IMPORTED_MODULE_2__.AppIframe[app], _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalId, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.hubspotBaseUrl, _utils_iframe__WEBPACK_IMPORTED_MODULE_4__.resizeWindow, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.refreshToken ? '' : _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.impactLink).setOptions(options);
+      embedder.subscribe((0,_messageMiddleware__WEBPACK_IMPORTED_MODULE_3__.messageMiddleware)(embedder));
+      embedder.attachTo(container, true);
+      embedder.postStartAppMessage(); // lets the app know all all data has been passed to it
+
+      window.embedder = embedder;
+    }
+  }, []);
+  return iframeNotRendered;
 }
 
 /***/ }),
@@ -830,84 +832,6 @@ function configureRaven() {
 
 /***/ }),
 
-/***/ "./scripts/navigation.ts":
-/*!*******************************!*\
-  !*** ./scripts/navigation.ts ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "leadinPageRedirect": () => (/* binding */ leadinPageRedirect),
-/* harmony export */   "leadinPageReload": () => (/* binding */ leadinPageReload),
-/* harmony export */   "syncRoute": () => (/* binding */ syncRoute)
-/* harmony export */ });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constants_selectors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants/selectors */ "./scripts/constants/selectors.ts");
-/* harmony import */ var _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants/urlsMap */ "./scripts/constants/urlsMap.ts");
-
-
-
-
-function setSelectedMenuItem(url) {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_1__.domElements.subMenuButtons).removeClass('current');
-  var match = url.match(/\?page=leadin_?\w*/);
-
-  if (match) {
-    var pageParam = match[0];
-    var selectedElement = jquery__WEBPACK_IMPORTED_MODULE_0___default()("a[href=\"admin.php".concat(pageParam, "\"]"));
-    selectedElement.parent().addClass('current');
-  }
-} // Given a route like "/settings/forms", parse it into "?page=leadin_settings&leadin_route[]=forms"
-
-
-function syncRoute() {
-  var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var searchQuery = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-  var baseUrls = Object.keys(_constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__["default"]).sort(function (a, b) {
-    return a.length < b.length ? 1 : -1;
-  });
-  var wpPage;
-  var route = '';
-  baseUrls.some(function (basePath) {
-    if (path.indexOf(basePath) === 0) {
-      wpPage = _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__["default"][basePath][0];
-      var routePrefix = _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__["default"][basePath][1] || '';
-      var cleanedPath = path.replace(basePath, '');
-      route = "".concat(routePrefix).concat(cleanedPath).replace(/^\/+/, '');
-      return true;
-    }
-
-    return false;
-  });
-
-  if (!wpPage) {
-    return;
-  }
-
-  var leadinRouteParam = route ? "&".concat(route.split('/').map(function (subRoute) {
-    return "".concat(encodeURIComponent("leadin_route[]"), "=").concat(subRoute);
-  }).join('&')) : '';
-  var leadinSearchParam = searchQuery.length ? "&leadin_search=".concat(encodeURIComponent(searchQuery)) : ''; // @ts-expect-error Global
-
-  var nonce = window.leadinConfig ? // @ts-expect-error Global
-  "&_wpnonce=".concat(window.leadinConfig.routeNonce) : '';
-  var newUrl = "?page=".concat(wpPage).concat(leadinRouteParam).concat(leadinSearchParam).concat(nonce);
-  setSelectedMenuItem(newUrl);
-  window.history.replaceState(null, '', newUrl);
-}
-var leadinPageReload = function leadinPageReload() {
-  return window.location.reload();
-};
-var leadinPageRedirect = function leadinPageRedirect(path) {
-  syncRoute(path);
-  leadinPageReload();
-};
-
-/***/ }),
-
 /***/ "./scripts/utils/appUtils.ts":
 /*!***********************************!*\
   !*** ./scripts/utils/appUtils.ts ***!
@@ -939,47 +863,21 @@ function initAppOnReady(initFn) {
 
 /***/ }),
 
-/***/ "./scripts/utils/portalInfo.ts":
-/*!*************************************!*\
-  !*** ./scripts/utils/portalInfo.ts ***!
-  \*************************************/
+/***/ "./scripts/utils/iframe.ts":
+/*!*********************************!*\
+  !*** ./scripts/utils/iframe.ts ***!
+  \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "leadinGetPortalInfo": () => (/* binding */ leadinGetPortalInfo)
+/* harmony export */   "resizeWindow": () => (/* binding */ resizeWindow),
+/* harmony export */   "useIframeNotRendered": () => (/* binding */ useIframeNotRendered)
 /* harmony export */ });
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-
-var leadinGetPortalInfo = function leadinGetPortalInfo() {
-  return {
-    portalDomain: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.portalDomain,
-    portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.portalId,
-    portalEmail: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.portalEmail,
-    accountName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.accountName
-  };
-};
-
-/***/ }),
-
-/***/ "./scripts/utils/queryParams.ts":
-/*!**************************************!*\
-  !*** ./scripts/utils/queryParams.ts ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "addQueryObjectToUrl": () => (/* binding */ addQueryObjectToUrl),
-/* harmony export */   "filterLeadinQueryParams": () => (/* binding */ filterLeadinQueryParams),
-/* harmony export */   "getQueryParam": () => (/* binding */ getQueryParam),
-/* harmony export */   "leadinClearQueryParam": () => (/* binding */ leadinClearQueryParam)
-/* harmony export */ });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/Raven */ "./scripts/lib/Raven.ts");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -994,81 +892,63 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function leadinClearQueryParam() {
-  var currentWindowLocation = window.location.toString();
+var IFRAME_DISPLAY_TIMEOUT = 5000;
+function useIframeNotRendered(app) {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      iframeNotRendered = _useState2[0],
+      setIframeNotRendered = _useState2[1];
 
-  if (currentWindowLocation.indexOf('?') > 0) {
-    currentWindowLocation = currentWindowLocation.substring(0, currentWindowLocation.indexOf('?'));
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var timer = setTimeout(function () {
+      var iframe = document.getElementById(app);
+
+      if (!iframe) {
+        _lib_Raven__WEBPACK_IMPORTED_MODULE_1__["default"].captureException(new Error("Leadin Iframe blocked"), {
+          fingerprint: ['IFRAME_SETUP_ERROR']
+        });
+        setIframeNotRendered(true);
+      }
+    }, IFRAME_DISPLAY_TIMEOUT);
+    return function () {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, []);
+  return iframeNotRendered;
+}
+var resizeWindow = function resizeWindow() {
+  var adminMenuWrap = document.getElementById('adminmenuwrap');
+  var sideMenuHeight = adminMenuWrap ? adminMenuWrap.offsetHeight : 0;
+  var adminBar = document.getElementById('wpadminbar');
+  var adminBarHeight = adminBar && adminBar.offsetHeight || 0;
+  var offset = 4;
+
+  if (window.innerHeight < sideMenuHeight) {
+    return sideMenuHeight - offset;
+  } else {
+    return window.innerHeight - adminBarHeight - offset;
   }
-
-  var newWindowLocation = "".concat(currentWindowLocation, "?page=leadin");
-  window.history.pushState({}, '', newWindowLocation);
-}
-function getQueryParam(key) {
-  var query = window.location.search.substring(1);
-  var vars = query.split('&');
-
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=');
-
-    if (decodeURIComponent(pair[0]) === key) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
-
-  return null;
-}
-function filterLeadinQueryParams(searchString) {
-  if (!searchString) return '';
-  var pairs = searchString.slice(1).split('&');
-  var filteredSearch = pairs.reduce(function (paramsMap, pair) {
-    var _pair$split = pair.split('='),
-        _pair$split2 = _slicedToArray(_pair$split, 2),
-        key = _pair$split2[0],
-        value = _pair$split2[1];
-
-    if (key && _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParamsKeys.indexOf(key) === -1) {
-      paramsMap[key] = value;
-    }
-
-    return paramsMap;
-  }, {});
-  return jquery__WEBPACK_IMPORTED_MODULE_0___default().param(filteredSearch);
-}
-function addQueryObjectToUrl(urlObject, queryParams) {
-  Object.keys(queryParams).forEach(function (key) {
-    urlObject.searchParams.append(key, queryParams[key]);
-  });
-}
+};
 
 /***/ }),
 
-/***/ "./scripts/utils/sideNav.ts":
-/*!**********************************!*\
-  !*** ./scripts/utils/sideNav.ts ***!
-  \**********************************/
+/***/ "./scripts/utils/queryParams.ts":
+/*!**************************************!*\
+  !*** ./scripts/utils/queryParams.ts ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "setLeadinCookiesDisabledNavigation": () => (/* binding */ setLeadinCookiesDisabledNavigation),
-/* harmony export */   "setLeadinCookiesEnabledNavigation": () => (/* binding */ setLeadinCookiesEnabledNavigation),
-/* harmony export */   "setLeadinUnAuthedNavigation": () => (/* binding */ setLeadinUnAuthedNavigation)
+/* harmony export */   "addQueryObjectToUrl": () => (/* binding */ addQueryObjectToUrl)
 /* harmony export */ });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constants_selectors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/selectors */ "./scripts/constants/selectors.ts");
-
-
-function setLeadinUnAuthedNavigation() {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_1__.domElements.subMenu).remove();
-}
-function setLeadinCookiesEnabledNavigation() {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_1__.domElements.subMenuLinks).addClass('visible');
-}
-function setLeadinCookiesDisabledNavigation() {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_1__.domElements.subMenuLinks).removeClass('visible');
+function addQueryObjectToUrl(urlObject, queryParams) {
+  Object.keys(queryParams).forEach(function (key) {
+    urlObject.searchParams.append(key, queryParams[key]);
+  });
 }
 
 /***/ }),
@@ -1184,589 +1064,6 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-
-/***/ }),
-
-/***/ "./node_modules/penpal/lib/index.js":
-/*!******************************************!*\
-  !*** ./node_modules/penpal/lib/index.js ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.ERR_IFRAME_ALREADY_ATTACHED_TO_DOM = exports.ERR_NOT_IN_IFRAME = exports.ERR_CONNECTION_TIMEOUT = exports.ERR_CONNECTION_DESTROYED = void 0;
-var HANDSHAKE = 'handshake';
-var HANDSHAKE_REPLY = 'handshake-reply';
-var CALL = 'call';
-var REPLY = 'reply';
-var FULFILLED = 'fulfilled';
-var REJECTED = 'rejected';
-var MESSAGE = 'message';
-var DATA_CLONE_ERROR = 'DataCloneError';
-var ERR_CONNECTION_DESTROYED = 'ConnectionDestroyed';
-exports.ERR_CONNECTION_DESTROYED = ERR_CONNECTION_DESTROYED;
-var ERR_CONNECTION_TIMEOUT = 'ConnectionTimeout';
-exports.ERR_CONNECTION_TIMEOUT = ERR_CONNECTION_TIMEOUT;
-var ERR_NOT_IN_IFRAME = 'NotInIframe';
-exports.ERR_NOT_IN_IFRAME = ERR_NOT_IN_IFRAME;
-var ERR_IFRAME_ALREADY_ATTACHED_TO_DOM = 'IframeAlreadyAttachedToDom';
-exports.ERR_IFRAME_ALREADY_ATTACHED_TO_DOM = ERR_IFRAME_ALREADY_ATTACHED_TO_DOM;
-var CHECK_IFRAME_IN_DOC_INTERVAL = 60000;
-var DEFAULT_PORTS = {
-  'http:': '80',
-  'https:': '443'
-};
-var URL_REGEX = /^(https?:|file:)?\/\/([^/:]+)?(:(\d+))?/;
-var Penpal = {
-  ERR_CONNECTION_DESTROYED: ERR_CONNECTION_DESTROYED,
-  ERR_CONNECTION_TIMEOUT: ERR_CONNECTION_TIMEOUT,
-  ERR_NOT_IN_IFRAME: ERR_NOT_IN_IFRAME,
-  ERR_IFRAME_ALREADY_ATTACHED_TO_DOM: ERR_IFRAME_ALREADY_ATTACHED_TO_DOM,
-
-  /**
-   * Promise implementation.
-   * @type {Constructor}
-   */
-  Promise: function () {
-    try {
-      return window ? window.Promise : null;
-    } catch (e) {
-      return null;
-    }
-  }(),
-
-  /**
-   * Whether debug messages should be logged.
-   * @type {boolean}
-   */
-  debug: false
-};
-/**
- * @return {number} A unique ID (not universally unique)
- */
-
-var generateId = function () {
-  var id = 0;
-  return function () {
-    return ++id;
-  };
-}();
-/**
- * Logs a message.
- * @param {...*} args One or more items to log
- */
-
-
-var log = function log() {
-  if (Penpal.debug) {
-    var _console;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    (_console = console).log.apply(_console, ['[Penpal]'].concat(args)); // eslint-disable-line no-console
-
-  }
-};
-/**
- * Converts a URL into an origin.
- * @param {string} url
- * @return {string} The URL's origin
- */
-
-
-var getOriginFromUrl = function getOriginFromUrl(url) {
-  var location = document.location;
-  var regexResult = URL_REGEX.exec(url);
-  var protocol;
-  var hostname;
-  var port;
-
-  if (regexResult) {
-    // It's an absolute URL. Use the parsed info.
-    // regexResult[1] will be undefined if the URL starts with //
-    protocol = regexResult[1] ? regexResult[1] : location.protocol;
-    hostname = regexResult[2];
-    port = regexResult[4];
-  } else {
-    // It's a relative path. Use the current location's info.
-    protocol = location.protocol;
-    hostname = location.hostname;
-    port = location.port;
-  } // If the protocol is file, the origin is "null"
-  // The origin of a document with file protocol is an opaque origin
-  // and its serialization "null" [1]
-  // [1] https://html.spec.whatwg.org/multipage/origin.html#origin
-
-
-  if (protocol === "file:") {
-    return "null";
-  } // If the port is the default for the protocol, we don't want to add it to the origin string
-  // or it won't match the message's event.origin.
-
-
-  var portSuffix = port && port !== DEFAULT_PORTS[protocol] ? ":".concat(port) : '';
-  return "".concat(protocol, "//").concat(hostname).concat(portSuffix);
-};
-/**
- * A simplified promise class only used internally for when destroy() is called. This is
- * used to destroy connections synchronously while promises typically resolve asynchronously.
- *
- * @param {Function} executor
- * @returns {Object}
- * @constructor
- */
-
-
-var DestructionPromise = function DestructionPromise(executor) {
-  var handlers = [];
-  executor(function () {
-    handlers.forEach(function (handler) {
-      handler();
-    });
-  });
-  return {
-    then: function then(handler) {
-      handlers.push(handler);
-    }
-  };
-};
-/**
- * Converts an error object into a plain object.
- * @param {Error} Error object.
- * @returns {Object}
- */
-
-
-var serializeError = function serializeError(_ref) {
-  var name = _ref.name,
-      message = _ref.message,
-      stack = _ref.stack;
-  return {
-    name: name,
-    message: message,
-    stack: stack
-  };
-};
-/**
- * Converts a plain object into an error object.
- * @param {Object} Object with error properties.
- * @returns {Error}
- */
-
-
-var deserializeError = function deserializeError(obj) {
-  var deserializedError = new Error();
-  Object.keys(obj).forEach(function (key) {
-    return deserializedError[key] = obj[key];
-  });
-  return deserializedError;
-};
-/**
- * Augments an object with methods that match those defined by the remote. When these methods are
- * called, a "call" message will be sent to the remote, the remote's corresponding method will be
- * executed, and the method's return value will be returned via a message.
- * @param {Object} callSender Sender object that should be augmented with methods.
- * @param {Object} info Information about the local and remote windows.
- * @param {Array} methodNames Names of methods available to be called on the remote.
- * @param {Promise} destructionPromise A promise resolved when destroy() is called on the penpal
- * connection.
- * @returns {Object} The call sender object with methods that may be called.
- */
-
-
-var connectCallSender = function connectCallSender(callSender, info, methodNames, destroy, destructionPromise) {
-  var localName = info.localName,
-      local = info.local,
-      remote = info.remote,
-      remoteOrigin = info.remoteOrigin;
-  var destroyed = false;
-  log("".concat(localName, ": Connecting call sender"));
-
-  var createMethodProxy = function createMethodProxy(methodName) {
-    return function () {
-      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      log("".concat(localName, ": Sending ").concat(methodName, "() call")); // This handles the case where the iframe has been removed from the DOM
-      // (and therefore its window closed), the consumer has not yet
-      // called destroy(), and the user calls a method exposed by
-      // the remote. We detect the iframe has been removed and force
-      // a destroy() immediately so that the consumer sees the error saying
-      // the connection has been destroyed.
-
-      if (remote.closed) {
-        destroy();
-      }
-
-      if (destroyed) {
-        var error = new Error("Unable to send ".concat(methodName, "() call due ") + "to destroyed connection");
-        error.code = ERR_CONNECTION_DESTROYED;
-        throw error;
-      }
-
-      return new Penpal.Promise(function (resolve, reject) {
-        var id = generateId();
-
-        var handleMessageEvent = function handleMessageEvent(event) {
-          if (event.source === remote && event.origin === remoteOrigin && event.data.penpal === REPLY && event.data.id === id) {
-            log("".concat(localName, ": Received ").concat(methodName, "() reply"));
-            local.removeEventListener(MESSAGE, handleMessageEvent);
-            var returnValue = event.data.returnValue;
-
-            if (event.data.returnValueIsError) {
-              returnValue = deserializeError(returnValue);
-            }
-
-            (event.data.resolution === FULFILLED ? resolve : reject)(returnValue);
-          }
-        };
-
-        local.addEventListener(MESSAGE, handleMessageEvent);
-        remote.postMessage({
-          penpal: CALL,
-          id: id,
-          methodName: methodName,
-          args: args
-        }, remoteOrigin);
-      });
-    };
-  };
-
-  destructionPromise.then(function () {
-    destroyed = true;
-  });
-  methodNames.reduce(function (api, methodName) {
-    api[methodName] = createMethodProxy(methodName);
-    return api;
-  }, callSender);
-};
-/**
- * Listens for "call" messages coming from the remote, executes the corresponding method, and
- * responds with the return value.
- * @param {Object} info Information about the local and remote windows.
- * @param {Object} methods The keys are the names of the methods that can be called by the remote
- * while the values are the method functions.
- * @param {Promise} destructionPromise A promise resolved when destroy() is called on the penpal
- * connection.
- * @returns {Function} A function that may be called to disconnect the receiver.
- */
-
-
-var connectCallReceiver = function connectCallReceiver(info, methods, destructionPromise) {
-  var localName = info.localName,
-      local = info.local,
-      remote = info.remote,
-      remoteOrigin = info.remoteOrigin;
-  var destroyed = false;
-  log("".concat(localName, ": Connecting call receiver"));
-
-  var handleMessageEvent = function handleMessageEvent(event) {
-    if (event.source === remote && event.origin === remoteOrigin && event.data.penpal === CALL) {
-      var _event$data = event.data,
-          methodName = _event$data.methodName,
-          args = _event$data.args,
-          id = _event$data.id;
-      log("".concat(localName, ": Received ").concat(methodName, "() call"));
-
-      if (methodName in methods) {
-        var createPromiseHandler = function createPromiseHandler(resolution) {
-          return function (returnValue) {
-            log("".concat(localName, ": Sending ").concat(methodName, "() reply"));
-
-            if (destroyed) {
-              // It's possible to throw an error here, but it would need to be thrown asynchronously
-              // and would only be catchable using window.onerror. This is because the consumer
-              // is merely returning a value from their method and not calling any function
-              // that they could wrap in a try-catch. Even if the consumer were to catch the error,
-              // the value of doing so is questionable. Instead, we'll just log a message.
-              log("".concat(localName, ": Unable to send ").concat(methodName, "() reply due to destroyed connection"));
-              return;
-            }
-
-            var message = {
-              penpal: REPLY,
-              id: id,
-              resolution: resolution,
-              returnValue: returnValue
-            };
-
-            if (resolution === REJECTED && returnValue instanceof Error) {
-              message.returnValue = serializeError(returnValue);
-              message.returnValueIsError = true;
-            }
-
-            try {
-              remote.postMessage(message, remoteOrigin);
-            } catch (err) {
-              // If a consumer attempts to send an object that's not cloneable (e.g., window),
-              // we want to ensure the receiver's promise gets rejected.
-              if (err.name === DATA_CLONE_ERROR) {
-                remote.postMessage({
-                  penpal: REPLY,
-                  id: id,
-                  resolution: REJECTED,
-                  returnValue: serializeError(err),
-                  returnValueIsError: true
-                }, remoteOrigin);
-              }
-
-              throw err;
-            }
-          };
-        };
-
-        new Penpal.Promise(function (resolve) {
-          return resolve(methods[methodName].apply(methods, args));
-        }).then(createPromiseHandler(FULFILLED), createPromiseHandler(REJECTED));
-      }
-    }
-  };
-
-  local.addEventListener(MESSAGE, handleMessageEvent);
-  destructionPromise.then(function () {
-    destroyed = true;
-    local.removeEventListener(MESSAGE, handleMessageEvent);
-  });
-};
-/**
- * @typedef {Object} Child
- * @property {Promise} promise A promise which will be resolved once a connection has
- * been established.
- * @property {HTMLIframeElement} iframe The created iframe element.
- * @property {Function} destroy A method that, when called, will remove the iframe element from
- * the DOM and clean up event listeners.
- */
-
-/**
- * Creates an iframe, loads a webpage into the URL, and attempts to establish communication with
- * the iframe.
- * @param {Object} options
- * @param {string} options.url The URL of the webpage that should be loaded into the created iframe.
- * @param {HTMLElement} [options.appendTo] The container to which the iframe should be appended.
- * @param {Object} [options.methods={}] Methods that may be called by the iframe.
- * @param {Number} [options.timeout] The amount of time, in milliseconds, Penpal should wait
- * for the child to respond before rejecting the connection promise.
- * @return {Child}
- */
-
-
-Penpal.connectToChild = function (_ref2) {
-  var url = _ref2.url,
-      appendTo = _ref2.appendTo,
-      iframe = _ref2.iframe,
-      _ref2$methods = _ref2.methods,
-      methods = _ref2$methods === void 0 ? {} : _ref2$methods,
-      timeout = _ref2.timeout;
-
-  if (iframe && iframe.parentNode) {
-    var error = new Error('connectToChild() must not be called with an iframe already attached to DOM');
-    error.code = ERR_IFRAME_ALREADY_ATTACHED_TO_DOM;
-    throw error;
-  }
-
-  var destroy;
-  var connectionDestructionPromise = new DestructionPromise(function (resolveConnectionDestructionPromise) {
-    destroy = resolveConnectionDestructionPromise;
-  });
-  var parent = window;
-  iframe = iframe || document.createElement('iframe');
-  iframe.src = url;
-  var childOrigin = getOriginFromUrl(url);
-  var promise = new Penpal.Promise(function (resolveConnectionPromise, reject) {
-    var connectionTimeoutId;
-
-    if (timeout !== undefined) {
-      connectionTimeoutId = setTimeout(function () {
-        var error = new Error("Connection to child timed out after ".concat(timeout, "ms"));
-        error.code = ERR_CONNECTION_TIMEOUT;
-        reject(error);
-        destroy();
-      }, timeout);
-    } // We resolve the promise with the call sender. If the child reconnects (for example, after
-    // refreshing or navigating to another page that uses Penpal, we'll update the call sender
-    // with methods that match the latest provided by the child.
-
-
-    var callSender = {};
-    var receiverMethodNames;
-    var destroyCallReceiver;
-
-    var handleMessage = function handleMessage(event) {
-      var child = iframe.contentWindow;
-
-      if (event.source === child && event.origin === childOrigin && event.data.penpal === HANDSHAKE) {
-        log('Parent: Received handshake, sending reply'); // If event.origin is "null", the remote protocol is file:
-        // and we must post messages with "*" as targetOrigin [1]
-        // [1] https://developer.mozilla.org/fr/docs/Web/API/Window/postMessage#Utiliser_window.postMessage_dans_les_extensions
-
-        var remoteOrigin = event.origin === "null" ? "*" : event.origin;
-        event.source.postMessage({
-          penpal: HANDSHAKE_REPLY,
-          methodNames: Object.keys(methods)
-        }, remoteOrigin);
-        var info = {
-          localName: 'Parent',
-          local: parent,
-          remote: child,
-          remoteOrigin: remoteOrigin
-        }; // If the child reconnected, we need to destroy the previous call receiver before setting
-        // up a new one.
-
-        if (destroyCallReceiver) {
-          destroyCallReceiver();
-        } // When this promise is resolved, it will destroy the call receiver (stop listening to
-        // method calls from the child) and delete its methods off the call sender.
-
-
-        var callReceiverDestructionPromise = new DestructionPromise(function (resolveCallReceiverDestructionPromise) {
-          connectionDestructionPromise.then(resolveCallReceiverDestructionPromise);
-          destroyCallReceiver = resolveCallReceiverDestructionPromise;
-        });
-        connectCallReceiver(info, methods, callReceiverDestructionPromise); // If the child reconnected, we need to remove the methods from the previous call receiver
-        // off the sender.
-
-        if (receiverMethodNames) {
-          receiverMethodNames.forEach(function (receiverMethodName) {
-            delete callSender[receiverMethodName];
-          });
-        }
-
-        receiverMethodNames = event.data.methodNames;
-        connectCallSender(callSender, info, receiverMethodNames, destroy, connectionDestructionPromise);
-        clearTimeout(connectionTimeoutId);
-        resolveConnectionPromise(callSender);
-      }
-    };
-
-    parent.addEventListener(MESSAGE, handleMessage);
-    log('Parent: Loading iframe');
-    (appendTo || document.body).appendChild(iframe); // This is to prevent memory leaks when the iframe is removed
-    // from the document and the consumer hasn't called destroy().
-    // Without this, event listeners attached to the window would
-    // stick around and since the event handlers have a reference
-    // to the iframe in their closures, the iframe would stick around
-    // too.
-
-    var checkIframeInDocIntervalId = setInterval(function () {
-      if (!document.body.contains(iframe)) {
-        clearInterval(checkIframeInDocIntervalId);
-        destroy();
-      }
-    }, CHECK_IFRAME_IN_DOC_INTERVAL);
-    connectionDestructionPromise.then(function () {
-      if (iframe.parentNode) {
-        iframe.parentNode.removeChild(iframe);
-      }
-
-      parent.removeEventListener(MESSAGE, handleMessage);
-      clearInterval(checkIframeInDocIntervalId);
-      var error = new Error('Connection destroyed');
-      error.code = ERR_CONNECTION_DESTROYED;
-      reject(error);
-    });
-  });
-  return {
-    promise: promise,
-    iframe: iframe,
-    destroy: destroy
-  };
-};
-/**
- * @typedef {Object} Parent
- * @property {Promise} promise A promise which will be resolved once a connection has
- * been established.
- */
-
-/**
- * Attempts to establish communication with the parent window.
- * @param {Object} options
- * @param {string} [options.parentOrigin=*] Valid parent origin used to restrict communication.
- * @param {Object} [options.methods={}] Methods that may be called by the parent window.
- * @param {Number} [options.timeout] The amount of time, in milliseconds, Penpal should wait
- * for the parent to respond before rejecting the connection promise.
- * @return {Parent}
- */
-
-
-Penpal.connectToParent = function () {
-  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-      _ref3$parentOrigin = _ref3.parentOrigin,
-      parentOrigin = _ref3$parentOrigin === void 0 ? '*' : _ref3$parentOrigin,
-      _ref3$methods = _ref3.methods,
-      methods = _ref3$methods === void 0 ? {} : _ref3$methods,
-      timeout = _ref3.timeout;
-
-  if (window === window.top) {
-    var error = new Error('connectToParent() must be called within an iframe');
-    error.code = ERR_NOT_IN_IFRAME;
-    throw error;
-  }
-
-  var destroy;
-  var connectionDestructionPromise = new DestructionPromise(function (resolveConnectionDestructionPromise) {
-    destroy = resolveConnectionDestructionPromise;
-  });
-  var child = window;
-  var parent = child.parent;
-  var promise = new Penpal.Promise(function (resolveConnectionPromise, reject) {
-    var connectionTimeoutId;
-
-    if (timeout !== undefined) {
-      connectionTimeoutId = setTimeout(function () {
-        var error = new Error("Connection to parent timed out after ".concat(timeout, "ms"));
-        error.code = ERR_CONNECTION_TIMEOUT;
-        reject(error);
-        destroy();
-      }, timeout);
-    }
-
-    var handleMessageEvent = function handleMessageEvent(event) {
-      if ((parentOrigin === '*' || parentOrigin === event.origin) && event.source === parent && event.data.penpal === HANDSHAKE_REPLY) {
-        log('Child: Received handshake reply');
-        child.removeEventListener(MESSAGE, handleMessageEvent);
-        var info = {
-          localName: 'Child',
-          local: child,
-          remote: parent,
-          remoteOrigin: event.origin
-        };
-        var callSender = {};
-        connectCallReceiver(info, methods, connectionDestructionPromise);
-        connectCallSender(callSender, info, event.data.methodNames, destroy, connectionDestructionPromise);
-        clearTimeout(connectionTimeoutId);
-        resolveConnectionPromise(callSender);
-      }
-    };
-
-    child.addEventListener(MESSAGE, handleMessageEvent);
-    connectionDestructionPromise.then(function () {
-      child.removeEventListener(MESSAGE, handleMessageEvent);
-      var error = new Error('Connection destroyed');
-      error.code = ERR_CONNECTION_DESTROYED;
-      reject(error);
-    });
-    log('Child: Sending handshake');
-    parent.postMessage({
-      penpal: HANDSHAKE,
-      methodNames: Object.keys(methods)
-    }, parentOrigin);
-  });
-  return {
-    promise: promise,
-    destroy: destroy
-  };
-};
-
-var _default = Penpal;
-exports["default"] = _default;
 
 /***/ }),
 
@@ -6474,10 +5771,10 @@ var __webpack_exports__ = {};
   \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_appUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/appUtils */ "./scripts/utils/appUtils.ts");
-/* harmony import */ var _iframe_IframeApp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../iframe/IframeApp */ "./scripts/iframe/IframeApp.tsx");
+/* harmony import */ var _iframe_renderIframeApp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../iframe/renderIframeApp */ "./scripts/iframe/renderIframeApp.tsx");
 
 
-(0,_utils_appUtils__WEBPACK_IMPORTED_MODULE_0__.initAppOnReady)(_iframe_IframeApp__WEBPACK_IMPORTED_MODULE_1__.renderIframeApp);
+(0,_utils_appUtils__WEBPACK_IMPORTED_MODULE_0__.initAppOnReady)(_iframe_renderIframeApp__WEBPACK_IMPORTED_MODULE_1__["default"]);
 })();
 
 /******/ })()

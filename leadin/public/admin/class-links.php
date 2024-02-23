@@ -112,39 +112,6 @@ class Links {
 	}
 
 	/**
-	 * Get background iframe src.
-	 */
-	public static function get_background_iframe_src() {
-		$portal_id     = Portal_Options::get_portal_id();
-		$portal_id_url = '';
-
-		if ( Connection::is_connected() ) {
-			$portal_id_url = "/$portal_id";
-		}
-
-		$query = '';
-
-		return Filters::apply_base_url_filters() . "/wordpress-plugin-ui$portal_id_url/background?$query" . self::get_query_params();
-	}
-
-	/**
-	 * Return login link to redirect to when the user isn't authenticated in HubSpot
-	 */
-	public static function get_login_url() {
-		$portal_id = Portal_Options::get_portal_id();
-		return Filters::apply_base_url_filters() . "/wordpress-plugin-ui/$portal_id/login?" . self::get_query_params();
-	}
-
-	/**
-	 * Returns the url for the connection page
-	 */
-	private static function get_connection_src() {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$portal_id = Connection::is_connected() ? Portal_Options::get_portal_id() : ( isset( $_GET['leadin_connect'] ) ? filter_var( wp_unslash( $_GET['leadin_connect'] ), FILTER_VALIDATE_INT ) : 0 );
-		return Filters::apply_base_url_filters() . "/wordpress-plugin-ui/onboarding/connect?portalId=$portal_id&" . self::get_query_params();
-	}
-
-	/**
 	 * This function computes the right iframe src based on query params and current page.
 	 *
 	 * The `page` query param is used as a key to get the url from the get_routes_mapping
@@ -170,18 +137,6 @@ class Links {
 		$leadin_new_portal     = 'leadin_new_portal';
 		$browser_search_string = '';
 
-		// Old Connection flow.
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_GET['leadin_connect'] ) ) {
-			$extra = '';
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			if ( isset( $_GET['is_new_portal'] ) ) {
-				$extra = '&isNewPortal=true';
-				set_transient( $leadin_new_portal, 'true' );
-			}
-			return self::get_connection_src() . $extra;
-		}
-
 		if ( get_transient( $leadin_onboarding ) ) {
 			delete_transient( $leadin_onboarding );
 			$browser_search_string = '&justConnected=true';
@@ -199,7 +154,6 @@ class Links {
 			$wp_user    = wp_get_current_user();
 			$wp_user_id = $wp_user->ID;
 			set_transient( $leadin_onboarding, 'true' );
-			$route = '/wordpress-plugin-ui/onboarding';
 		} else {
 			if ( '' === $page_id ) {
 				$page_id = self::get_page_id();
@@ -207,9 +161,8 @@ class Links {
 
 			$routes = self::get_routes_mapping();
 
-			$is_external = MenuConstants::PRICING === $page_id || MenuConstants::REPORTING === $page_id || MenuConstants::LISTS === $page_id;
+			$is_external = MenuConstants::PRICING === $page_id || MenuConstants::REPORTING === $page_id || MenuConstants::LISTS === $page_id || MenuConstants::CONTACTS === $page_id || MenuConstants::EMAIL === $page_id;
 
-			$route = IframeRoutes::get_oauth_path( $is_external );
 			if ( empty( $route ) && isset( $routes[ $page_id ] ) ) {
 				$route = $routes[ $page_id ];
 

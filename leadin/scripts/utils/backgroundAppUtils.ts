@@ -1,12 +1,15 @@
-import Raven from '../lib/Raven';
-import { createBackgroundIframe } from '../iframe/iframeUtils';
+import {
+  deviceId,
+  hubspotBaseUrl,
+  locale,
+  portalId,
+} from '../constants/leadinConfig';
 import { initApp } from './appUtils';
 
 type CallbackFn = (...args: any[]) => void;
 
 export function initBackgroundApp(initFn: CallbackFn | CallbackFn[]) {
   function main() {
-    createBackgroundIframe();
     if (Array.isArray(initFn)) {
       initFn.forEach(callback => callback());
     } else {
@@ -16,22 +19,26 @@ export function initBackgroundApp(initFn: CallbackFn | CallbackFn[]) {
   initApp(main);
 }
 
-export function initMonitorGutenberBlockPreview() {
-  const formsPreviewTimeouts: { [key: string]: any } = {};
-  // This listener is responsible to monitor the form previews are rendered correctly
-  window.addEventListener('message', event => {
-    if (event.data.type === 'hsFormCallback') {
-      const formId = event.data.id;
-      if (event.data.eventName === 'onBeforeFormInit') {
-        formsPreviewTimeouts[formId] = setTimeout(() => {
-          Raven.captureMessage(
-            `The form preview ${formId} has not been rendered correctly.`
-          );
-        }, 10 * 1000);
-      }
-      if (event.data.eventName === 'onFormReady') {
-        clearTimeout(formsPreviewTimeouts[formId]);
-      }
-    }
-  });
-}
+export const getOrCreateBackgroundApp = (refreshToken: string) => {
+  if ((window as any).LeadinBackgroundApp) {
+    return (window as any).LeadinBackgroundApp;
+  }
+  const { IntegratedAppEmbedder, IntegratedAppOptions }: any = window;
+  const options = new IntegratedAppOptions()
+    .setLocale(locale)
+    .setDeviceId(deviceId)
+    .setRefreshToken(refreshToken);
+
+  const embedder = new IntegratedAppEmbedder(
+    'integrated-plugin-proxy',
+    portalId,
+    hubspotBaseUrl,
+    () => {}
+  ).setOptions(options);
+
+  embedder.attachTo(document.body, false);
+  embedder.postStartAppMessage(); // lets the app know all all data has been passed to it
+
+  (window as any).LeadinBackgroundApp = embedder;
+  return (window as any).LeadinBackgroundApp;
+};

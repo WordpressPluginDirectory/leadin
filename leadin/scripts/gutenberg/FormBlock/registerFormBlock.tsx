@@ -6,12 +6,8 @@ import { connectionStatus } from '../../constants/leadinConfig';
 import FormGutenbergPreview from './FormGutenbergPreview';
 import ErrorHandler from '../../shared/Common/ErrorHandler';
 import FormEdit from '../../shared/Form/FormEdit';
+import ConnectionStatus from '../../shared/enums/connectionStatus';
 import { __ } from '@wordpress/i18n';
-
-const ConnectionStatus = {
-  Connected: 'Connected',
-  NotConnected: 'NotConnected',
-};
 
 export interface IFormBlockAttributes {
   attributes: {

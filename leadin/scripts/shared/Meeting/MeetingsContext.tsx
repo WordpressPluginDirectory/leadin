@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import useCurrentUserFetch from './useCurrentUserFetch';
-import useMeetingsFetch from './useMeetingsFetch';
+import useCurrentUserFetch from './hooks/useCurrentUserFetch';
+import useMeetingsFetch from './hooks/useMeetingsFetch';
+import LoadState from '../enums/loadState';
 
 interface IMeetingsContextWrapperState {
   loading: boolean;
@@ -42,31 +43,25 @@ export default function MeetingsContextWrapper({
     selectedMeeting: url,
   });
 
-  const [
-    { meetings, meetingUsers },
-    loadingMeetings,
-    errorMeeting,
-    reloadMeetings,
-  ] = useMeetingsFetch();
+  const {
+    meetings,
+    meetingUsers,
+    loadMeetingsState,
+    error: errorMeeting,
+    reload: reloadMeetings,
+  } = useMeetingsFetch();
 
-  const [
-    currentUser,
-    loadingUser,
-    errorUser,
-    createUser,
-    reloadUser,
-  ] = useCurrentUserFetch();
+  const {
+    user: currentUser,
+    loadUserState,
+    error: errorUser,
+    reload: reloadUser,
+  } = useCurrentUserFetch();
 
   const reload = useCallback(() => {
     reloadUser();
     reloadMeetings();
   }, [reloadUser, reloadMeetings]);
-
-  useEffect(() => {
-    if (!state.loading && !state.error && state.meetings.length === 0) {
-      createUser();
-    }
-  }, [state, createUser]);
 
   useEffect(() => {
     if (
@@ -82,7 +77,9 @@ export default function MeetingsContextWrapper({
   useEffect(() => {
     setState(previous => ({
       ...previous,
-      loading: loadingUser || loadingMeetings,
+      loading:
+        loadUserState === LoadState.Loading ||
+        loadMeetingsState === LoadState.Loading,
       currentUser,
       meetings,
       meetingUsers: meetingUsers.reduce((p, c) => ({ ...p, [c.id]: c }), {}),
@@ -90,8 +87,8 @@ export default function MeetingsContextWrapper({
       selectedMeeting: url,
     }));
   }, [
-    loadingUser,
-    loadingMeetings,
+    loadUserState,
+    loadMeetingsState,
     currentUser,
     meetings,
     meetingUsers,

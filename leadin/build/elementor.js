@@ -56,338 +56,6 @@ var isPropValid = /* #__PURE__ */(0,_emotion_memoize__WEBPACK_IMPORTED_MODULE_0_
 
 /***/ }),
 
-/***/ "./scripts/api/hubspotApiClient.ts":
-/*!*****************************************!*\
-  !*** ./scripts/api/hubspotApiClient.ts ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createForm": () => (/* binding */ createForm),
-/* harmony export */   "fetchForms": () => (/* binding */ fetchForms)
-/* harmony export */ });
-/* harmony import */ var _wordpressApiClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wordpressApiClient */ "./scripts/api/wordpressApiClient.ts");
-
-var FORMS_PATH = "/forms/v2/forms";
-function fetchForms() {
-  var searchQuery = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-  var limit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
-  var queryParams = {
-    offset: offset,
-    limit: limit,
-    formTypes: ['HUBSPOT']
-  };
-
-  if (searchQuery) {
-    queryParams.name__contains = searchQuery;
-  }
-
-  return (0,_wordpressApiClient__WEBPACK_IMPORTED_MODULE_0__.makeProxyRequest)('get', FORMS_PATH, {}, queryParams).then(function (forms) {
-    var filteredForms = [];
-    forms.forEach(function (currentForm) {
-      var guid = currentForm.guid,
-          name = currentForm.name;
-      filteredForms.push({
-        name: name,
-        guid: guid
-      });
-    });
-    return filteredForms;
-  });
-}
-function createForm(payload) {
-  return (0,_wordpressApiClient__WEBPACK_IMPORTED_MODULE_0__.makeProxyRequest)('post', FORMS_PATH, payload);
-}
-
-/***/ }),
-
-/***/ "./scripts/api/hubspotPluginApi.ts":
-/*!*****************************************!*\
-  !*** ./scripts/api/hubspotPluginApi.ts ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createMeetingUser": () => (/* binding */ createMeetingUser),
-/* harmony export */   "getAuth": () => (/* binding */ getAuth),
-/* harmony export */   "getForm": () => (/* binding */ getForm),
-/* harmony export */   "getMeetingUser": () => (/* binding */ getMeetingUser),
-/* harmony export */   "getMeetingUsers": () => (/* binding */ getMeetingUsers),
-/* harmony export */   "getMeetings": () => (/* binding */ getMeetings),
-/* harmony export */   "leadinConnectCalendar": () => (/* binding */ leadinConnectCalendar),
-/* harmony export */   "monitorFormCreatedFromTemplate": () => (/* binding */ monitorFormCreatedFromTemplate),
-/* harmony export */   "monitorFormCreationFailed": () => (/* binding */ monitorFormCreationFailed),
-/* harmony export */   "monitorFormPreviewRender": () => (/* binding */ monitorFormPreviewRender),
-/* harmony export */   "monitorMeetingPreviewRender": () => (/* binding */ monitorMeetingPreviewRender),
-/* harmony export */   "monitorPluginDeactivation": () => (/* binding */ monitorPluginDeactivation),
-/* harmony export */   "monitorReviewBannerDismissed": () => (/* binding */ monitorReviewBannerDismissed),
-/* harmony export */   "monitorReviewBannerLinkClicked": () => (/* binding */ monitorReviewBannerLinkClicked),
-/* harmony export */   "monitorReviewBannerRendered": () => (/* binding */ monitorReviewBannerRendered),
-/* harmony export */   "monitorSidebarMetaChange": () => (/* binding */ monitorSidebarMetaChange)
-/* harmony export */ });
-/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../lib/Raven */ "./scripts/lib/Raven.ts");
-/* harmony import */ var _gutenberg_MeetingsBlock_MeetingGutenbergInterframe__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../gutenberg/MeetingsBlock/MeetingGutenbergInterframe */ "./scripts/gutenberg/MeetingsBlock/MeetingGutenbergInterframe.ts");
-
-
-
-function callInterframeMethod(method) {
-  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    args[_key - 1] = arguments[_key];
-  }
-
-  //@ts-expect-error global
-  return window.leadinChildFrameConnection.promise.then(function (child) {
-    return _lib_Raven__WEBPACK_IMPORTED_MODULE_0__["default"].context(child[method], args);
-  });
-}
-
-function getAuth() {
-  return callInterframeMethod('leadinGetAuth');
-}
-function getMeetings() {
-  return callInterframeMethod('leadinGetMeetings');
-}
-function getMeetingUser() {
-  return callInterframeMethod('leadinGetMeetingUser');
-}
-function getMeetingUsers(ids) {
-  return callInterframeMethod('leadinGetMeetingUsers', ids);
-}
-function createMeetingUser(data) {
-  return callInterframeMethod('leadinPostMeetingUser', data);
-}
-function getForm(formId) {
-  return callInterframeMethod('leadinGetForm', formId);
-}
-function monitorFormPreviewRender() {
-  var origin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'gutenberg';
-  return callInterframeMethod('monitorFormPreviewRender', origin);
-}
-function monitorFormCreatedFromTemplate(type) {
-  var origin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'gutenberg';
-  return callInterframeMethod('monitorFormCreatedFromTemplate', type, origin);
-}
-function monitorFormCreationFailed(error) {
-  var origin = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'gutenberg';
-  return callInterframeMethod('monitorFormCreationFailed', error, origin);
-}
-function monitorMeetingPreviewRender() {
-  var origin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'gutenberg';
-  return callInterframeMethod('monitorMeetingPreviewRender', origin);
-}
-function monitorSidebarMetaChange(metaKey) {
-  return callInterframeMethod('monitorSidebarMetaChange', metaKey);
-}
-function monitorReviewBannerRendered() {
-  return callInterframeMethod('monitorReviewBannerRendered');
-}
-function monitorReviewBannerLinkClicked() {
-  return callInterframeMethod('monitorReviewBannerLinkClicked');
-}
-function monitorReviewBannerDismissed() {
-  return callInterframeMethod('monitorReviewBannerDismissed');
-}
-function leadinConnectCalendar(calendarArgs) {
-  var hubspotBaseUrl = calendarArgs.hubspotBaseUrl,
-      portalId = calendarArgs.portalId,
-      triggerReload = calendarArgs.triggerReload;
-  _gutenberg_MeetingsBlock_MeetingGutenbergInterframe__WEBPACK_IMPORTED_MODULE_1__.meetingsGutenbergInterframe.setCallback(triggerReload);
-  return callInterframeMethod('leadinConnectCalendar', {
-    hubspotBaseUrl: hubspotBaseUrl,
-    portalId: portalId
-  });
-}
-function monitorPluginDeactivation(reason) {
-  return callInterframeMethod('monitorPluginDeactivation', reason);
-}
-
-/***/ }),
-
-/***/ "./scripts/api/wordpressApiClient.ts":
-/*!*******************************************!*\
-  !*** ./scripts/api/wordpressApiClient.ts ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "disableInternalTracking": () => (/* binding */ disableInternalTracking),
-/* harmony export */   "fetchDisableInternalTracking": () => (/* binding */ fetchDisableInternalTracking),
-/* harmony export */   "fetchOAuthToken": () => (/* binding */ fetchOAuthToken),
-/* harmony export */   "fetchRefreshToken": () => (/* binding */ fetchRefreshToken),
-/* harmony export */   "getBusinessUnitId": () => (/* binding */ getBusinessUnitId),
-/* harmony export */   "getBusinessUnits": () => (/* binding */ getBusinessUnits),
-/* harmony export */   "healthcheckRestApi": () => (/* binding */ healthcheckRestApi),
-/* harmony export */   "leadinDisconnectPortal": () => (/* binding */ leadinDisconnectPortal),
-/* harmony export */   "makeInterframeProxyRequest": () => (/* binding */ makeInterframeProxyRequest),
-/* harmony export */   "makeProxyRequest": () => (/* binding */ makeProxyRequest),
-/* harmony export */   "setBusinessUnitId": () => (/* binding */ setBusinessUnitId),
-/* harmony export */   "skipReview": () => (/* binding */ skipReview),
-/* harmony export */   "trackConsent": () => (/* binding */ trackConsent),
-/* harmony export */   "updateHublet": () => (/* binding */ updateHublet)
-/* harmony export */ });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/Raven */ "./scripts/lib/Raven.ts");
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _utils_queryParams__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/queryParams */ "./scripts/utils/queryParams.ts");
-
-
-
-
-
-function makeRequest(method, path) {
-  var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var queryParams = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-  // eslint-disable-next-line compat/compat
-  var restApiUrl = new URL("".concat(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.restUrl, "leadin/v1").concat(path));
-  (0,_utils_queryParams__WEBPACK_IMPORTED_MODULE_3__.addQueryObjectToUrl)(restApiUrl, queryParams);
-  return new Promise(function (resolve, reject) {
-    var payload = {
-      url: restApiUrl.toString(),
-      method: method,
-      contentType: 'application/json',
-      beforeSend: function beforeSend(xhr) {
-        return xhr.setRequestHeader('X-WP-Nonce', _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.restNonce);
-      },
-      success: resolve,
-      error: function error(response) {
-        _lib_Raven__WEBPACK_IMPORTED_MODULE_1__["default"].captureMessage("HTTP Request to ".concat(restApiUrl, " failed with error ").concat(response.status, ": ").concat(response.responseText), {
-          fingerprint: ['{{ default }}', path, response.status, response.responseText]
-        });
-        reject(response);
-      }
-    };
-
-    if (method !== 'get') {
-      payload.data = JSON.stringify(data);
-    }
-
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax(payload);
-  });
-}
-
-function makeProxyRequest(method, hubspotApiPath, data) {
-  var queryParamsObject = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-  var proxyApiPath = "/proxy"; // eslint-disable-next-line compat/compat
-
-  var proxyQueryParams = new URLSearchParams(queryParamsObject).toString();
-  var proxyUrl = "".concat(hubspotApiPath, "?").concat(proxyQueryParams);
-  return makeRequest(method, proxyApiPath, data, {
-    proxyUrl: proxyUrl
-  });
-}
-function fetchOAuthToken() {
-  return makeRequest('GET', '/oauth-token')["catch"](function (err) {
-    return {
-      status: err.status,
-      message: err.responseText
-    };
-  });
-}
-function fetchRefreshToken() {
-  return makeRequest('GET', '/refresh-token')["catch"](function (err) {
-    return {
-      status: err.status,
-      message: err.responseText
-    };
-  });
-}
-/**
- * To surface errors to the interframe, we need to catch the error
- * and return it to through penpal as a normal message, which the iframe
- * can check for and re-throw.
- */
-
-function makeInterframeProxyRequest(method, hubspotApiPath, data) {
-  var queryParamsObject = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-  return makeProxyRequest(method, hubspotApiPath, data, queryParamsObject)["catch"](function (err) {
-    return {
-      status: err.status,
-      message: err.responseText
-    };
-  });
-}
-function healthcheckRestApi() {
-  return makeRequest('get', '/healthcheck');
-}
-function disableInternalTracking(value) {
-  return makeRequest('put', '/internal-tracking', value ? '1' : '0');
-}
-function fetchDisableInternalTracking() {
-  return makeRequest('get', '/internal-tracking').then(function (message) {
-    return {
-      message: message
-    };
-  });
-}
-function updateHublet(hublet) {
-  return makeRequest('put', '/hublet', {
-    hublet: hublet
-  });
-}
-function skipReview() {
-  return makeRequest('post', '/skip-review');
-}
-function trackConsent(canTrack) {
-  return makeRequest('post', '/track-consent', {
-    canTrack: canTrack
-  }).then(function (message) {
-    return {
-      message: message
-    };
-  });
-}
-function leadinDisconnectPortal() {
-  return makeRequest('delete', '/portal');
-}
-function setBusinessUnitId(businessUnitId) {
-  return makeRequest('put', '/business-unit', {
-    businessUnitId: businessUnitId
-  });
-}
-function getBusinessUnitId() {
-  return makeRequest('get', '/business-unit');
-}
-function getBusinessUnits() {
-  return makeProxyRequest('get', '/integrations-proxy/v1/forms/business-units', {});
-}
-
-/***/ }),
-
-/***/ "./scripts/api/wordpressMeetingsApiClient.ts":
-/*!***************************************************!*\
-  !*** ./scripts/api/wordpressMeetingsApiClient.ts ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "fetchMeetingsAndUsers": () => (/* binding */ fetchMeetingsAndUsers),
-/* harmony export */   "getOrCreateMeetingUser": () => (/* binding */ getOrCreateMeetingUser)
-/* harmony export */ });
-/* harmony import */ var _wordpressApiClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wordpressApiClient */ "./scripts/api/wordpressApiClient.ts");
-
-var WordpressServiceUrls = {
-  GetMeetingsPath: '/wordpress/v1/meetings/links',
-  CreateMeetingUserPath: '/wordpress/v1/meetings/user'
-};
-function fetchMeetingsAndUsers() {
-  return (0,_wordpressApiClient__WEBPACK_IMPORTED_MODULE_0__.makeProxyRequest)('get', WordpressServiceUrls.GetMeetingsPath, {}, {});
-}
-function getOrCreateMeetingUser(defaultMeetingUser) {
-  return (0,_wordpressApiClient__WEBPACK_IMPORTED_MODULE_0__.makeProxyRequest)('post', WordpressServiceUrls.CreateMeetingUserPath, defaultMeetingUser, {});
-}
-
-/***/ }),
-
 /***/ "./scripts/constants/defaultFormOptions.ts":
 /*!*************************************************!*\
   !*** ./scripts/constants/defaultFormOptions.ts ***!
@@ -398,19 +66,10 @@ function getOrCreateMeetingUser(defaultMeetingUser) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "DEFAULT_OPTIONS": () => (/* binding */ DEFAULT_OPTIONS),
-/* harmony export */   "getFormDef": () => (/* binding */ getFormDef),
 /* harmony export */   "isDefaultForm": () => (/* binding */ isDefaultForm)
 /* harmony export */ });
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
-var _FORMS_TYPES;
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 var REGISTRATION_FORM = 'REGISTRATION_FORM';
 var CONTACT_US_FORM = 'CONTACT_US_FORM';
@@ -439,513 +98,6 @@ var DEFAULT_OPTIONS = {
 function isDefaultForm(value) {
   return value === REGISTRATION_FORM || value === CONTACT_US_FORM || value === NEWSLETTER_FORM || value === SUPPORT_FORM || value === EVENT_FORM;
 }
-var defaultProps = {
-  action: '',
-  method: 'POST',
-  cssClass: 'hs-form stacked',
-  redirect: '',
-  submitText: 'Submit',
-  followUpId: '',
-  notifyRecipients: '',
-  leadNurturingCampaignId: '',
-  performableHtml: '',
-  migratedFrom: '',
-  ignoreCurrentValues: false,
-  metaData: [{
-    name: 'lang',
-    value: 'en'
-  }, {
-    name: 'embedType',
-    value: 'REGULAR'
-  }],
-  deletable: true,
-  cloneable: true,
-  captchaEnabled: false,
-  inlineMessage: 'Thanks for submitting the form.',
-  tmsId: '',
-  campaignGuid: '',
-  formType: 'HUBSPOT',
-  editable: true,
-  themeName: 'canvas',
-  parentId: 0,
-  isPublished: true,
-  style: '{"fontFamily":"arial, helvetica, sans-serif","backgroundWidth":"100%","labelTextColor":"#33475b","linkColor":"#0000EE","clickedLinkColor":"#551A8B","labelTextSize":"13px","helpTextColor":"#7C98B6","helpTextSize":"11px","legalConsentTextColor":"#33475b","legalConsentTextSize":"14px","thankYouTextColor":"#33475b","thankYouTextSize":"16px","submitColor":"#ff7a59","submitAlignment":"left","submitFontColor":"#ffffff","submitSize":"12px","paginationProgressColor":"#598aff","paginationProgressTextColor":"#33475b","paginationProgressShow":true,"paginationProgressTransition":"fade","paginationProgressTheme":"default","paginationContentUseScroll":false,"paginationContentScrollHeight":"100%"}'
-};
-var emailFieldDef = {
-  name: 'email',
-  label: 'Email',
-  type: 'string',
-  fieldType: 'text',
-  description: '',
-  groupName: 'contactinformation',
-  displayOrder: -1,
-  required: true,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'CONTACT',
-  metaData: [],
-  objectTypeId: '0-1'
-};
-var firsNameFieldDef = {
-  name: 'firstname',
-  label: 'First Name',
-  type: 'string',
-  fieldType: 'text',
-  description: '',
-  groupName: 'contactinformation',
-  displayOrder: -1,
-  required: false,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'CONTACT',
-  metaData: [],
-  objectTypeId: '0-1'
-};
-var lastNameFieldDef = {
-  name: 'lastname',
-  label: 'Last Name',
-  type: 'string',
-  fieldType: 'text',
-  description: '',
-  groupName: 'contactinformation',
-  displayOrder: -1,
-  required: false,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'CONTACT',
-  metaData: [],
-  objectTypeId: '0-1'
-};
-var messageFieldDef = {
-  name: 'message',
-  label: 'Message',
-  type: 'string',
-  fieldType: 'textarea',
-  description: '',
-  groupName: 'contact_activity',
-  displayOrder: -1,
-  required: false,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'CONTACT',
-  metaData: [],
-  objectTypeId: '0-1'
-};
-var phoneNumberFieldDef = {
-  name: 'phone',
-  label: 'Phone Number',
-  type: 'string',
-  fieldType: 'phonenumber',
-  description: '',
-  groupName: 'contactinformation',
-  displayOrder: -1,
-  required: false,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'CONTACT',
-  metaData: [],
-  objectTypeId: '0-1'
-};
-var ticketNameFieldDef = {
-  name: 'subject',
-  label: 'Ticket name',
-  type: 'string',
-  fieldType: 'text',
-  description: '',
-  groupName: 'ticketinformation',
-  displayOrder: -1,
-  required: true,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'TICKET',
-  metaData: [],
-  objectTypeId: '0-5'
-};
-var tickedDescFieldDef = {
-  name: 'content',
-  label: 'Ticket description',
-  type: 'string',
-  fieldType: 'textarea',
-  description: '',
-  groupName: 'ticketinformation',
-  displayOrder: -1,
-  required: true,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'TICKET',
-  metaData: [],
-  objectTypeId: '0-5'
-};
-var companyNameFieldDef = {
-  name: 'company',
-  label: 'Company Name',
-  type: 'string',
-  fieldType: 'text',
-  description: '',
-  groupName: 'contactinformation',
-  displayOrder: -1,
-  required: false,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'CONTACT',
-  metaData: [],
-  objectTypeId: '0-1'
-};
-var jobTitleFieldDef = {
-  name: 'jobtitle',
-  label: 'Job Title',
-  type: 'string',
-  fieldType: 'text',
-  description: '',
-  groupName: 'contactinformation',
-  displayOrder: -1,
-  required: false,
-  selectedOptions: [],
-  options: [],
-  validation: {
-    name: '',
-    message: '',
-    data: '',
-    useDefaultBlockList: false,
-    blockedEmailAddresses: []
-  },
-  enabled: true,
-  hidden: false,
-  defaultValue: '',
-  isSmartField: false,
-  unselectedLabel: '',
-  placeholder: '',
-  dependentFieldFilters: [],
-  labelHidden: false,
-  propertyObjectType: 'CONTACT',
-  metaData: [],
-  objectTypeId: '0-1'
-};
-var FORMS_TYPES = (_FORMS_TYPES = {}, _defineProperty(_FORMS_TYPES, REGISTRATION_FORM, {
-  name: 'New registration form',
-  formFieldGroups: [{
-    fields: [emailFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [firsNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [lastNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [phoneNumberFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }]
-}), _defineProperty(_FORMS_TYPES, CONTACT_US_FORM, {
-  name: 'New contact us form',
-  formFieldGroups: [{
-    fields: [emailFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [firsNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [lastNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [messageFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }]
-}), _defineProperty(_FORMS_TYPES, NEWSLETTER_FORM, {
-  name: 'New newsletter sign-up form',
-  formFieldGroups: [{
-    fields: [emailFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [firsNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [lastNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }]
-}), _defineProperty(_FORMS_TYPES, SUPPORT_FORM, {
-  name: 'New support form',
-  formFieldGroups: [{
-    fields: [emailFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [ticketNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [tickedDescFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }]
-}), _defineProperty(_FORMS_TYPES, EVENT_FORM, {
-  name: 'New event registration form',
-  formFieldGroups: [{
-    fields: [companyNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [emailFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [firsNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [lastNameFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }, {
-    fields: [jobTitleFieldDef],
-    "default": true,
-    isSmartGroup: false,
-    richText: {
-      content: '',
-      type: 'TEXT'
-    },
-    isPageBreak: false
-  }]
-}), _FORMS_TYPES);
-function getFormDef(type) {
-  var _Intl$DateTimeFormat$ = Intl.DateTimeFormat().resolvedOptions(),
-      _Intl$DateTimeFormat$2 = _Intl$DateTimeFormat$.locale,
-      locale = _Intl$DateTimeFormat$2 === void 0 ? 'en-us' : _Intl$DateTimeFormat$2;
-
-  var today = new Date();
-  var selectedForm = FORMS_TYPES[type];
-  return _objectSpread(_objectSpread(_objectSpread({}, defaultProps), selectedForm), {}, {
-    name: "".concat(selectedForm.name, " (").concat(today.toLocaleDateString(locale, {
-      month: 'long',
-      day: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    }), ") ")
-  });
-}
 
 /***/ }),
 
@@ -959,8 +111,8 @@ function getFormDef(type) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "accountName": () => (/* binding */ accountName),
+/* harmony export */   "activationTime": () => (/* binding */ activationTime),
 /* harmony export */   "adminUrl": () => (/* binding */ adminUrl),
-/* harmony export */   "backgroundIframeUrl": () => (/* binding */ backgroundIframeUrl),
 /* harmony export */   "connectionStatus": () => (/* binding */ connectionStatus),
 /* harmony export */   "deviceId": () => (/* binding */ deviceId),
 /* harmony export */   "didDisconnect": () => (/* binding */ didDisconnect),
@@ -969,14 +121,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "formsScriptPayload": () => (/* binding */ formsScriptPayload),
 /* harmony export */   "hublet": () => (/* binding */ hublet),
 /* harmony export */   "hubspotBaseUrl": () => (/* binding */ hubspotBaseUrl),
+/* harmony export */   "hubspotNonce": () => (/* binding */ hubspotNonce),
 /* harmony export */   "iframeUrl": () => (/* binding */ iframeUrl),
 /* harmony export */   "impactLink": () => (/* binding */ impactLink),
 /* harmony export */   "leadinPluginVersion": () => (/* binding */ leadinPluginVersion),
-/* harmony export */   "leadinQueryParamsKeys": () => (/* binding */ leadinQueryParamsKeys),
+/* harmony export */   "leadinQueryParams": () => (/* binding */ leadinQueryParams),
 /* harmony export */   "locale": () => (/* binding */ locale),
 /* harmony export */   "loginUrl": () => (/* binding */ loginUrl),
 /* harmony export */   "meetingsScript": () => (/* binding */ meetingsScript),
-/* harmony export */   "oauth": () => (/* binding */ oauth),
 /* harmony export */   "phpVersion": () => (/* binding */ phpVersion),
 /* harmony export */   "pluginPath": () => (/* binding */ pluginPath),
 /* harmony export */   "plugins": () => (/* binding */ plugins),
@@ -984,11 +136,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "portalEmail": () => (/* binding */ portalEmail),
 /* harmony export */   "portalId": () => (/* binding */ portalId),
 /* harmony export */   "redirectNonce": () => (/* binding */ redirectNonce),
+/* harmony export */   "refreshToken": () => (/* binding */ refreshToken),
 /* harmony export */   "restNonce": () => (/* binding */ restNonce),
 /* harmony export */   "restUrl": () => (/* binding */ restUrl),
 /* harmony export */   "reviewSkippedDate": () => (/* binding */ reviewSkippedDate),
-/* harmony export */   "routeNonce": () => (/* binding */ routeNonce),
-/* harmony export */   "routes": () => (/* binding */ routes),
 /* harmony export */   "theme": () => (/* binding */ theme),
 /* harmony export */   "trackConsent": () => (/* binding */ trackConsent),
 /* harmony export */   "wpVersion": () => (/* binding */ wpVersion)
@@ -996,7 +147,7 @@ __webpack_require__.r(__webpack_exports__);
 var _window$leadinConfig = window.leadinConfig,
     accountName = _window$leadinConfig.accountName,
     adminUrl = _window$leadinConfig.adminUrl,
-    backgroundIframeUrl = _window$leadinConfig.backgroundIframeUrl,
+    activationTime = _window$leadinConfig.activationTime,
     connectionStatus = _window$leadinConfig.connectionStatus,
     deviceId = _window$leadinConfig.deviceId,
     didDisconnect = _window$leadinConfig.didDisconnect,
@@ -1006,13 +157,13 @@ var _window$leadinConfig = window.leadinConfig,
     formsScriptPayload = _window$leadinConfig.formsScriptPayload,
     hublet = _window$leadinConfig.hublet,
     hubspotBaseUrl = _window$leadinConfig.hubspotBaseUrl,
+    hubspotNonce = _window$leadinConfig.hubspotNonce,
     iframeUrl = _window$leadinConfig.iframeUrl,
     impactLink = _window$leadinConfig.impactLink,
     leadinPluginVersion = _window$leadinConfig.leadinPluginVersion,
-    leadinQueryParamsKeys = _window$leadinConfig.leadinQueryParamsKeys,
+    leadinQueryParams = _window$leadinConfig.leadinQueryParams,
     locale = _window$leadinConfig.locale,
     loginUrl = _window$leadinConfig.loginUrl,
-    oauth = _window$leadinConfig.oauth,
     phpVersion = _window$leadinConfig.phpVersion,
     pluginPath = _window$leadinConfig.pluginPath,
     plugins = _window$leadinConfig.plugins,
@@ -1022,83 +173,12 @@ var _window$leadinConfig = window.leadinConfig,
     redirectNonce = _window$leadinConfig.redirectNonce,
     restNonce = _window$leadinConfig.restNonce,
     restUrl = _window$leadinConfig.restUrl,
+    refreshToken = _window$leadinConfig.refreshToken,
     reviewSkippedDate = _window$leadinConfig.reviewSkippedDate,
-    routeNonce = _window$leadinConfig.routeNonce,
-    routes = _window$leadinConfig.routes,
     theme = _window$leadinConfig.theme,
     trackConsent = _window$leadinConfig.trackConsent,
     wpVersion = _window$leadinConfig.wpVersion;
 
-
-/***/ }),
-
-/***/ "./scripts/constants/selectors.ts":
-/*!****************************************!*\
-  !*** ./scripts/constants/selectors.ts ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "domElements": () => (/* binding */ domElements)
-/* harmony export */ });
-var domElements = {
-  iframe: '#leadin-iframe',
-  subMenu: '.toplevel_page_leadin > ul',
-  subMenuLinks: '.toplevel_page_leadin > ul a',
-  subMenuButtons: '.toplevel_page_leadin > ul > li',
-  deactivatePluginButton: '[data-slug="leadin"] .deactivate a',
-  deactivateFeedbackForm: 'form.leadin-deactivate-form',
-  deactivateFeedbackSubmit: 'button#leadin-feedback-submit',
-  deactivateFeedbackSkip: 'button#leadin-feedback-skip',
-  thickboxModalClose: '.leadin-modal-close',
-  thickboxModalWindow: 'div#TB_window.thickbox-loading',
-  thickboxModalContent: 'div#TB_ajaxContent.TB_modal',
-  reviewBannerLeaveReviewLink: 'a#leave-review-button',
-  reviewBannerDismissButton: 'a#dismiss-review-banner-button',
-  leadinIframeContainer: 'leadin-iframe-container',
-  leadinIframe: 'leadin-iframe',
-  leadinIframeFallbackContainer: 'leadin-iframe-fallback-container'
-};
-
-/***/ }),
-
-/***/ "./scripts/constants/urlsMap.ts":
-/*!**************************************!*\
-  !*** ./scripts/constants/urlsMap.ts ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _leadinConfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./leadinConfig */ "./scripts/constants/leadinConfig.ts");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-var flatUrls = function flatUrls(key, route) {
-  if (typeof route === 'string') {
-    return _defineProperty({}, key, route);
-  }
-
-  return Object.keys(route).reduce(function (agg, childKey) {
-    var childRoute = route[childKey];
-    return _objectSpread(_objectSpread({}, agg), flatUrls(key + childKey, childRoute));
-  }, {});
-};
-
-var urlsMap = Object.keys(_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.routes).reduce(function (agg, key) {
-  return _objectSpread(_objectSpread({}, agg), flatUrls(key, _leadinConfig__WEBPACK_IMPORTED_MODULE_0__.routes[key]));
-}, {});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (urlsMap);
 
 /***/ }),
 
@@ -1220,28 +300,24 @@ __webpack_require__(/*! ./ElementorButton.linaria.css!=!../../../node_modules/@l
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ElementorFormSelect)
+/* harmony export */   "default": () => (/* binding */ ElementorFormSelectContainer)
 /* harmony export */ });
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
 /* harmony import */ var _Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Common/ElementorBanner */ "./scripts/elementor/Common/ElementorBanner.tsx");
-/* harmony import */ var _api_hubspotApiClient__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../api/hubspotApiClient */ "./scripts/api/hubspotApiClient.ts");
-/* harmony import */ var _shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../shared/UIComponents/UISpinner */ "./scripts/shared/UIComponents/UISpinner.tsx");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+/* harmony import */ var _shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../shared/UIComponents/UISpinner */ "./scripts/shared/UIComponents/UISpinner.tsx");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _hooks_useForms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./hooks/useForms */ "./scripts/elementor/FormWidget/hooks/useForms.ts");
+/* harmony import */ var _utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utils/backgroundAppUtils */ "./scripts/utils/backgroundAppUtils.ts");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -1251,75 +327,64 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var mapForm = function mapForm(form) {
-  return {
-    label: form.name,
-    value: form.guid
-  };
-};
+
 
 function ElementorFormSelect(_ref) {
   var formId = _ref.formId,
       setAttributes = _ref.setAttributes;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      loading = _useState2[0],
-      setLoading = _useState2[1];
+  var _useForms = (0,_hooks_useForms__WEBPACK_IMPORTED_MODULE_7__["default"])(),
+      hasError = _useForms.hasError,
+      forms = _useForms.forms,
+      loading = _useForms.loading;
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
-      _useState4 = _slicedToArray(_useState3, 2),
-      hasError = _useState4[0],
-      setError = _useState4[1];
+  return loading ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
+    children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_4__["default"], {})
+  }) : hasError ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    type: "danger",
+    children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please refresh your forms or try again in a few minutes.', 'leadin')
+  }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", {
+    value: formId,
+    onChange: function onChange(event) {
+      var selectedForm = forms.find(function (form) {
+        return form.value === event.target.value;
+      });
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
-      _useState6 = _slicedToArray(_useState5, 2),
-      forms = _useState6[0],
-      setForms = _useState6[1];
-
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    setLoading(true);
-    (0,_api_hubspotApiClient__WEBPACK_IMPORTED_MODULE_4__.fetchForms)('', 0, 100).then(function (data) {
-      setForms(data.map(mapForm));
-    })["catch"](function (error) {
-      return setError(error);
-    })["finally"](function () {
-      return setLoading(false);
-    });
-  }, [setForms]);
-  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-    children: loading ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
-      children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_5__["default"], {})
-    }) : hasError ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      type: "danger",
-      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Please refresh your forms or try again in a few minutes.', 'leadin')
-    }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", {
-      value: formId,
-      onChange: function onChange(event) {
-        var selectedForm = forms.find(function (form) {
-          return form.value === event.target.value;
+      if (selectedForm) {
+        setAttributes({
+          portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
+          formId: selectedForm.value,
+          formName: selectedForm.label
         });
+      }
+    },
+    children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
+      value: "",
+      disabled: true,
+      selected: true,
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Search for a form', 'leadin')
+    }), forms.map(function (form) {
+      return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
+        value: form.value,
+        children: form.label
+      }, form.value);
+    })]
+  });
+}
 
-        if (selectedForm) {
-          setAttributes({
-            portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
-            formId: selectedForm.value,
-            formName: selectedForm.label
-          });
-        }
-      },
-      children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
-        value: "",
-        disabled: true,
-        selected: true,
-        children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Search for a form', 'leadin')
-      }), forms.map(function (form) {
-        return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
-          value: form.value,
-          children: form.label
-        }, form.value);
-      })]
-    })
+function ElementorFormSelectWrapper(props) {
+  var isBackgroundAppReady = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__.useBackgroundAppContext)();
+  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: !isBackgroundAppReady ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
+      children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_4__["default"], {})
+    }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ElementorFormSelect, _objectSpread({}, props))
+  });
+}
+
+function ElementorFormSelectContainer(props) {
+  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__.BackgroudAppContext.Provider, {
+    value: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshToken && (0,_utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_8__.getOrCreateBackgroundApp)(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshToken),
+    children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ElementorFormSelectWrapper, _objectSpread({}, props))
   });
 }
 
@@ -1389,19 +454,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
 /* harmony import */ var _shared_Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../shared/Common/ErrorHandler */ "./scripts/shared/Common/ErrorHandler.tsx");
 /* harmony import */ var _shared_Form_FormEdit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../shared/Form/FormEdit */ "./scripts/shared/Form/FormEdit.tsx");
+/* harmony import */ var _shared_enums_connectionStatus__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../shared/enums/connectionStatus */ "./scripts/shared/enums/connectionStatus.ts");
 
 
 
 
 
-var ConnectionStatus = {
-  Connected: 'Connected',
-  NotConnected: 'NotConnected'
-};
+
 function FormWidgetController(attributes, setValue) {
   return function () {
     var render = function render() {
-      if (_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.connectionStatus === ConnectionStatus.Connected) {
+      if (_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.connectionStatus === _shared_enums_connectionStatus__WEBPACK_IMPORTED_MODULE_5__["default"].Connected) {
         return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_Form_FormEdit__WEBPACK_IMPORTED_MODULE_4__["default"], {
           attributes: attributes,
           isSelected: true,
@@ -1419,6 +482,86 @@ function FormWidgetController(attributes, setValue) {
     return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
       children: render()
     });
+  };
+}
+
+/***/ }),
+
+/***/ "./scripts/elementor/FormWidget/hooks/useForms.ts":
+/*!********************************************************!*\
+  !*** ./scripts/elementor/FormWidget/hooks/useForms.ts ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ useForms)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _shared_enums_loadState__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../shared/enums/loadState */ "./scripts/shared/enums/loadState.ts");
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+function useForms() {
+  var proxy = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_3__.usePostAsyncBackgroundMessage)();
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_shared_enums_loadState__WEBPACK_IMPORTED_MODULE_1__["default"].NotLoaded),
+      _useState2 = _slicedToArray(_useState, 2),
+      loadState = _useState2[0],
+      setLoadState = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState4 = _slicedToArray(_useState3, 2),
+      hasError = _useState4[0],
+      setError = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      forms = _useState6[0],
+      setForms = _useState6[1];
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (loadState === _shared_enums_loadState__WEBPACK_IMPORTED_MODULE_1__["default"].NotLoaded) {
+      proxy({
+        key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_2__.ProxyMessages.FetchForms,
+        payload: {
+          search: ''
+        }
+      }).then(function (data) {
+        setForms(data.map(function (form) {
+          return {
+            label: form.name,
+            value: form.guid
+          };
+        }));
+        setLoadState(_shared_enums_loadState__WEBPACK_IMPORTED_MODULE_1__["default"].Loaded);
+      })["catch"](function (error) {
+        setError(error);
+        setLoadState(_shared_enums_loadState__WEBPACK_IMPORTED_MODULE_1__["default"].Failed);
+      });
+    }
+  }, [loadState]);
+  return {
+    forms: forms,
+    loading: loadState === _shared_enums_loadState__WEBPACK_IMPORTED_MODULE_1__["default"].Loading,
+    hasError: hasError
   };
 }
 
@@ -1500,7 +643,7 @@ var registerFormWidget = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ElementorMeetingSelect)
+/* harmony export */   "default": () => (/* binding */ ElementorMeetingsSelectContainer)
 /* harmony export */ });
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
@@ -1508,10 +651,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Common/ElementorBanner */ "./scripts/elementor/Common/ElementorBanner.tsx");
 /* harmony import */ var _shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../shared/UIComponents/UISpinner */ "./scripts/shared/UIComponents/UISpinner.tsx");
 /* harmony import */ var _ElementorMeetingWarning__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ElementorMeetingWarning */ "./scripts/elementor/MeetingWidget/ElementorMeetingWarning.tsx");
-/* harmony import */ var _shared_Meeting_MeetingsContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../shared/Meeting/MeetingsContext */ "./scripts/shared/Meeting/MeetingsContext.tsx");
-/* harmony import */ var _shared_Meeting_useMeetings__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../shared/Meeting/useMeetings */ "./scripts/shared/Meeting/useMeetings.ts");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _shared_Meeting_hooks_useMeetings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../shared/Meeting/hooks/useMeetings */ "./scripts/shared/Meeting/hooks/useMeetings.ts");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var raven_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! raven-js */ "./node_modules/raven-js/src/singleton.js");
+/* harmony import */ var raven_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(raven_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utils/backgroundAppUtils */ "./scripts/utils/backgroundAppUtils.ts");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -1532,35 +685,50 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
+
+
 function ElementorMeetingSelect(_ref) {
   var url = _ref.url,
       setAttributes = _ref.setAttributes;
 
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(_shared_Meeting_MeetingsContext__WEBPACK_IMPORTED_MODULE_5__.MeetingsContext),
-      loading = _useContext.loading,
-      error = _useContext.error,
-      reload = _useContext.reload;
+  var _useMeetings = (0,_shared_Meeting_hooks_useMeetings__WEBPACK_IMPORTED_MODULE_5__["default"])(),
+      meetings = _useMeetings.mappedMeetings,
+      loading = _useMeetings.loading,
+      error = _useMeetings.error,
+      reload = _useMeetings.reload,
+      connectCalendar = _useMeetings.connectCalendar;
 
-  var meetings = (0,_shared_Meeting_useMeetings__WEBPACK_IMPORTED_MODULE_6__["default"])();
-  var selectedMeetingCalendar = (0,_shared_Meeting_useMeetings__WEBPACK_IMPORTED_MODULE_6__.useSelectedMeetingCalendar)();
+  var selectedMeetingCalendar = (0,_shared_Meeting_hooks_useMeetings__WEBPACK_IMPORTED_MODULE_5__.useSelectedMeetingCalendar)(url);
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(url),
       _useState2 = _slicedToArray(_useState, 2),
       localUrl = _useState2[0],
       setLocalUrl = _useState2[1];
 
+  var handleConnectCalendar = function handleConnectCalendar() {
+    return connectCalendar().then(function () {
+      reload();
+    })["catch"](function (error) {
+      raven_js__WEBPACK_IMPORTED_MODULE_7___default().captureMessage('Unable to connect calendar', {
+        extra: {
+          error: error
+        }
+      });
+    });
+  };
+
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
     children: loading ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
       children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_3__["default"], {})
     }) : error ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_2__["default"], {
       type: "danger",
-      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Please refresh your meetings or try again in a few minutes.', 'leadin')
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Please refresh your meetings or try again in a few minutes.', 'leadin')
     }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
       children: [selectedMeetingCalendar && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ElementorMeetingWarning__WEBPACK_IMPORTED_MODULE_4__["default"], {
         status: selectedMeetingCalendar,
-        triggerReload: function triggerReload() {
-          return reload();
-        }
+        onConnectCalendar: connectCalendar
       }), meetings.length > 1 && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", {
         value: localUrl,
         onChange: function onChange(event) {
@@ -1574,7 +742,7 @@ function ElementorMeetingSelect(_ref) {
           value: "",
           disabled: true,
           selected: true,
-          children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Select a meeting', 'leadin')
+          children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Select a meeting', 'leadin')
         }), meetings.map(function (item) {
           return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", {
             value: item.value,
@@ -1583,6 +751,22 @@ function ElementorMeetingSelect(_ref) {
         })]
       })]
     })
+  });
+}
+
+function ElementorMeetingSelectWrapper(props) {
+  var isBackgroundAppReady = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_8__.useBackgroundAppContext)();
+  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: !isBackgroundAppReady ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
+      children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_3__["default"], {})
+    }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ElementorMeetingSelect, _objectSpread({}, props))
+  });
+}
+
+function ElementorMeetingsSelectContainer(props) {
+  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_8__.BackgroudAppContext.Provider, {
+    value: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_9__.refreshToken && (0,_utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_10__.getOrCreateBackgroundApp)(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_9__.refreshToken),
+    children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ElementorMeetingSelectWrapper, _objectSpread({}, props))
   });
 }
 
@@ -1602,14 +786,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
-/* harmony import */ var _shared_Meeting_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../shared/Meeting/constants */ "./scripts/shared/Meeting/constants.ts");
-/* harmony import */ var _Common_ElementorButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Common/ElementorButton */ "./scripts/elementor/Common/ElementorButton.tsx");
-/* harmony import */ var _Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Common/ElementorBanner */ "./scripts/elementor/Common/ElementorBanner.tsx");
-/* harmony import */ var _linaria_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @linaria/react */ "./node_modules/@linaria/react/dist/index.mjs");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _shared_Meeting_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../shared/Meeting/constants */ "./scripts/shared/Meeting/constants.ts");
+/* harmony import */ var _Common_ElementorButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Common/ElementorButton */ "./scripts/elementor/Common/ElementorButton.tsx");
+/* harmony import */ var _Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Common/ElementorBanner */ "./scripts/elementor/Common/ElementorBanner.tsx");
+/* harmony import */ var _linaria_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @linaria/react */ "./node_modules/@linaria/react/dist/index.mjs");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
 
 
 
@@ -1617,37 +799,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-var Container = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_8__.styled)('div')({
+var Container = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_6__.styled)('div')({
   name: "Container",
   "class": "c1p032ba",
   propsAsIs: false
 });
 function MeetingWarning(_ref) {
-  var triggerReload = _ref.triggerReload,
+  var onConnectCalendar = _ref.onConnectCalendar,
       status = _ref.status;
-  var isMeetingOwner = status === _shared_Meeting_constants__WEBPACK_IMPORTED_MODULE_4__.CURRENT_USER_CALENDAR_MISSING;
-  var titleText = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Your calendar is not connected.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Calendar is not connected.', 'leadin');
-  var titleMessage = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Please connect your calendar to activate your scheduling pages.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Make sure that everybody in this meeting has connected their calendar from the Meetings page in HubSpot.', 'leadin');
+  var isMeetingOwner = status === _shared_Meeting_constants__WEBPACK_IMPORTED_MODULE_2__.CURRENT_USER_CALENDAR_MISSING;
+  var titleText = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Your calendar is not connected.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Calendar is not connected.', 'leadin');
+  var titleMessage = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please connect your calendar to activate your scheduling pages.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Make sure that everybody in this meeting has connected their calendar from the Meetings page in HubSpot.', 'leadin');
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
     children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(Container, {
-      children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_4__["default"], {
         type: "warning",
         children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("b", {
           children: titleText
         }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("br", {}), titleMessage]
       })
-    }), isMeetingOwner && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ElementorButton__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    }), isMeetingOwner && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ElementorButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
       id: "meetings-connect-calendar",
-      onClick: function onClick() {
-        return (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_3__.leadinConnectCalendar)({
-          hubspotBaseUrl: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.hubspotBaseUrl,
-          portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
-          triggerReload: triggerReload
-        });
-      },
-      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Connect calendar', 'leadin')
+      onClick: onConnectCalendar,
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Connect calendar', 'leadin')
     })]
   });
 }
@@ -1673,8 +847,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
 /* harmony import */ var _Common_ConnectPluginBanner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Common/ConnectPluginBanner */ "./scripts/elementor/Common/ConnectPluginBanner.tsx");
 /* harmony import */ var _ElementorMeetingSelect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ElementorMeetingSelect */ "./scripts/elementor/MeetingWidget/ElementorMeetingSelect.tsx");
-/* harmony import */ var _shared_Meeting_MeetingsContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../shared/Meeting/MeetingsContext */ "./scripts/shared/Meeting/MeetingsContext.tsx");
-
 
 
 
@@ -1688,12 +860,9 @@ function MeetingControlController(attributes, setValue) {
   return function () {
     var render = function render() {
       if (_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.connectionStatus === ConnectionStatus.Connected) {
-        return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_Meeting_MeetingsContext__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ElementorMeetingSelect__WEBPACK_IMPORTED_MODULE_4__["default"], {
           url: attributes.url,
-          children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ElementorMeetingSelect__WEBPACK_IMPORTED_MODULE_4__["default"], {
-            url: attributes.url,
-            setAttributes: setValue
-          })
+          setAttributes: setValue
         });
       } else {
         return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ConnectPluginBanner__WEBPACK_IMPORTED_MODULE_3__["default"], {});
@@ -1827,10 +996,10 @@ var registerMeetingsWidget = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./scripts/elementor/elementoWidget.ts":
-/*!*********************************************!*\
-  !*** ./scripts/elementor/elementoWidget.ts ***!
-  \*********************************************/
+/***/ "./scripts/elementor/elementorWidget.ts":
+/*!**********************************************!*\
+  !*** ./scripts/elementor/elementorWidget.ts ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1873,296 +1042,187 @@ function elementorWidget(elementor, options, callback) {
 
 /***/ }),
 
-/***/ "./scripts/gutenberg/MeetingsBlock/MeetingGutenbergInterframe.ts":
-/*!***********************************************************************!*\
-  !*** ./scripts/gutenberg/MeetingsBlock/MeetingGutenbergInterframe.ts ***!
-  \***********************************************************************/
+/***/ "./scripts/iframe/integratedMessages/core/CoreMessages.ts":
+/*!****************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/core/CoreMessages.ts ***!
+  \****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "gutenbergTriggerConnectCalendarRefresh": () => (/* binding */ gutenbergTriggerConnectCalendarRefresh),
-/* harmony export */   "meetingsGutenbergInterframe": () => (/* binding */ meetingsGutenbergInterframe)
+/* harmony export */   "CoreMessages": () => (/* binding */ CoreMessages)
 /* harmony export */ });
-/* harmony import */ var raven_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! raven-js */ "./node_modules/raven-js/src/singleton.js");
-/* harmony import */ var raven_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(raven_js__WEBPACK_IMPORTED_MODULE_0__);
-
-var meetingsGutenbergInterframe = function () {
-  var callback;
-  return {
-    executeCallback: function executeCallback(args) {
-      if (callback) {
-        raven_js__WEBPACK_IMPORTED_MODULE_0___default().context(callback, args);
-      }
-    },
-    setCallback: function setCallback(callbackFunc) {
-      callback = callbackFunc;
-    }
-  };
-}();
-function gutenbergTriggerConnectCalendarRefresh(args) {
-  meetingsGutenbergInterframe.executeCallback(args);
-}
-
-/***/ }),
-
-/***/ "./scripts/iframe/iframeUtils.ts":
-/*!***************************************!*\
-  !*** ./scripts/iframe/iframeUtils.ts ***!
-  \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createBackgroundIframe": () => (/* binding */ createBackgroundIframe),
-/* harmony export */   "createIframe": () => (/* binding */ createIframe)
-/* harmony export */ });
-/* harmony import */ var _lib_Interframe__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../lib/Interframe */ "./scripts/lib/Interframe.ts");
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/urlsMap */ "./scripts/constants/urlsMap.ts");
-var _excluded = ["page"];
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-
-
-
-
-function getIframeHeight() {
-  var adminMenuWrap = document.getElementById('adminmenuwrap');
-  var sideMenuHeight = adminMenuWrap ? adminMenuWrap.offsetHeight : 0;
-  var adminBar = document.getElementById('wpadminbar');
-  var adminBarHeight = adminBar && adminBar.offsetHeight || 0;
-
-  if (window.innerHeight < sideMenuHeight) {
-    return sideMenuHeight;
-  } else {
-    return window.innerHeight - adminBarHeight;
-  }
-}
-
-function addIframeResizeEvent(iframe) {
-  var animationFrame;
-  window.addEventListener('resize', function () {
-    if (animationFrame) {
-      cancelAnimationFrame(animationFrame);
-    }
-
-    animationFrame = requestAnimationFrame(function () {
-      iframe.style.minHeight = "".concat(getIframeHeight(), "px");
-    });
-  }, true);
-}
-
-function createIframeElement(iframeSrc) {
-  var iframe = document.createElement('iframe');
-  iframe.id = 'leadin-iframe';
-  iframe.src = iframeSrc;
-  iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-  iframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-popups allow-top-navigation allow-same-origin');
-  iframe.style.minHeight = "".concat(getIframeHeight(), "px");
-  addIframeResizeEvent(iframe);
-  return iframe;
-}
-
-function createSpinnerImage() {
-  var img = document.createElement('img');
-  img.src = "".concat(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.pluginPath, "/public/assets/images/loading-dots.svg");
-  img.id = 'hs-plugin-loader';
-  img.style.cssText = " top: 50%;\n                        left: 50%;\n                        margin-left: -41px;\n                        margin-top: -37;\n                        display: block;\n                        position: absolute;\n                        z-index: 900;";
-  return img;
-}
-
-function addIframeLoadEvent(iframeContainer, img, iframe) {
-  iframe.addEventListener('load', function () {
-    if (img && document.getElementById(img.id)) {
-      img.remove();
-    }
-  }, true);
-}
-
-function withLoadingSpinner(iframe) {
-  var iframeContainer = document.createElement('div');
-  var img = createSpinnerImage();
-  iframeContainer.appendChild(img);
-  iframeContainer.appendChild(iframe);
-  addIframeLoadEvent(iframeContainer, img, iframe);
-  return iframeContainer;
-}
-
-function createIframe() {
-  var _Object$fromEntries = Object.fromEntries(new URLSearchParams(window.location.search)),
-      page = _Object$fromEntries.page,
-      query = _objectWithoutProperties(_Object$fromEntries, _excluded);
-
-  var iframeSrcUrl = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.iframeUrl;
-  var tourId = query['leadin_tour_id'];
-  var justConnected = query['leadin_just_connected'];
-  var routeKey = "".concat(page).concat(Object.entries(query).reduce(function (agg, _ref) {
-    var _ref2 = _slicedToArray(_ref, 2),
-        key = _ref2[0],
-        value = _ref2[1];
-
-    if (key.includes('leadin_route')) {
-      return "".concat(agg).concat(value);
-    }
-
-    return agg;
-  }, ''));
-  var routeValue = _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__["default"][routeKey];
-
-  if (routeValue && !justConnected) {
-    var urlObject = new URL(iframeSrcUrl);
-    urlObject.pathname = routeValue;
-
-    if (tourId) {
-      urlObject.searchParams.append('tourId', tourId);
-    }
-
-    iframeSrcUrl = urlObject.toString();
-  }
-
-  var link = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.impactLink ? "".concat(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.impactLink, "?u=").concat(encodeURIComponent("".concat(iframeSrcUrl)), "&trackConsent=0") : iframeSrcUrl;
-  var iframe = createIframeElement(link);
-  (0,_lib_Interframe__WEBPACK_IMPORTED_MODULE_0__.initInterframe)(iframe);
-  return withLoadingSpinner(iframe);
-}
-function createBackgroundIframe() {
-  var iframe = createIframeElement(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.backgroundIframeUrl);
-  iframe.style.display = 'none';
-  (0,_lib_Interframe__WEBPACK_IMPORTED_MODULE_0__.initInterframe)(iframe);
-  document.body.appendChild(iframe);
-}
-
-/***/ }),
-
-/***/ "./scripts/lib/Interframe.ts":
-/*!***********************************!*\
-  !*** ./scripts/lib/Interframe.ts ***!
-  \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "initInterframe": () => (/* binding */ initInterframe)
-/* harmony export */ });
-/* harmony import */ var penpal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! penpal */ "./node_modules/penpal/lib/index.js");
-/* harmony import */ var _Raven__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Raven */ "./scripts/lib/Raven.ts");
-/* harmony import */ var _navigation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../navigation */ "./scripts/navigation.ts");
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _utils_queryParams__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/queryParams */ "./scripts/utils/queryParams.ts");
-/* harmony import */ var _utils_portalInfo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/portalInfo */ "./scripts/utils/portalInfo.ts");
-/* harmony import */ var _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../api/wordpressApiClient */ "./scripts/api/wordpressApiClient.ts");
-/* harmony import */ var _utils_sideNav__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/sideNav */ "./scripts/utils/sideNav.ts");
-/* harmony import */ var _gutenberg_MeetingsBlock_MeetingGutenbergInterframe__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../gutenberg/MeetingsBlock/MeetingGutenbergInterframe */ "./scripts/gutenberg/MeetingsBlock/MeetingGutenbergInterframe.ts");
-
-
-
-
-
-
-
-
-
-var methods = {
-  leadinClearQueryParam: _utils_queryParams__WEBPACK_IMPORTED_MODULE_4__.leadinClearQueryParam,
-  leadinPageReload: _navigation__WEBPACK_IMPORTED_MODULE_2__.leadinPageReload,
-  leadinPageRedirect: _navigation__WEBPACK_IMPORTED_MODULE_2__.leadinPageRedirect,
-  leadinGetPortalInfo: _utils_portalInfo__WEBPACK_IMPORTED_MODULE_5__.leadinGetPortalInfo,
-  leadinDisconnectPortal: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.leadinDisconnectPortal,
-  getLeadinConfig: function getLeadinConfig() {
-    return _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__;
-  },
-  setLeadinUnAuthedNavigation: _utils_sideNav__WEBPACK_IMPORTED_MODULE_7__.setLeadinUnAuthedNavigation,
-  makeInterframeProxyRequest: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.makeInterframeProxyRequest,
-  fetchOAuthToken: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.fetchOAuthToken,
-  fetchRefreshToken: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.fetchRefreshToken,
-  skipReview: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.skipReview,
-  updateHublet: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.updateHublet,
-  trackConsent: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.trackConsent,
-  disableInternalTracking: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.disableInternalTracking,
-  fetchDisableInternalTracking: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.fetchDisableInternalTracking,
-  gutenbergTriggerConnectCalendarRefresh: _gutenberg_MeetingsBlock_MeetingGutenbergInterframe__WEBPACK_IMPORTED_MODULE_8__.gutenbergTriggerConnectCalendarRefresh,
-  setBusinessUnitId: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.setBusinessUnitId,
-  getBusinessUnitId: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.getBusinessUnitId,
-  getBusinessUnits: _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_6__.getBusinessUnits
+var CoreMessages = {
+  HandshakeReceive: 'INTEGRATED_APP_EMBEDDER_HANDSHAKE_RECEIVED',
+  SendRefreshToken: 'INTEGRATED_APP_EMBEDDER_SEND_REFRESH_TOKEN',
+  ReloadParentFrame: 'INTEGRATED_APP_EMBEDDER_RELOAD_PARENT_FRAME',
+  RedirectParentFrame: 'INTEGRATED_APP_EMBEDDER_REDIRECT_PARENT_FRAME',
+  SendLocale: 'INTEGRATED_APP_EMBEDDER_SEND_LOCALE',
+  SendDeviceId: 'INTEGRATED_APP_EMBEDDER_SEND_DEVICE_ID'
 };
-var UNAUTHORIZED = 'unauthorized';
-var REDIRECT = 'REDIRECT';
-var hubspotBaseUrl = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__.hubspotBaseUrl;
 
-function createConnectionToIframe(iframe) {
-  return penpal__WEBPACK_IMPORTED_MODULE_0__["default"].connectToChild({
-    url: iframe.src,
-    // The iframe to which a connection should be made
-    iframe: iframe,
-    // Methods the parent is exposing to the child
-    methods: methods
-  });
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/forms/FormsMessages.ts":
+/*!******************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/forms/FormsMessages.ts ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "FormMessages": () => (/* binding */ FormMessages)
+/* harmony export */ });
+var FormMessages = {
+  CreateFormAppNavigation: 'CREATE_FORM_APP_NAVIGATION'
+};
+
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/index.ts":
+/*!****************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/index.ts ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CoreMessages": () => (/* reexport safe */ _core_CoreMessages__WEBPACK_IMPORTED_MODULE_0__.CoreMessages),
+/* harmony export */   "FormMessages": () => (/* reexport safe */ _forms_FormsMessages__WEBPACK_IMPORTED_MODULE_1__.FormMessages),
+/* harmony export */   "LiveChatMessages": () => (/* reexport safe */ _livechat_LiveChatMessages__WEBPACK_IMPORTED_MODULE_2__.LiveChatMessages),
+/* harmony export */   "PluginMessages": () => (/* reexport safe */ _plugin_PluginMessages__WEBPACK_IMPORTED_MODULE_3__.PluginMessages),
+/* harmony export */   "ProxyMessages": () => (/* reexport safe */ _proxy_ProxyMessages__WEBPACK_IMPORTED_MODULE_4__.ProxyMessages)
+/* harmony export */ });
+/* harmony import */ var _core_CoreMessages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/CoreMessages */ "./scripts/iframe/integratedMessages/core/CoreMessages.ts");
+/* harmony import */ var _forms_FormsMessages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./forms/FormsMessages */ "./scripts/iframe/integratedMessages/forms/FormsMessages.ts");
+/* harmony import */ var _livechat_LiveChatMessages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./livechat/LiveChatMessages */ "./scripts/iframe/integratedMessages/livechat/LiveChatMessages.ts");
+/* harmony import */ var _plugin_PluginMessages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugin/PluginMessages */ "./scripts/iframe/integratedMessages/plugin/PluginMessages.ts");
+/* harmony import */ var _proxy_ProxyMessages__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./proxy/ProxyMessages */ "./scripts/iframe/integratedMessages/proxy/ProxyMessages.ts");
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/livechat/LiveChatMessages.ts":
+/*!************************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/livechat/LiveChatMessages.ts ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "LiveChatMessages": () => (/* binding */ LiveChatMessages)
+/* harmony export */ });
+var LiveChatMessages = {
+  CreateLiveChatAppNavigation: 'CREATE_LIVE_CHAT_APP_NAVIGATION'
+};
+
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/plugin/PluginMessages.ts":
+/*!********************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/plugin/PluginMessages.ts ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PluginMessages": () => (/* binding */ PluginMessages)
+/* harmony export */ });
+var PluginMessages = {
+  PluginSettingsNavigation: 'PLUGIN_SETTINGS_NAVIGATION',
+  PluginLeadinConfig: 'PLUGIN_LEADIN_CONFIG',
+  TrackConsent: 'INTEGRATED_APP_EMBEDDER_TRACK_CONSENT',
+  InternalTrackingFetchRequest: 'INTEGRATED_TRACKING_FETCH_REQUEST',
+  InternalTrackingFetchResponse: 'INTEGRATED_TRACKING_FETCH_RESPONSE',
+  InternalTrackingFetchError: 'INTEGRATED_TRACKING_FETCH_ERROR',
+  InternalTrackingChangeRequest: 'INTEGRATED_TRACKING_CHANGE_REQUEST',
+  InternalTrackingChangeError: 'INTEGRATED_TRACKING_CHANGE_ERROR',
+  BusinessUnitFetchRequest: 'BUSINESS_UNIT_FETCH_REQUEST',
+  BusinessUnitFetchResponse: 'BUSINESS_UNIT_FETCH_FETCH_RESPONSE',
+  BusinessUnitFetchError: 'BUSINESS_UNIT_FETCH_FETCH_ERROR',
+  BusinessUnitChangeRequest: 'BUSINESS_UNIT_CHANGE_REQUEST',
+  BusinessUnitChangeError: 'BUSINESS_UNIT_CHANGE_ERROR',
+  SkipReviewRequest: 'SKIP_REVIEW_REQUEST',
+  SkipReviewResponse: 'SKIP_REVIEW_RESPONSE',
+  SkipReviewError: 'SKIP_REVIEW_ERROR'
+};
+
+/***/ }),
+
+/***/ "./scripts/iframe/integratedMessages/proxy/ProxyMessages.ts":
+/*!******************************************************************!*\
+  !*** ./scripts/iframe/integratedMessages/proxy/ProxyMessages.ts ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ProxyMessages": () => (/* binding */ ProxyMessages)
+/* harmony export */ });
+var ProxyMessages = {
+  FetchForms: 'FETCH_FORMS',
+  FetchForm: 'FETCH_FORM',
+  CreateFormFromTemplate: 'CREATE_FORM_FROM_TEMPLATE',
+  FetchAuth: 'FETCH_AUTH',
+  FetchMeetingsAndUsers: 'FETCH_MEETINGS_AND_USERS',
+  FetchContactsCreateSinceActivation: 'FETCH_CONTACTS_CREATED_SINCE_ACTIVATION',
+  FetchOrCreateMeetingUser: 'FETCH_OR_CREATE_MEETING_USER',
+  ConnectMeetingsCalendar: 'CONNECT_MEETINGS_CALENDAR',
+  TrackFormPreviewRender: 'TRACK_FORM_PREVIEW_RENDER',
+  TrackFormCreatedFromTemplate: 'TRACK_FORM_CREATED_FROM_TEMPLATE',
+  TrackFormCreationFailed: 'TRACK_FORM_CREATION_FAILED',
+  TrackMeetingPreviewRender: 'TRACK_MEETING_PREVIEW_RENDER',
+  TrackSidebarMetaChange: 'TRACK_SIDEBAR_META_CHANGE',
+  TrackReviewBannerRender: 'TRACK_REVIEW_BANNER_RENDER',
+  TrackReviewBannerInteraction: 'TRACK_REVIEW_BANNER_INTERACTION',
+  TrackReviewBannerDismissed: 'TRACK_REVIEW_BANNER_DISMISSED',
+  TrackPluginDeactivation: 'TRACK_PLUGIN_DEACTIVATION'
+};
+
+/***/ }),
+
+/***/ "./scripts/iframe/useBackgroundApp.ts":
+/*!********************************************!*\
+  !*** ./scripts/iframe/useBackgroundApp.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BackgroudAppContext": () => (/* binding */ BackgroudAppContext),
+/* harmony export */   "useBackgroundAppContext": () => (/* binding */ useBackgroundAppContext),
+/* harmony export */   "usePostAsyncBackgroundMessage": () => (/* binding */ usePostAsyncBackgroundMessage),
+/* harmony export */   "usePostBackgroundMessage": () => (/* binding */ usePostBackgroundMessage)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var BackgroudAppContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(null);
+function useBackgroundAppContext() {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(BackgroudAppContext);
 }
-
-function initInterframe(iframe) {
-  //@ts-expect-error global
-  if (!window.leadinChildFrameConnection) {
-    //@ts-expect-error global
-    window.leadinChildFrameConnection = createConnectionToIframe(iframe); //@ts-expect-error global
-
-    window.leadinChildFrameConnection.promise["catch"](function (error) {
-      _Raven__WEBPACK_IMPORTED_MODULE_1__["default"].captureException(error, {
-        fingerprint: ['INTERFRAME_CONNECTION_ERROR']
-      });
-    });
-  }
-
-  var redirectToLogin = function redirectToLogin(event) {
-    if (event.data === UNAUTHORIZED) {
-      window.removeEventListener('message', redirectToLogin);
-      iframe.src = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__.loginUrl;
-      (0,_utils_sideNav__WEBPACK_IMPORTED_MODULE_7__.setLeadinUnAuthedNavigation)();
-    }
+function usePostBackgroundMessage() {
+  var app = useBackgroundAppContext();
+  return function (message) {
+    app.postMessage(message);
   };
-
-  var handleNavigation = function handleNavigation(event) {
-    if (event.origin !== hubspotBaseUrl) return;
-
-    try {
-      var data = JSON.parse(event.data);
-
-      if (data['leadin_sync_route']) {
-        var route = data['leadin_sync_route'];
-        var search = data['leadin_sync_search'];
-        (0,_navigation__WEBPACK_IMPORTED_MODULE_2__.syncRoute)(route, (0,_utils_queryParams__WEBPACK_IMPORTED_MODULE_4__.filterLeadinQueryParams)(search));
-      } else if (data['message'] === REDIRECT) {
-        window.location.href = data['url'];
-      }
-    } catch (e) {// Error in parsing message
-    }
+}
+function usePostAsyncBackgroundMessage() {
+  var app = useBackgroundAppContext();
+  return function (message) {
+    return app.postAsyncMessage(message);
   };
-
-  var currentPage = (0,_utils_queryParams__WEBPACK_IMPORTED_MODULE_4__.getQueryParam)('page');
-
-  if (currentPage !== 'leadin_settings' && currentPage !== 'leadin' && currentPage !== 'leadin_user_guide') {
-    window.addEventListener('message', redirectToLogin);
-  }
-
-  window.addEventListener('message', handleNavigation);
 }
 
 /***/ }),
@@ -2211,177 +1271,6 @@ function configureRaven() {
 
 /***/ }),
 
-/***/ "./scripts/navigation.ts":
-/*!*******************************!*\
-  !*** ./scripts/navigation.ts ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "leadinPageRedirect": () => (/* binding */ leadinPageRedirect),
-/* harmony export */   "leadinPageReload": () => (/* binding */ leadinPageReload),
-/* harmony export */   "syncRoute": () => (/* binding */ syncRoute)
-/* harmony export */ });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constants_selectors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants/selectors */ "./scripts/constants/selectors.ts");
-/* harmony import */ var _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants/urlsMap */ "./scripts/constants/urlsMap.ts");
-
-
-
-
-function setSelectedMenuItem(url) {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_1__.domElements.subMenuButtons).removeClass('current');
-  var match = url.match(/\?page=leadin_?\w*/);
-
-  if (match) {
-    var pageParam = match[0];
-    var selectedElement = jquery__WEBPACK_IMPORTED_MODULE_0___default()("a[href=\"admin.php".concat(pageParam, "\"]"));
-    selectedElement.parent().addClass('current');
-  }
-} // Given a route like "/settings/forms", parse it into "?page=leadin_settings&leadin_route[]=forms"
-
-
-function syncRoute() {
-  var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var searchQuery = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-  var baseUrls = Object.keys(_constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__["default"]).sort(function (a, b) {
-    return a.length < b.length ? 1 : -1;
-  });
-  var wpPage;
-  var route = '';
-  baseUrls.some(function (basePath) {
-    if (path.indexOf(basePath) === 0) {
-      wpPage = _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__["default"][basePath][0];
-      var routePrefix = _constants_urlsMap__WEBPACK_IMPORTED_MODULE_2__["default"][basePath][1] || '';
-      var cleanedPath = path.replace(basePath, '');
-      route = "".concat(routePrefix).concat(cleanedPath).replace(/^\/+/, '');
-      return true;
-    }
-
-    return false;
-  });
-
-  if (!wpPage) {
-    return;
-  }
-
-  var leadinRouteParam = route ? "&".concat(route.split('/').map(function (subRoute) {
-    return "".concat(encodeURIComponent("leadin_route[]"), "=").concat(subRoute);
-  }).join('&')) : '';
-  var leadinSearchParam = searchQuery.length ? "&leadin_search=".concat(encodeURIComponent(searchQuery)) : ''; // @ts-expect-error Global
-
-  var nonce = window.leadinConfig ? // @ts-expect-error Global
-  "&_wpnonce=".concat(window.leadinConfig.routeNonce) : '';
-  var newUrl = "?page=".concat(wpPage).concat(leadinRouteParam).concat(leadinSearchParam).concat(nonce);
-  setSelectedMenuItem(newUrl);
-  window.history.replaceState(null, '', newUrl);
-}
-var leadinPageReload = function leadinPageReload() {
-  return window.location.reload();
-};
-var leadinPageRedirect = function leadinPageRedirect(path) {
-  syncRoute(path);
-  leadinPageReload();
-};
-
-/***/ }),
-
-/***/ "./scripts/shared/Auth/AuthWrapper.tsx":
-/*!*********************************************!*\
-  !*** ./scripts/shared/Auth/AuthWrapper.tsx ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ AuthWrapper)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _useAuth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./useAuth */ "./scripts/shared/Auth/useAuth.ts");
-/* harmony import */ var _Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Common/LoadingBlock */ "./scripts/shared/Common/LoadingBlock.tsx");
-/* harmony import */ var _Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Common/ErrorHandler */ "./scripts/shared/Common/ErrorHandler.tsx");
-
-
-
-
-
-function AuthWrapper(_ref) {
-  var children = _ref.children;
-
-  var _useAuth = (0,_useAuth__WEBPACK_IMPORTED_MODULE_2__["default"])(),
-      auth = _useAuth.auth,
-      loading = _useAuth.loading;
-
-  return loading ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_3__["default"], {}) : auth ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-    children: children
-  }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    status: 401
-  });
-}
-
-/***/ }),
-
-/***/ "./scripts/shared/Auth/useAuth.ts":
-/*!****************************************!*\
-  !*** ./scripts/shared/Auth/useAuth.ts ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ useAuth)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-function useAuth() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      auth = _useState2[0],
-      setAuth = _useState2[1];
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
-      _useState4 = _slicedToArray(_useState3, 2),
-      loading = _useState4[0],
-      setLoading = _useState4[1];
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__.getAuth)().then(function (response) {
-      setAuth(!!response);
-      setLoading(false);
-    })["catch"](function () {
-      return setLoading(false);
-    });
-  }, []);
-  return {
-    auth: auth,
-    loading: loading
-  };
-}
-
-/***/ }),
-
 /***/ "./scripts/shared/Common/AsyncSelect.tsx":
 /*!***********************************************!*\
   !*** ./scripts/shared/Common/AsyncSelect.tsx ***!
@@ -2396,9 +1285,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _linaria_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @linaria/react */ "./node_modules/@linaria/react/dist/index.mjs");
+/* harmony import */ var _linaria_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @linaria/react */ "./node_modules/@linaria/react/dist/index.mjs");
 /* harmony import */ var _UIComponents_colors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UIComponents/colors */ "./scripts/shared/UIComponents/colors.ts");
 /* harmony import */ var _UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../UIComponents/UISpinner */ "./scripts/shared/UIComponents/UISpinner.tsx");
+/* harmony import */ var _enums_loadState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../enums/loadState */ "./scripts/shared/enums/loadState.ts");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -2416,7 +1306,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var Container = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+
+var Container = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "Container",
   "class": "c1wxx7eu",
   propsAsIs: false
@@ -2434,7 +1325,7 @@ var _exp3 = /*#__PURE__*/function _exp3() {
   };
 };
 
-var ControlContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var ControlContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "ControlContainer",
   "class": "c1rgwbep",
   propsAsIs: false,
@@ -2443,62 +1334,62 @@ var ControlContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4
     "c1rgwbep-1": [_exp3()]
   }
 });
-var ValueContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var ValueContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "ValueContainer",
   "class": "v1mdmbaj",
   propsAsIs: false
 });
-var Placeholder = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var Placeholder = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "Placeholder",
   "class": "p1gwkvxy",
   propsAsIs: false
 });
-var SingleValue = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var SingleValue = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "SingleValue",
   "class": "s1bwlafs",
   propsAsIs: false
 });
-var IndicatorContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var IndicatorContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "IndicatorContainer",
   "class": "i196z9y5",
   propsAsIs: false
 });
-var DropdownIndicator = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var DropdownIndicator = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "DropdownIndicator",
   "class": "d1dfo5ow",
   propsAsIs: false
 });
-var InputContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var InputContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "InputContainer",
   "class": "if3lze",
   propsAsIs: false
 });
-var Input = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('input')({
+var Input = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('input')({
   name: "Input",
   "class": "i9kxf50",
   propsAsIs: false
 });
-var InputShadow = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var InputShadow = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "InputShadow",
   "class": "igjr3uc",
   propsAsIs: false
 });
-var MenuContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var MenuContainer = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "MenuContainer",
   "class": "mhb9if7",
   propsAsIs: false
 });
-var MenuList = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var MenuList = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "MenuList",
   "class": "mxaof7s",
   propsAsIs: false
 });
-var MenuGroup = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var MenuGroup = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "MenuGroup",
   "class": "mw50s5v",
   propsAsIs: false
 });
-var MenuGroupHeader = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var MenuGroupHeader = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "MenuGroupHeader",
   "class": "m11rzvjw",
   propsAsIs: false
@@ -2522,7 +1413,7 @@ var _exp7 = /*#__PURE__*/function _exp7() {
   };
 };
 
-var MenuItem = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_4__.styled)('div')({
+var MenuItem = /*#__PURE__*/(0,_linaria_react__WEBPACK_IMPORTED_MODULE_5__.styled)('div')({
   name: "MenuItem",
   "class": "m1jcdsjv",
   propsAsIs: false,
@@ -2546,10 +1437,10 @@ function AsyncSelect(_ref) {
       isFocused = _useState2[0],
       setFocus = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(_enums_loadState__WEBPACK_IMPORTED_MODULE_4__["default"].NotLoaded),
       _useState4 = _slicedToArray(_useState3, 2),
-      isLoading = _useState4[0],
-      setLoading = _useState4[1];
+      loadState = _useState4[0],
+      setLoadState = _useState4[1];
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
       _useState6 = _slicedToArray(_useState5, 2),
@@ -2563,14 +1454,13 @@ function AsyncSelect(_ref) {
 
   var inputSize = "".concat(inputShadowEl.current ? inputShadowEl.current.clientWidth + 10 : 2, "px");
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (loadOptions) {
-      setLoading(true);
-      loadOptions(localValue, function (result) {
+    if (loadOptions && loadState === _enums_loadState__WEBPACK_IMPORTED_MODULE_4__["default"].NotLoaded) {
+      loadOptions('', function (result) {
         setOptions(result);
-        setLoading(false);
+        setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_4__["default"].Idle);
       });
     }
-  }, [localValue, loadOptions]);
+  }, [loadOptions, loadState]);
 
   var renderItems = function renderItems() {
     var items = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -2633,6 +1523,11 @@ function AsyncSelect(_ref) {
             },
             onChange: function onChange(e) {
               setLocalValue(e.target.value);
+              setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_4__["default"].Loading);
+              loadOptions && loadOptions(e.target.value, function (result) {
+                setOptions(result);
+                setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_4__["default"].Idle);
+              });
             },
             value: localValue,
             width: inputSize,
@@ -2643,7 +1538,7 @@ function AsyncSelect(_ref) {
           })]
         })]
       }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(IndicatorContainer, {
-        children: [isLoading && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_3__["default"], {}), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(DropdownIndicator, {})]
+        children: [loadState === _enums_loadState__WEBPACK_IMPORTED_MODULE_4__["default"].Loading && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_3__["default"], {}), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(DropdownIndicator, {})]
       })]
     }), isFocused && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(MenuContainer, {
       children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(MenuList, {
@@ -2803,17 +1698,28 @@ function LoadingBlock() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ FormEdit)
+/* harmony export */   "default": () => (/* binding */ FormEditContainer)
 /* harmony export */ });
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
 /* harmony import */ var _UIComponents_UISpacer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../UIComponents/UISpacer */ "./scripts/shared/UIComponents/UISpacer.ts");
-/* harmony import */ var _Auth_AuthWrapper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Auth/AuthWrapper */ "./scripts/shared/Auth/AuthWrapper.tsx");
-/* harmony import */ var _PreviewForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./PreviewForm */ "./scripts/shared/Form/PreviewForm.tsx");
-/* harmony import */ var _FormSelect__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./FormSelect */ "./scripts/shared/Form/FormSelect.tsx");
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
+/* harmony import */ var _PreviewForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./PreviewForm */ "./scripts/shared/Form/PreviewForm.tsx");
+/* harmony import */ var _FormSelect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./FormSelect */ "./scripts/shared/Form/FormSelect.tsx");
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
+/* harmony import */ var _Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Common/LoadingBlock */ "./scripts/shared/Common/LoadingBlock.tsx");
+/* harmony import */ var _utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../utils/backgroundAppUtils */ "./scripts/utils/backgroundAppUtils.ts");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
 
 
 
@@ -2833,6 +1739,8 @@ function FormEdit(_ref) {
   var formId = attributes.formId,
       formName = attributes.formName;
   var formSelected = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId && formId;
+  var isBackgroundAppReady = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__.useBackgroundAppContext)();
+  var monitorFormPreviewRender = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__.usePostBackgroundMessage)();
 
   var handleChange = function handleChange(selectedForm) {
     setAttributes({
@@ -2843,27 +1751,32 @@ function FormEdit(_ref) {
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_7__.monitorFormPreviewRender)(origin);
-  }, [origin]);
-  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-    children: [(isSelected || !formSelected) && (!_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.oauth ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Auth_AuthWrapper__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_FormSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        formId: formId,
-        formName: formName,
-        handleChange: handleChange,
+    monitorFormPreviewRender({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_7__.ProxyMessages.TrackFormPreviewRender,
+      payload: {
         origin: origin
-      })
-    }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_FormSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }
+    });
+  }, [origin]);
+  return !isBackgroundAppReady ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_8__["default"], {}) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: [(isSelected || !formSelected) && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_FormSelect__WEBPACK_IMPORTED_MODULE_5__["default"], {
       formId: formId,
       formName: formName,
       handleChange: handleChange,
       origin: origin
-    })), formSelected && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-      children: [isSelected && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_UIComponents_UISpacer__WEBPACK_IMPORTED_MODULE_3__["default"], {}), preview && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_PreviewForm__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    }), formSelected && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+      children: [isSelected && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_UIComponents_UISpacer__WEBPACK_IMPORTED_MODULE_3__["default"], {}), preview && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_PreviewForm__WEBPACK_IMPORTED_MODULE_4__["default"], {
         portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
         formId: formId
       })]
     })]
+  });
+}
+
+function FormEditContainer(props) {
+  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__.BackgroudAppContext.Provider, {
+    value: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshToken && (0,_utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_9__.getOrCreateBackgroundApp)(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshToken),
+    children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(FormEdit, _objectSpread({}, props))
   });
 }
 
@@ -2881,44 +1794,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ FormSelect)
 /* harmony export */ });
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js");
-/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
-/* harmony import */ var _api_hubspotApiClient__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../api/hubspotApiClient */ "./scripts/api/hubspotApiClient.ts");
-/* harmony import */ var _useForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./useForm */ "./scripts/shared/Form/useForm.ts");
-/* harmony import */ var _FormSelector__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./FormSelector */ "./scripts/shared/Form/FormSelector.tsx");
-/* harmony import */ var _Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Common/LoadingBlock */ "./scripts/shared/Common/LoadingBlock.tsx");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../constants/defaultFormOptions */ "./scripts/constants/defaultFormOptions.ts");
-/* harmony import */ var _Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../Common/ErrorHandler */ "./scripts/shared/Common/ErrorHandler.tsx");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+/* harmony import */ var _FormSelector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormSelector */ "./scripts/shared/Form/FormSelector.tsx");
+/* harmony import */ var _Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Common/LoadingBlock */ "./scripts/shared/Common/LoadingBlock.tsx");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _hooks_useForms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hooks/useForms */ "./scripts/shared/Form/hooks/useForms.ts");
+/* harmony import */ var _hooks_useCreateFormFromTemplate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./hooks/useCreateFormFromTemplate */ "./scripts/shared/Form/hooks/useCreateFormFromTemplate.ts");
+/* harmony import */ var _constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../constants/defaultFormOptions */ "./scripts/constants/defaultFormOptions.ts");
+/* harmony import */ var _Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Common/ErrorHandler */ "./scripts/shared/Common/ErrorHandler.tsx");
 
 
 
@@ -2926,18 +1809,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
-
-
-
-
-
-var mapForm = function mapForm(form) {
-  return {
-    label: form.name,
-    value: form.guid
-  };
-};
 
 function FormSelect(_ref) {
   var formId = _ref.formId,
@@ -2946,68 +1817,58 @@ function FormSelect(_ref) {
       _ref$origin = _ref.origin,
       origin = _ref$origin === void 0 ? 'gutenberg' : _ref$origin;
 
-  var _useForm = (0,_useForm__WEBPACK_IMPORTED_MODULE_5__["default"])(formId, formName),
-      form = _useForm.form,
-      loading = _useForm.loading,
-      setLoading = _useForm.setLoading;
+  var _useForms = (0,_hooks_useForms__WEBPACK_IMPORTED_MODULE_4__["default"])(),
+      search = _useForms.search,
+      formApiError = _useForms.formApiError,
+      reset = _useForms.reset;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
-      _useState2 = _slicedToArray(_useState, 2),
-      searchformError = _useState2[0],
-      setSearchFormError = _useState2[1];
+  var _useCreateFormFromTem = (0,_hooks_useCreateFormFromTemplate__WEBPACK_IMPORTED_MODULE_5__["default"])(origin),
+      createFormByTemplate = _useCreateFormFromTem.createFormByTemplate,
+      createReset = _useCreateFormFromTem.reset,
+      isCreating = _useCreateFormFromTem.isCreating,
+      hasError = _useCreateFormFromTem.hasError,
+      createApiError = _useCreateFormFromTem.formApiError;
 
-  var loadOptions = lodash_debounce__WEBPACK_IMPORTED_MODULE_2___default()(function (search, callback) {
-    (0,_api_hubspotApiClient__WEBPACK_IMPORTED_MODULE_4__.fetchForms)(search).then(function (forms) {
-      return callback([].concat(_toConsumableArray(forms.map(mapForm)), [_constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_9__.DEFAULT_OPTIONS]));
-    })["catch"](function (error) {
-      return setSearchFormError(error);
-    });
-  }, 300, {
-    trailing: true
-  });
-  var value = form ? mapForm(form) : null;
+  var value = formId && formName ? {
+    label: formName,
+    value: formId
+  } : null;
 
   var handleLocalChange = function handleLocalChange(option) {
-    if ((0,_constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_9__.isDefaultForm)(option.value)) {
-      setLoading(true);
-      (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_3__.monitorFormCreatedFromTemplate)(option.value, origin);
-      (0,_api_hubspotApiClient__WEBPACK_IMPORTED_MODULE_4__.createForm)((0,_constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_9__.getFormDef)(option.value)).then(function (_ref2) {
+    if ((0,_constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_6__.isDefaultForm)(option.value)) {
+      createFormByTemplate(option.value).then(function (_ref2) {
         var guid = _ref2.guid,
             name = _ref2.name;
-        return handleChange({
+        handleChange({
           value: guid,
           label: name
         });
-      })["catch"](function (error) {
-        setSearchFormError(error);
-        (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_3__.monitorFormCreationFailed)(_objectSpread(_objectSpread({}, error), {}, {
-          type: option.value
-        }), origin);
-      })["finally"](function () {
-        return setLoading(false);
       });
     } else {
       handleChange(option);
     }
   };
 
-  var formApiError = searchformError;
-  return loading ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_7__["default"], {}) : !formApiError ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_FormSelector__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    loadOptions: loadOptions,
+  return isCreating ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_2__["default"], {}) : formApiError || createApiError ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    status: formApiError ? formApiError.status : createApiError.status,
+    resetErrorState: function resetErrorState() {
+      if (hasError) {
+        createReset();
+      } else {
+        reset();
+      }
+    },
+    errorInfo: {
+      header: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('There was a problem retrieving your forms', 'leadin'),
+      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Please refresh your forms or try again in a few minutes.', 'leadin'),
+      action: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Refresh forms', 'leadin')
+    }
+  }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_FormSelector__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    loadOptions: search,
     onChange: function onChange(option) {
       return handleLocalChange(option);
     },
     value: value
-  }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    status: formApiError.status,
-    resetErrorState: function resetErrorState() {
-      return setSearchFormError(null);
-    },
-    errorInfo: {
-      header: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('There was a problem retrieving your forms', 'leadin'),
-      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Please refresh your forms or try again in a few minutes.', 'leadin'),
-      action: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Refresh forms', 'leadin')
-    }
   });
 }
 
@@ -3073,7 +1934,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _UIComponents_UIOverlay__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UIComponents/UIOverlay */ "./scripts/shared/UIComponents/UIOverlay.ts");
 /* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _useFormsScript__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./useFormsScript */ "./scripts/shared/Form/useFormsScript.ts");
+/* harmony import */ var _hooks_useFormsScript__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hooks/useFormsScript */ "./scripts/shared/Form/hooks/useFormsScript.ts");
 
 
 
@@ -3083,7 +1944,7 @@ function PreviewForm(_ref) {
   var portalId = _ref.portalId,
       formId = _ref.formId;
   var inputEl = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
-  var ready = (0,_useFormsScript__WEBPACK_IMPORTED_MODULE_4__["default"])();
+  var ready = (0,_hooks_useFormsScript__WEBPACK_IMPORTED_MODULE_4__["default"])();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (!ready) {
       return;
@@ -3103,21 +1964,22 @@ function PreviewForm(_ref) {
 
 /***/ }),
 
-/***/ "./scripts/shared/Form/useForm.ts":
-/*!****************************************!*\
-  !*** ./scripts/shared/Form/useForm.ts ***!
-  \****************************************/
+/***/ "./scripts/shared/Form/hooks/useCreateFormFromTemplate.ts":
+/*!****************************************************************!*\
+  !*** ./scripts/shared/Form/hooks/useCreateFormFromTemplate.ts ***!
+  \****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ useForm)
+/* harmony export */   "default": () => (/* binding */ useCreateFormFromTemplate)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _enums_loadState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../enums/loadState */ "./scripts/shared/enums/loadState.ts");
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3132,53 +1994,148 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
- // TODO: This hook will dissapear when OAuth rolls out.
 
-function useForm(id, name) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+
+function useCreateFormFromTemplate() {
+  var origin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'gutenberg';
+  var proxy = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_1__.usePostAsyncBackgroundMessage)();
+  var track = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_1__.usePostBackgroundMessage)();
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Idle),
       _useState2 = _slicedToArray(_useState, 2),
-      loading = _useState2[0],
-      setLoading = _useState2[1];
+      loadState = _useState2[0],
+      setLoadState = _useState2[1];
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState4 = _slicedToArray(_useState3, 2),
-      form = _useState4[0],
-      setForm = _useState4[1];
+      formApiError = _useState4[0],
+      setFormApiError = _useState4[1];
 
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (!id || _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.oauth) {
-      if (name) {
-        setForm({
-          guid: id,
-          name: name
-        });
-      } else {
-        setForm(null);
+  var createFormByTemplate = function createFormByTemplate(type) {
+    setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Loading);
+    track({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_3__.ProxyMessages.TrackFormCreatedFromTemplate,
+      payload: {
+        type: type,
+        origin: origin
       }
-
-      setLoading(false);
-    } else {
-      (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__.getForm)(id).then(function (response) {
-        setForm(response);
-        setLoading(false);
-      })["catch"](function () {
-        return setLoading(false);
+    });
+    return proxy({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_3__.ProxyMessages.CreateFormFromTemplate,
+      payload: type
+    }).then(function (form) {
+      setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Idle);
+      return form;
+    })["catch"](function (err) {
+      setFormApiError(err);
+      track({
+        key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_3__.ProxyMessages.TrackFormCreationFailed,
+        payload: {
+          origin: origin
+        }
       });
-    }
-  }, [id, name, setForm]);
+      setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Failed);
+    });
+  };
+
   return {
-    loading: loading,
-    form: form,
-    setLoading: setLoading
+    isCreating: loadState === _enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Loading,
+    hasError: loadState === _enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Failed,
+    formApiError: formApiError,
+    createFormByTemplate: createFormByTemplate,
+    reset: function reset() {
+      return setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Idle);
+    }
   };
 }
 
 /***/ }),
 
-/***/ "./scripts/shared/Form/useFormsScript.ts":
+/***/ "./scripts/shared/Form/hooks/useForms.ts":
 /*!***********************************************!*\
-  !*** ./scripts/shared/Form/useFormsScript.ts ***!
+  !*** ./scripts/shared/Form/hooks/useForms.ts ***!
   \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ useForms)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js");
+/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../constants/defaultFormOptions */ "./scripts/constants/defaultFormOptions.ts");
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+function useForms() {
+  var proxy = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_2__.usePostAsyncBackgroundMessage)();
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      formApiError = _useState2[0],
+      setFormApiError = _useState2[1];
+
+  var search = lodash_debounce__WEBPACK_IMPORTED_MODULE_1___default()(function (search, callback) {
+    return proxy({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_4__.ProxyMessages.FetchForms,
+      payload: {
+        search: search
+      }
+    }).then(function (forms) {
+      callback([].concat(_toConsumableArray(forms.map(function (form) {
+        return {
+          label: form.name,
+          value: form.guid
+        };
+      })), [_constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_3__.DEFAULT_OPTIONS]));
+    })["catch"](function (error) {
+      setFormApiError(error);
+    });
+  }, 300, {
+    trailing: true
+  });
+  return {
+    search: search,
+    formApiError: formApiError,
+    reset: function reset() {
+      return setFormApiError(null);
+    }
+  };
+}
+
+/***/ }),
+
+/***/ "./scripts/shared/Form/hooks/useFormsScript.ts":
+/*!*****************************************************!*\
+  !*** ./scripts/shared/Form/hooks/useFormsScript.ts ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3190,8 +2147,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../lib/Raven */ "./scripts/lib/Raven.ts");
+/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../lib/Raven */ "./scripts/lib/Raven.ts");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3255,13 +2212,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Common/LoadingBlock */ "./scripts/shared/Common/LoadingBlock.tsx");
 /* harmony import */ var _MeetingSelector__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MeetingSelector */ "./scripts/shared/Meeting/MeetingSelector.tsx");
 /* harmony import */ var _MeetingWarning__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MeetingWarning */ "./scripts/shared/Meeting/MeetingWarning.tsx");
-/* harmony import */ var _MeetingsContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MeetingsContext */ "./scripts/shared/Meeting/MeetingsContext.tsx");
-/* harmony import */ var _useMeetings__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./useMeetings */ "./scripts/shared/Meeting/useMeetings.ts");
-/* harmony import */ var _Common_HubspotWrapper__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Common/HubspotWrapper */ "./scripts/shared/Common/HubspotWrapper.ts");
-/* harmony import */ var _Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Common/ErrorHandler */ "./scripts/shared/Common/ErrorHandler.tsx");
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _hooks_useMeetings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./hooks/useMeetings */ "./scripts/shared/Meeting/hooks/useMeetings.ts");
+/* harmony import */ var _Common_HubspotWrapper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Common/HubspotWrapper */ "./scripts/shared/Common/HubspotWrapper.ts");
+/* harmony import */ var _Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Common/ErrorHandler */ "./scripts/shared/Common/ErrorHandler.tsx");
+/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var raven_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! raven-js */ "./node_modules/raven-js/src/singleton.js");
+/* harmony import */ var raven_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(raven_js__WEBPACK_IMPORTED_MODULE_10__);
 
 
 
@@ -3274,46 +2232,57 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function MeetingController(_ref) {
-  var handleChange = _ref.handleChange;
+  var handleChange = _ref.handleChange,
+      url = _ref.url;
 
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(_MeetingsContext__WEBPACK_IMPORTED_MODULE_5__.MeetingsContext),
-      loading = _useContext.loading,
-      selectedMeeting = _useContext.selectedMeeting,
-      error = _useContext.error,
-      reload = _useContext.reload;
+  var _useMeetings = (0,_hooks_useMeetings__WEBPACK_IMPORTED_MODULE_5__["default"])(),
+      meetings = _useMeetings.mappedMeetings,
+      loading = _useMeetings.loading,
+      error = _useMeetings.error,
+      reload = _useMeetings.reload,
+      connectCalendar = _useMeetings.connectCalendar;
 
-  var meetings = (0,_useMeetings__WEBPACK_IMPORTED_MODULE_6__["default"])();
-  var selectedMeetingOption = (0,_useMeetings__WEBPACK_IMPORTED_MODULE_6__.useSelectedMeeting)();
-  var selectedMeetingCalendar = (0,_useMeetings__WEBPACK_IMPORTED_MODULE_6__.useSelectedMeetingCalendar)();
+  var selectedMeetingOption = (0,_hooks_useMeetings__WEBPACK_IMPORTED_MODULE_5__.useSelectedMeeting)(url);
+  var selectedMeetingCalendar = (0,_hooks_useMeetings__WEBPACK_IMPORTED_MODULE_5__.useSelectedMeetingCalendar)(url);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (!selectedMeeting && meetings.length > 0) {
+    if (!url && meetings.length > 0) {
       handleChange(meetings[0].value);
     }
-  }, [meetings, selectedMeeting, handleChange]);
+  }, [meetings, url, handleChange]);
 
   var handleLocalChange = function handleLocalChange(option) {
     handleChange(option.value);
   };
 
+  var handleConnectCalendar = function handleConnectCalendar() {
+    return connectCalendar().then(function () {
+      reload();
+    })["catch"](function (error) {
+      raven_js__WEBPACK_IMPORTED_MODULE_10___default().captureMessage('Unable to connect calendar', {
+        extra: {
+          error: error
+        }
+      });
+    });
+  };
+
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-    children: loading ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_2__["default"], {}) : error ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    children: loading ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_2__["default"], {}) : error ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
       status: error && error.status || error,
       resetErrorState: function resetErrorState() {
         return reload();
       },
       errorInfo: {
-        header: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_10__.__)('There was a problem retrieving your meetings', 'leadin'),
-        message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_10__.__)('Please refresh your meetings or try again in a few minutes.', 'leadin'),
-        action: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_10__.__)('Refresh meetings', 'leadin')
+        header: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('There was a problem retrieving your meetings', 'leadin'),
+        message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Please refresh your meetings or try again in a few minutes.', 'leadin'),
+        action: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Refresh meetings', 'leadin')
       }
-    }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_Common_HubspotWrapper__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_Common_HubspotWrapper__WEBPACK_IMPORTED_MODULE_6__["default"], {
       padding: "90px 32px 24px",
-      pluginPath: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_9__.pluginPath,
+      pluginPath: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_8__.pluginPath,
       children: [selectedMeetingCalendar && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_MeetingWarning__WEBPACK_IMPORTED_MODULE_4__["default"], {
         status: selectedMeetingCalendar,
-        triggerReload: function triggerReload() {
-          return reload();
-        }
+        onConnectCalendar: handleConnectCalendar
       }), meetings.length > 1 && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_MeetingSelector__WEBPACK_IMPORTED_MODULE_3__["default"], {
         onChange: handleLocalChange,
         options: meetings,
@@ -3334,15 +2303,28 @@ function MeetingController(_ref) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MeetingEdit)
+/* harmony export */   "default": () => (/* binding */ MeetingsEditContainer)
 /* harmony export */ });
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
-/* harmony import */ var _MeetingController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MeetingController */ "./scripts/shared/Meeting/MeetingController.tsx");
-/* harmony import */ var _MeetingsContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MeetingsContext */ "./scripts/shared/Meeting/MeetingsContext.tsx");
-/* harmony import */ var _PreviewMeeting__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./PreviewMeeting */ "./scripts/shared/Meeting/PreviewMeeting.tsx");
+/* harmony import */ var _MeetingController__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MeetingController */ "./scripts/shared/Meeting/MeetingController.tsx");
+/* harmony import */ var _PreviewMeeting__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PreviewMeeting */ "./scripts/shared/Meeting/PreviewMeeting.tsx");
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
+/* harmony import */ var _Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Common/LoadingBlock */ "./scripts/shared/Common/LoadingBlock.tsx");
+/* harmony import */ var _utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utils/backgroundAppUtils */ "./scripts/utils/backgroundAppUtils.ts");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
 
 
 
@@ -3357,6 +2339,8 @@ function MeetingEdit(_ref) {
       preview = _ref$preview === void 0 ? true : _ref$preview,
       _ref$origin = _ref.origin,
       origin = _ref$origin === void 0 ? 'gutenberg' : _ref$origin;
+  var isBackgroundAppReady = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_4__.useBackgroundAppContext)();
+  var monitorFormPreviewRender = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_4__.usePostBackgroundMessage)();
 
   var handleChange = function handleChange(newUrl) {
     setAttributes({
@@ -3365,17 +2349,27 @@ function MeetingEdit(_ref) {
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_2__.monitorMeetingPreviewRender)(origin);
+    monitorFormPreviewRender({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_6__.ProxyMessages.TrackMeetingPreviewRender,
+      payload: {
+        origin: origin
+      }
+    });
   }, [origin]);
-  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-    children: [(isSelected || !url) && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_MeetingsContext__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  return !isBackgroundAppReady ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_LoadingBlock__WEBPACK_IMPORTED_MODULE_7__["default"], {}) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: [(isSelected || !url) && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_MeetingController__WEBPACK_IMPORTED_MODULE_2__["default"], {
       url: url,
-      children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_MeetingController__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        handleChange: handleChange
-      })
-    }), preview && url && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_PreviewMeeting__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      handleChange: handleChange
+    }), preview && url && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_PreviewMeeting__WEBPACK_IMPORTED_MODULE_3__["default"], {
       url: url
     })]
+  });
+}
+
+function MeetingsEditContainer(props) {
+  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_4__.BackgroudAppContext.Provider, {
+    value: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_5__.refreshToken && (0,_utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_8__.getOrCreateBackgroundApp)(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_5__.refreshToken),
+    children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(MeetingEdit, _objectSpread({}, props))
   });
 }
 
@@ -3443,158 +2437,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var _UIComponents_UIAlert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../UIComponents/UIAlert */ "./scripts/shared/UIComponents/UIAlert.tsx");
 /* harmony import */ var _UIComponents_UIButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UIComponents/UIButton */ "./scripts/shared/UIComponents/UIButton.ts");
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./constants */ "./scripts/shared/Meeting/constants.ts");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__);
-
-
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./scripts/shared/Meeting/constants.ts");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
 
 
 function MeetingWarning(_ref) {
-  var triggerReload = _ref.triggerReload,
-      status = _ref.status;
-  var isMeetingOwner = status === _constants__WEBPACK_IMPORTED_MODULE_5__.CURRENT_USER_CALENDAR_MISSING;
-  var titleText = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Your calendar is not connected.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Calendar is not connected.', 'leadin');
-  var titleMessage = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Please connect your calendar to activate your scheduling pages.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Make sure that everybody in this meeting has connected their calendar from the Meetings page in HubSpot.', 'leadin');
+  var status = _ref.status,
+      onConnectCalendar = _ref.onConnectCalendar;
+  var isMeetingOwner = status === _constants__WEBPACK_IMPORTED_MODULE_3__.CURRENT_USER_CALENDAR_MISSING;
+  var titleText = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Your calendar is not connected.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Calendar is not connected.', 'leadin');
+  var titleMessage = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Please connect your calendar to activate your scheduling pages.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Make sure that everybody in this meeting has connected their calendar from the Meetings page in HubSpot.', 'leadin');
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_UIComponents_UIAlert__WEBPACK_IMPORTED_MODULE_1__["default"], {
     titleText: titleText,
     titleMessage: titleMessage,
     children: isMeetingOwner && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_UIComponents_UIButton__WEBPACK_IMPORTED_MODULE_2__["default"], {
       use: "tertiary",
       id: "meetings-connect-calendar",
-      onClick: function onClick() {
-        return (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_3__.leadinConnectCalendar)({
-          hubspotBaseUrl: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_4__.hubspotBaseUrl,
-          portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_4__.portalId,
-          triggerReload: triggerReload
-        });
-      },
-      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Connect calendar', 'leadin')
+      onClick: onConnectCalendar,
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Connect calendar', 'leadin')
     })
-  });
-}
-
-/***/ }),
-
-/***/ "./scripts/shared/Meeting/MeetingsContext.tsx":
-/*!****************************************************!*\
-  !*** ./scripts/shared/Meeting/MeetingsContext.tsx ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MeetingsContext": () => (/* binding */ MeetingsContext),
-/* harmony export */   "default": () => (/* binding */ MeetingsContextWrapper)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _useCurrentUserFetch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./useCurrentUserFetch */ "./scripts/shared/Meeting/useCurrentUserFetch.ts");
-/* harmony import */ var _useMeetingsFetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./useMeetingsFetch */ "./scripts/shared/Meeting/useMeetingsFetch.ts");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-var MeetingsContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createContext({
-  loading: true,
-  error: null,
-  meetings: [],
-  currentUser: null,
-  meetingUsers: {},
-  selectedMeeting: '',
-  reload: function reload() {}
-});
-function MeetingsContextWrapper(_ref) {
-  var url = _ref.url,
-      children = _ref.children;
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-    loading: true,
-    error: null,
-    meetings: [],
-    currentUser: null,
-    meetingUsers: {},
-    selectedMeeting: url
-  }),
-      _useState2 = _slicedToArray(_useState, 2),
-      state = _useState2[0],
-      setState = _useState2[1];
-
-  var _useMeetingsFetch = (0,_useMeetingsFetch__WEBPACK_IMPORTED_MODULE_3__["default"])(),
-      _useMeetingsFetch2 = _slicedToArray(_useMeetingsFetch, 4),
-      _useMeetingsFetch2$ = _useMeetingsFetch2[0],
-      meetings = _useMeetingsFetch2$.meetings,
-      meetingUsers = _useMeetingsFetch2$.meetingUsers,
-      loadingMeetings = _useMeetingsFetch2[1],
-      errorMeeting = _useMeetingsFetch2[2],
-      reloadMeetings = _useMeetingsFetch2[3];
-
-  var _useCurrentUserFetch = (0,_useCurrentUserFetch__WEBPACK_IMPORTED_MODULE_2__["default"])(),
-      _useCurrentUserFetch2 = _slicedToArray(_useCurrentUserFetch, 5),
-      currentUser = _useCurrentUserFetch2[0],
-      loadingUser = _useCurrentUserFetch2[1],
-      errorUser = _useCurrentUserFetch2[2],
-      createUser = _useCurrentUserFetch2[3],
-      reloadUser = _useCurrentUserFetch2[4];
-
-  var reload = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
-    reloadUser();
-    reloadMeetings();
-  }, [reloadUser, reloadMeetings]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (!state.loading && !state.error && state.meetings.length === 0) {
-      createUser();
-    }
-  }, [state, createUser]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (!state.loading && !state.error && state.currentUser && state.meetings.length === 0) {
-      reloadMeetings();
-    }
-  }, [state, reloadMeetings]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    setState(function (previous) {
-      return _objectSpread(_objectSpread({}, previous), {}, {
-        loading: loadingUser || loadingMeetings,
-        currentUser: currentUser,
-        meetings: meetings,
-        meetingUsers: meetingUsers.reduce(function (p, c) {
-          return _objectSpread(_objectSpread({}, p), {}, _defineProperty({}, c.id, c));
-        }, {}),
-        error: errorMeeting || errorUser,
-        selectedMeeting: url
-      });
-    });
-  }, [loadingUser, loadingMeetings, currentUser, meetings, meetingUsers, errorMeeting, errorUser, url, setState]);
-  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(MeetingsContext.Provider, {
-    value: _objectSpread(_objectSpread({}, state), {}, {
-      reload: reload
-    }),
-    children: children
   });
 }
 
@@ -3615,14 +2480,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _UIComponents_UIOverlay__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UIComponents/UIOverlay */ "./scripts/shared/UIComponents/UIOverlay.ts");
-/* harmony import */ var _useMeetingsScript__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./useMeetingsScript */ "./scripts/shared/Meeting/useMeetingsScript.ts");
+/* harmony import */ var _hooks_useMeetingsScript__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hooks/useMeetingsScript */ "./scripts/shared/Meeting/hooks/useMeetingsScript.ts");
 
 
 
 
 function PreviewForm(_ref) {
   var url = _ref.url;
-  var ready = (0,_useMeetingsScript__WEBPACK_IMPORTED_MODULE_3__["default"])();
+  var ready = (0,_hooks_useMeetingsScript__WEBPACK_IMPORTED_MODULE_3__["default"])();
   var inputEl = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     if (!ready) {
@@ -3666,10 +2531,10 @@ var CURRENT_USER_CALENDAR_MISSING = 'CURRENT_USER_CALENDAR_MISSING';
 
 /***/ }),
 
-/***/ "./scripts/shared/Meeting/useCurrentUserFetch.ts":
-/*!*******************************************************!*\
-  !*** ./scripts/shared/Meeting/useCurrentUserFetch.ts ***!
-  \*******************************************************/
+/***/ "./scripts/shared/Meeting/hooks/useCurrentUserFetch.ts":
+/*!*************************************************************!*\
+  !*** ./scripts/shared/Meeting/hooks/useCurrentUserFetch.ts ***!
+  \*************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3679,9 +2544,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
-/* harmony import */ var _api_wordpressMeetingsApiClient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../api/wordpressMeetingsApiClient */ "./scripts/api/wordpressMeetingsApiClient.ts");
-/* harmony import */ var _utils_useThirdPartyCookiesEnabled__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/useThirdPartyCookiesEnabled */ "./scripts/utils/useThirdPartyCookiesEnabled.ts");
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _enums_loadState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../enums/loadState */ "./scripts/shared/enums/loadState.ts");
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3699,90 +2564,60 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var user = null;
-var defaultUserPayload = {
-  meetingsUserBlob: {
-    calendarSettings: {
-      provider: 'GOOGLE',
-      email: null,
-      calendarAccountId: null,
-      ewsUri: null,
-      username: null
-    },
-    brandSettings: null
-  },
-  namespace: null
-};
 function useCurrentUserFetch() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+  var proxy = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_1__.usePostAsyncBackgroundMessage)();
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].NotLoaded),
       _useState2 = _slicedToArray(_useState, 2),
-      loading = _useState2[0],
-      setLoading = _useState2[1];
+      loadState = _useState2[0],
+      setLoadState = _useState2[1];
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState4 = _slicedToArray(_useState3, 2),
       error = _useState4[0],
       setError = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState6 = _slicedToArray(_useState5, 2),
-      creating = _useState6[0],
-      setCreating = _useState6[1];
-
-  var cookiesEnabled = (0,_utils_useThirdPartyCookiesEnabled__WEBPACK_IMPORTED_MODULE_3__.useThirdPartyCookiesEnabled)();
-
   var createUser = function createUser() {
     if (!user) {
-      setCreating(true);
+      setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].NotLoaded);
     }
   };
 
   var reload = function reload() {
     user = null;
-    setLoading(true);
+    setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].NotLoaded);
     setError(null);
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (loading && !user) {
-      var loadMeetingUser = function loadMeetingUser() {
-        return !cookiesEnabled ? (0,_api_wordpressMeetingsApiClient__WEBPACK_IMPORTED_MODULE_2__.getOrCreateMeetingUser)(defaultUserPayload) : (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__.getMeetingUser)();
-      };
-
-      loadMeetingUser().then(function (data) {
+    if (loadState === _enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].NotLoaded && !user) {
+      setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Loading);
+      proxy({
+        key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_3__.ProxyMessages.FetchOrCreateMeetingUser
+      }).then(function (data) {
         user = data;
-      })["catch"](function (e) {
-        if (e && !/status 404/gi.test(e.message)) {
-          setError(e);
-        }
-      })["finally"](function () {
-        setLoading(false);
+        setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Idle);
+      })["catch"](function (err) {
+        setError(err);
+        setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Failed);
       });
-    } else {
-      setLoading(false);
     }
-  }, [loading, cookiesEnabled, setError]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (creating && !user) {
-      (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__.createMeetingUser)(defaultUserPayload).then(function (data) {
-        user = data;
-      })["catch"](function (e) {
-        return setError(e);
-      })["finally"](function () {
-        setCreating(false);
-      });
-    } else {
-      setCreating(false);
-    }
-  }, [creating, setError]);
-  return [user, loading || creating, error, createUser, reload];
+  }, [loadState]);
+  return {
+    user: user,
+    loadUserState: loadState,
+    error: error,
+    createUser: createUser,
+    reload: reload
+  };
 }
 
 /***/ }),
 
-/***/ "./scripts/shared/Meeting/useMeetings.ts":
-/*!***********************************************!*\
-  !*** ./scripts/shared/Meeting/useMeetings.ts ***!
-  \***********************************************/
+/***/ "./scripts/shared/Meeting/hooks/useMeetings.ts":
+/*!*****************************************************!*\
+  !*** ./scripts/shared/Meeting/hooks/useMeetings.ts ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3796,8 +2631,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./scripts/shared/Meeting/constants.ts");
-/* harmony import */ var _MeetingsContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MeetingsContext */ "./scripts/shared/Meeting/MeetingsContext.tsx");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants */ "./scripts/shared/Meeting/constants.ts");
+/* harmony import */ var _useMeetingsFetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./useMeetingsFetch */ "./scripts/shared/Meeting/hooks/useMeetingsFetch.ts");
+/* harmony import */ var _useCurrentUserFetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./useCurrentUserFetch */ "./scripts/shared/Meeting/hooks/useCurrentUserFetch.ts");
+/* harmony import */ var _enums_loadState__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../enums/loadState */ "./scripts/shared/enums/loadState.ts");
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3809,6 +2654,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
 
 
 
@@ -3834,39 +2683,70 @@ function hasCalendarObject(user) {
 }
 
 function useMeetings() {
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_MeetingsContext__WEBPACK_IMPORTED_MODULE_3__.MeetingsContext),
-      meetings = _useContext.meetings,
-      meetingUsers = _useContext.meetingUsers,
-      currentUser = _useContext.currentUser;
+  var proxy = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__.usePostAsyncBackgroundMessage)();
 
-  return meetings.map(function (meet) {
-    return {
-      label: meet.name || getDefaultMeetingName(meet, currentUser, meetingUsers),
-      value: meet.link
-    };
-  });
+  var _useMeetingsFetch = (0,_useMeetingsFetch__WEBPACK_IMPORTED_MODULE_3__["default"])(),
+      meetings = _useMeetingsFetch.meetings,
+      meetingUsers = _useMeetingsFetch.meetingUsers,
+      meetingsError = _useMeetingsFetch.error,
+      loadMeetingsState = _useMeetingsFetch.loadMeetingsState,
+      reloadMeetings = _useMeetingsFetch.reload;
+
+  var _useCurrentUserFetch = (0,_useCurrentUserFetch__WEBPACK_IMPORTED_MODULE_4__["default"])(),
+      currentUser = _useCurrentUserFetch.user,
+      userError = _useCurrentUserFetch.error,
+      loadUserState = _useCurrentUserFetch.loadUserState,
+      reloadUser = _useCurrentUserFetch.reload;
+
+  var reload = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function () {
+    reloadUser();
+    reloadMeetings();
+  }, [reloadUser, reloadMeetings]);
+
+  var connectCalendar = function connectCalendar() {
+    return proxy({
+      key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_7__.ProxyMessages.ConnectMeetingsCalendar
+    });
+  };
+
+  return {
+    mappedMeetings: meetings.map(function (meet) {
+      return {
+        label: meet.name || getDefaultMeetingName(meet, currentUser, meetingUsers),
+        value: meet.link
+      };
+    }),
+    meetings: meetings,
+    meetingUsers: meetingUsers,
+    currentUser: currentUser,
+    error: meetingsError || userError,
+    loading: loadMeetingsState == _enums_loadState__WEBPACK_IMPORTED_MODULE_5__["default"].Loading || loadUserState === _enums_loadState__WEBPACK_IMPORTED_MODULE_5__["default"].Loading,
+    reload: reload,
+    connectCalendar: connectCalendar
+  };
 }
-function useSelectedMeeting() {
-  var _useContext2 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_MeetingsContext__WEBPACK_IMPORTED_MODULE_3__.MeetingsContext),
-      selectedMeeting = _useContext2.selectedMeeting;
+function useSelectedMeeting(url) {
+  var _useMeetings = useMeetings(),
+      meetings = _useMeetings.mappedMeetings;
 
-  var meetings = useMeetings();
   var option = meetings.find(function (_ref) {
     var value = _ref.value;
-    return value === selectedMeeting;
+    return value === url;
   });
   return option;
 }
-function useSelectedMeetingCalendar() {
-  var _useContext3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_MeetingsContext__WEBPACK_IMPORTED_MODULE_3__.MeetingsContext),
-      selectedMeeting = _useContext3.selectedMeeting,
-      meetings = _useContext3.meetings,
-      meetingUsers = _useContext3.meetingUsers,
-      currentUser = _useContext3.currentUser;
+function useSelectedMeetingCalendar(url) {
+  var _useMeetings2 = useMeetings(),
+      meetings = _useMeetings2.meetings,
+      meetingUsers = _useMeetings2.meetingUsers,
+      currentUser = _useMeetings2.currentUser;
 
   var meeting = meetings.find(function (meet) {
-    return meet.link === selectedMeeting;
+    return meet.link === url;
   });
+  var mappedMeetingUsersId = meetingUsers.reduce(function (p, c) {
+    return _objectSpread(_objectSpread({}, p), {}, _defineProperty({}, c.id, c));
+  }, {});
 
   if (!meeting) {
     return null;
@@ -3876,7 +2756,7 @@ function useSelectedMeetingCalendar() {
     if (currentUser && meetingsUserIds.includes(currentUser.id) && !hasCalendarObject(currentUser)) {
       return _constants__WEBPACK_IMPORTED_MODULE_2__.CURRENT_USER_CALENDAR_MISSING;
     } else if (meetingsUserIds.map(function (id) {
-      return meetingUsers[id];
+      return mappedMeetingUsersId[id];
     }).some(function (user) {
       return !hasCalendarObject(user);
     })) {
@@ -3889,10 +2769,10 @@ function useSelectedMeetingCalendar() {
 
 /***/ }),
 
-/***/ "./scripts/shared/Meeting/useMeetingsFetch.ts":
-/*!****************************************************!*\
-  !*** ./scripts/shared/Meeting/useMeetingsFetch.ts ***!
-  \****************************************************/
+/***/ "./scripts/shared/Meeting/hooks/useMeetingsFetch.ts":
+/*!**********************************************************!*\
+  !*** ./scripts/shared/Meeting/hooks/useMeetingsFetch.ts ***!
+  \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3902,9 +2782,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../api/hubspotPluginApi */ "./scripts/api/hubspotPluginApi.ts");
-/* harmony import */ var _api_wordpressMeetingsApiClient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../api/wordpressMeetingsApiClient */ "./scripts/api/wordpressMeetingsApiClient.ts");
-/* harmony import */ var _utils_useThirdPartyCookiesEnabled__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/useThirdPartyCookiesEnabled */ "./scripts/utils/useThirdPartyCookiesEnabled.ts");
+/* harmony import */ var _iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../iframe/useBackgroundApp */ "./scripts/iframe/useBackgroundApp.ts");
+/* harmony import */ var _enums_loadState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../enums/loadState */ "./scripts/shared/enums/loadState.ts");
+/* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3917,91 +2797,61 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
 
 var meetings = [];
 var meetingUsers = [];
-
-function loadMeetings() {
-  var cookiesEnabled = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
-  if (!cookiesEnabled) {
-    return (0,_api_wordpressMeetingsApiClient__WEBPACK_IMPORTED_MODULE_2__.fetchMeetingsAndUsers)().then(function (data) {
-      meetings = data && data.meetingLinks;
-      meetingUsers = data && data.meetingUsers;
-    });
-  }
-
-  return (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__.getMeetings)().then(function (data) {
-    meetings = data;
-
-    if (data && data.length > 0) {
-      var userIds = data.reduce(function (p, _ref) {
-        var meetingsUserIds = _ref.meetingsUserIds;
-        var ids = meetingsUserIds.reduce(function (previous, current) {
-          return _objectSpread(_objectSpread({}, previous), {}, _defineProperty({}, current, current));
-        }, {});
-        return _objectSpread(_objectSpread({}, p), ids);
-      }, {});
-      return (0,_api_hubspotPluginApi__WEBPACK_IMPORTED_MODULE_1__.getMeetingUsers)(Object.keys(userIds));
-    }
-
-    return [];
-  }).then(function (users) {
-    return meetingUsers = users;
-  });
-}
-
 function useMeetingsFetch() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+  var proxy = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_1__.usePostAsyncBackgroundMessage)();
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].NotLoaded),
       _useState2 = _slicedToArray(_useState, 2),
-      loading = _useState2[0],
-      setLoading = _useState2[1];
+      loadState = _useState2[0],
+      setLoadState = _useState2[1];
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState4 = _slicedToArray(_useState3, 2),
       error = _useState4[0],
       setError = _useState4[1];
 
-  var cookiesEnabled = (0,_utils_useThirdPartyCookiesEnabled__WEBPACK_IMPORTED_MODULE_3__.useThirdPartyCookiesEnabled)();
-
   var reload = function reload() {
     meetings = [];
     setError(null);
-    setLoading(true);
+    setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].NotLoaded);
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (loading && meetings.length === 0) {
-      loadMeetings(cookiesEnabled)["catch"](function (e) {
-        return setError(e);
-      })["finally"](function () {
-        return setLoading(false);
+    if (loadState === _enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].NotLoaded && meetings.length === 0) {
+      setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Loading);
+      proxy({
+        key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_3__.ProxyMessages.FetchMeetingsAndUsers
+      }).then(function (data) {
+        setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Loaded);
+        meetings = data && data.meetingLinks;
+        meetingUsers = data && data.meetingUsers;
+      })["catch"](function (e) {
+        setError(e);
+        setLoadState(_enums_loadState__WEBPACK_IMPORTED_MODULE_2__["default"].Failed);
       });
-    } else {
-      setLoading(false);
     }
-  }, [loading, cookiesEnabled]);
-  return [{
+  }, [loadState]);
+  return {
     meetings: meetings,
-    meetingUsers: meetingUsers
-  }, loading, error, reload];
+    meetingUsers: meetingUsers,
+    loadMeetingsState: loadState,
+    error: error,
+    reload: reload
+  };
 }
 
 /***/ }),
 
-/***/ "./scripts/shared/Meeting/useMeetingsScript.ts":
-/*!*****************************************************!*\
-  !*** ./scripts/shared/Meeting/useMeetingsScript.ts ***!
-  \*****************************************************/
+/***/ "./scripts/shared/Meeting/hooks/useMeetingsScript.ts":
+/*!***********************************************************!*\
+  !*** ./scripts/shared/Meeting/hooks/useMeetingsScript.ts ***!
+  \***********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -4013,8 +2863,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../lib/Raven */ "./scripts/lib/Raven.ts");
+/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../lib/Raven */ "./scripts/lib/Raven.ts");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4346,6 +3196,47 @@ var OBSIDIAN = '#33475b';
 
 /***/ }),
 
+/***/ "./scripts/shared/enums/connectionStatus.ts":
+/*!**************************************************!*\
+  !*** ./scripts/shared/enums/connectionStatus.ts ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var ConnectionStatus = {
+  Connected: 'Connected',
+  NotConnected: 'NotConnected'
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ConnectionStatus);
+
+/***/ }),
+
+/***/ "./scripts/shared/enums/loadState.ts":
+/*!*******************************************!*\
+  !*** ./scripts/shared/enums/loadState.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var LoadState = {
+  NotLoaded: 'NotLoaded',
+  Loading: 'Loading',
+  Loaded: 'Loaded',
+  Idle: 'Idle',
+  Failed: 'Failed'
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadState);
+
+/***/ }),
+
 /***/ "./scripts/utils/appUtils.ts":
 /*!***********************************!*\
   !*** ./scripts/utils/appUtils.ts ***!
@@ -4386,19 +3277,15 @@ function initAppOnReady(initFn) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "initBackgroundApp": () => (/* binding */ initBackgroundApp),
-/* harmony export */   "initMonitorGutenberBlockPreview": () => (/* binding */ initMonitorGutenberBlockPreview)
+/* harmony export */   "getOrCreateBackgroundApp": () => (/* binding */ getOrCreateBackgroundApp),
+/* harmony export */   "initBackgroundApp": () => (/* binding */ initBackgroundApp)
 /* harmony export */ });
-/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../lib/Raven */ "./scripts/lib/Raven.ts");
-/* harmony import */ var _iframe_iframeUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../iframe/iframeUtils */ "./scripts/iframe/iframeUtils.ts");
-/* harmony import */ var _appUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./appUtils */ "./scripts/utils/appUtils.ts");
-
+/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _appUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./appUtils */ "./scripts/utils/appUtils.ts");
 
 
 function initBackgroundApp(initFn) {
   function main() {
-    (0,_iframe_iframeUtils__WEBPACK_IMPORTED_MODULE_1__.createBackgroundIframe)();
-
     if (Array.isArray(initFn)) {
       initFn.forEach(function (callback) {
         return callback();
@@ -4408,254 +3295,24 @@ function initBackgroundApp(initFn) {
     }
   }
 
-  (0,_appUtils__WEBPACK_IMPORTED_MODULE_2__.initApp)(main);
+  (0,_appUtils__WEBPACK_IMPORTED_MODULE_1__.initApp)(main);
 }
-function initMonitorGutenberBlockPreview() {
-  var formsPreviewTimeouts = {}; // This listener is responsible to monitor the form previews are rendered correctly
-
-  window.addEventListener('message', function (event) {
-    if (event.data.type === 'hsFormCallback') {
-      var formId = event.data.id;
-
-      if (event.data.eventName === 'onBeforeFormInit') {
-        formsPreviewTimeouts[formId] = setTimeout(function () {
-          _lib_Raven__WEBPACK_IMPORTED_MODULE_0__["default"].captureMessage("The form preview ".concat(formId, " has not been rendered correctly."));
-        }, 10 * 1000);
-      }
-
-      if (event.data.eventName === 'onFormReady') {
-        clearTimeout(formsPreviewTimeouts[formId]);
-      }
-    }
-  });
-}
-
-/***/ }),
-
-/***/ "./scripts/utils/portalInfo.ts":
-/*!*************************************!*\
-  !*** ./scripts/utils/portalInfo.ts ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "leadinGetPortalInfo": () => (/* binding */ leadinGetPortalInfo)
-/* harmony export */ });
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-
-var leadinGetPortalInfo = function leadinGetPortalInfo() {
-  return {
-    portalDomain: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.portalDomain,
-    portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.portalId,
-    portalEmail: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.portalEmail,
-    accountName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.accountName
-  };
-};
-
-/***/ }),
-
-/***/ "./scripts/utils/queryParams.ts":
-/*!**************************************!*\
-  !*** ./scripts/utils/queryParams.ts ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "addQueryObjectToUrl": () => (/* binding */ addQueryObjectToUrl),
-/* harmony export */   "filterLeadinQueryParams": () => (/* binding */ filterLeadinQueryParams),
-/* harmony export */   "getQueryParam": () => (/* binding */ getQueryParam),
-/* harmony export */   "leadinClearQueryParam": () => (/* binding */ leadinClearQueryParam)
-/* harmony export */ });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-function leadinClearQueryParam() {
-  var currentWindowLocation = window.location.toString();
-
-  if (currentWindowLocation.indexOf('?') > 0) {
-    currentWindowLocation = currentWindowLocation.substring(0, currentWindowLocation.indexOf('?'));
+var getOrCreateBackgroundApp = function getOrCreateBackgroundApp(refreshToken) {
+  if (window.LeadinBackgroundApp) {
+    return window.LeadinBackgroundApp;
   }
 
-  var newWindowLocation = "".concat(currentWindowLocation, "?page=leadin");
-  window.history.pushState({}, '', newWindowLocation);
-}
-function getQueryParam(key) {
-  var query = window.location.search.substring(1);
-  var vars = query.split('&');
+  var _window = window,
+      IntegratedAppEmbedder = _window.IntegratedAppEmbedder,
+      IntegratedAppOptions = _window.IntegratedAppOptions;
+  var options = new IntegratedAppOptions().setLocale(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.locale).setDeviceId(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.deviceId).setRefreshToken(refreshToken);
+  var embedder = new IntegratedAppEmbedder('integrated-plugin-proxy', _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.portalId, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_0__.hubspotBaseUrl, function () {}).setOptions(options);
+  embedder.attachTo(document.body, false);
+  embedder.postStartAppMessage(); // lets the app know all all data has been passed to it
 
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=');
-
-    if (decodeURIComponent(pair[0]) === key) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
-
-  return null;
-}
-function filterLeadinQueryParams(searchString) {
-  if (!searchString) return '';
-  var pairs = searchString.slice(1).split('&');
-  var filteredSearch = pairs.reduce(function (paramsMap, pair) {
-    var _pair$split = pair.split('='),
-        _pair$split2 = _slicedToArray(_pair$split, 2),
-        key = _pair$split2[0],
-        value = _pair$split2[1];
-
-    if (key && _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParamsKeys.indexOf(key) === -1) {
-      paramsMap[key] = value;
-    }
-
-    return paramsMap;
-  }, {});
-  return jquery__WEBPACK_IMPORTED_MODULE_0___default().param(filteredSearch);
-}
-function addQueryObjectToUrl(urlObject, queryParams) {
-  Object.keys(queryParams).forEach(function (key) {
-    urlObject.searchParams.append(key, queryParams[key]);
-  });
-}
-
-/***/ }),
-
-/***/ "./scripts/utils/sideNav.ts":
-/*!**********************************!*\
-  !*** ./scripts/utils/sideNav.ts ***!
-  \**********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "setLeadinCookiesDisabledNavigation": () => (/* binding */ setLeadinCookiesDisabledNavigation),
-/* harmony export */   "setLeadinCookiesEnabledNavigation": () => (/* binding */ setLeadinCookiesEnabledNavigation),
-/* harmony export */   "setLeadinUnAuthedNavigation": () => (/* binding */ setLeadinUnAuthedNavigation)
-/* harmony export */ });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constants_selectors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/selectors */ "./scripts/constants/selectors.ts");
-
-
-function setLeadinUnAuthedNavigation() {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_1__.domElements.subMenu).remove();
-}
-function setLeadinCookiesEnabledNavigation() {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_1__.domElements.subMenuLinks).addClass('visible');
-}
-function setLeadinCookiesDisabledNavigation() {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_1__.domElements.subMenuLinks).removeClass('visible');
-}
-
-/***/ }),
-
-/***/ "./scripts/utils/thirdPartyCookies.ts":
-/*!********************************************!*\
-  !*** ./scripts/utils/thirdPartyCookies.ts ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "checkThirdPartyCookies": () => (/* binding */ checkThirdPartyCookies)
-/* harmony export */ });
-var startHtmlUrl = 'https://static.hsappstatic.net/integrations-third-party-cookies/static-1.1/html/start.html';
-/**
- * Checks if third-party cookies are enabled or not
- * on the current browser session.
- *
- * @returns {Promise<Boolean>}
- *  A promise that will always resolve with a boolean indicating if third-party cookies are enabled or not.
- */
-
-var checkThirdPartyCookies = function checkThirdPartyCookies() {
-  return new Promise(function (resolve) {
-    try {
-      var iframe = document.createElement('iframe');
-      iframe.id = 'integrations-third-party-cookies-iframe';
-      iframe.src = startHtmlUrl;
-      iframe.style.display = 'none';
-
-      var receiveMessage = function receiveMessage(evt) {
-        if (evt.data.source === 'integrations-third-party-cookies-message') {
-          resolve(evt.data.enabled);
-
-          if (iframe.parentNode) {
-            iframe.parentNode.removeChild(iframe);
-            window.removeEventListener('message', receiveMessage, false);
-          }
-        }
-      };
-
-      window.addEventListener('message', receiveMessage, false);
-      document.body.appendChild(iframe);
-    } catch (err) {
-      resolve(false);
-    }
-  });
+  window.LeadinBackgroundApp = embedder;
+  return window.LeadinBackgroundApp;
 };
-
-/***/ }),
-
-/***/ "./scripts/utils/useThirdPartyCookiesEnabled.ts":
-/*!******************************************************!*\
-  !*** ./scripts/utils/useThirdPartyCookiesEnabled.ts ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "useThirdPartyCookiesEnabled": () => (/* binding */ useThirdPartyCookiesEnabled)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _thirdPartyCookies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./thirdPartyCookies */ "./scripts/utils/thirdPartyCookies.ts");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-function useThirdPartyCookiesEnabled() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      cookiesEnabled = _useState2[0],
-      setCookiesEnabled = _useState2[1];
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    (0,_thirdPartyCookies__WEBPACK_IMPORTED_MODULE_1__.checkThirdPartyCookies)().then(function (result) {
-      return setCookiesEnabled(result && !/firefox/i.test(navigator.userAgent));
-    });
-  }, []);
-  return cookiesEnabled;
-}
 
 /***/ }),
 
@@ -5547,589 +4204,6 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-
-/***/ }),
-
-/***/ "./node_modules/penpal/lib/index.js":
-/*!******************************************!*\
-  !*** ./node_modules/penpal/lib/index.js ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.ERR_IFRAME_ALREADY_ATTACHED_TO_DOM = exports.ERR_NOT_IN_IFRAME = exports.ERR_CONNECTION_TIMEOUT = exports.ERR_CONNECTION_DESTROYED = void 0;
-var HANDSHAKE = 'handshake';
-var HANDSHAKE_REPLY = 'handshake-reply';
-var CALL = 'call';
-var REPLY = 'reply';
-var FULFILLED = 'fulfilled';
-var REJECTED = 'rejected';
-var MESSAGE = 'message';
-var DATA_CLONE_ERROR = 'DataCloneError';
-var ERR_CONNECTION_DESTROYED = 'ConnectionDestroyed';
-exports.ERR_CONNECTION_DESTROYED = ERR_CONNECTION_DESTROYED;
-var ERR_CONNECTION_TIMEOUT = 'ConnectionTimeout';
-exports.ERR_CONNECTION_TIMEOUT = ERR_CONNECTION_TIMEOUT;
-var ERR_NOT_IN_IFRAME = 'NotInIframe';
-exports.ERR_NOT_IN_IFRAME = ERR_NOT_IN_IFRAME;
-var ERR_IFRAME_ALREADY_ATTACHED_TO_DOM = 'IframeAlreadyAttachedToDom';
-exports.ERR_IFRAME_ALREADY_ATTACHED_TO_DOM = ERR_IFRAME_ALREADY_ATTACHED_TO_DOM;
-var CHECK_IFRAME_IN_DOC_INTERVAL = 60000;
-var DEFAULT_PORTS = {
-  'http:': '80',
-  'https:': '443'
-};
-var URL_REGEX = /^(https?:|file:)?\/\/([^/:]+)?(:(\d+))?/;
-var Penpal = {
-  ERR_CONNECTION_DESTROYED: ERR_CONNECTION_DESTROYED,
-  ERR_CONNECTION_TIMEOUT: ERR_CONNECTION_TIMEOUT,
-  ERR_NOT_IN_IFRAME: ERR_NOT_IN_IFRAME,
-  ERR_IFRAME_ALREADY_ATTACHED_TO_DOM: ERR_IFRAME_ALREADY_ATTACHED_TO_DOM,
-
-  /**
-   * Promise implementation.
-   * @type {Constructor}
-   */
-  Promise: function () {
-    try {
-      return window ? window.Promise : null;
-    } catch (e) {
-      return null;
-    }
-  }(),
-
-  /**
-   * Whether debug messages should be logged.
-   * @type {boolean}
-   */
-  debug: false
-};
-/**
- * @return {number} A unique ID (not universally unique)
- */
-
-var generateId = function () {
-  var id = 0;
-  return function () {
-    return ++id;
-  };
-}();
-/**
- * Logs a message.
- * @param {...*} args One or more items to log
- */
-
-
-var log = function log() {
-  if (Penpal.debug) {
-    var _console;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    (_console = console).log.apply(_console, ['[Penpal]'].concat(args)); // eslint-disable-line no-console
-
-  }
-};
-/**
- * Converts a URL into an origin.
- * @param {string} url
- * @return {string} The URL's origin
- */
-
-
-var getOriginFromUrl = function getOriginFromUrl(url) {
-  var location = document.location;
-  var regexResult = URL_REGEX.exec(url);
-  var protocol;
-  var hostname;
-  var port;
-
-  if (regexResult) {
-    // It's an absolute URL. Use the parsed info.
-    // regexResult[1] will be undefined if the URL starts with //
-    protocol = regexResult[1] ? regexResult[1] : location.protocol;
-    hostname = regexResult[2];
-    port = regexResult[4];
-  } else {
-    // It's a relative path. Use the current location's info.
-    protocol = location.protocol;
-    hostname = location.hostname;
-    port = location.port;
-  } // If the protocol is file, the origin is "null"
-  // The origin of a document with file protocol is an opaque origin
-  // and its serialization "null" [1]
-  // [1] https://html.spec.whatwg.org/multipage/origin.html#origin
-
-
-  if (protocol === "file:") {
-    return "null";
-  } // If the port is the default for the protocol, we don't want to add it to the origin string
-  // or it won't match the message's event.origin.
-
-
-  var portSuffix = port && port !== DEFAULT_PORTS[protocol] ? ":".concat(port) : '';
-  return "".concat(protocol, "//").concat(hostname).concat(portSuffix);
-};
-/**
- * A simplified promise class only used internally for when destroy() is called. This is
- * used to destroy connections synchronously while promises typically resolve asynchronously.
- *
- * @param {Function} executor
- * @returns {Object}
- * @constructor
- */
-
-
-var DestructionPromise = function DestructionPromise(executor) {
-  var handlers = [];
-  executor(function () {
-    handlers.forEach(function (handler) {
-      handler();
-    });
-  });
-  return {
-    then: function then(handler) {
-      handlers.push(handler);
-    }
-  };
-};
-/**
- * Converts an error object into a plain object.
- * @param {Error} Error object.
- * @returns {Object}
- */
-
-
-var serializeError = function serializeError(_ref) {
-  var name = _ref.name,
-      message = _ref.message,
-      stack = _ref.stack;
-  return {
-    name: name,
-    message: message,
-    stack: stack
-  };
-};
-/**
- * Converts a plain object into an error object.
- * @param {Object} Object with error properties.
- * @returns {Error}
- */
-
-
-var deserializeError = function deserializeError(obj) {
-  var deserializedError = new Error();
-  Object.keys(obj).forEach(function (key) {
-    return deserializedError[key] = obj[key];
-  });
-  return deserializedError;
-};
-/**
- * Augments an object with methods that match those defined by the remote. When these methods are
- * called, a "call" message will be sent to the remote, the remote's corresponding method will be
- * executed, and the method's return value will be returned via a message.
- * @param {Object} callSender Sender object that should be augmented with methods.
- * @param {Object} info Information about the local and remote windows.
- * @param {Array} methodNames Names of methods available to be called on the remote.
- * @param {Promise} destructionPromise A promise resolved when destroy() is called on the penpal
- * connection.
- * @returns {Object} The call sender object with methods that may be called.
- */
-
-
-var connectCallSender = function connectCallSender(callSender, info, methodNames, destroy, destructionPromise) {
-  var localName = info.localName,
-      local = info.local,
-      remote = info.remote,
-      remoteOrigin = info.remoteOrigin;
-  var destroyed = false;
-  log("".concat(localName, ": Connecting call sender"));
-
-  var createMethodProxy = function createMethodProxy(methodName) {
-    return function () {
-      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      log("".concat(localName, ": Sending ").concat(methodName, "() call")); // This handles the case where the iframe has been removed from the DOM
-      // (and therefore its window closed), the consumer has not yet
-      // called destroy(), and the user calls a method exposed by
-      // the remote. We detect the iframe has been removed and force
-      // a destroy() immediately so that the consumer sees the error saying
-      // the connection has been destroyed.
-
-      if (remote.closed) {
-        destroy();
-      }
-
-      if (destroyed) {
-        var error = new Error("Unable to send ".concat(methodName, "() call due ") + "to destroyed connection");
-        error.code = ERR_CONNECTION_DESTROYED;
-        throw error;
-      }
-
-      return new Penpal.Promise(function (resolve, reject) {
-        var id = generateId();
-
-        var handleMessageEvent = function handleMessageEvent(event) {
-          if (event.source === remote && event.origin === remoteOrigin && event.data.penpal === REPLY && event.data.id === id) {
-            log("".concat(localName, ": Received ").concat(methodName, "() reply"));
-            local.removeEventListener(MESSAGE, handleMessageEvent);
-            var returnValue = event.data.returnValue;
-
-            if (event.data.returnValueIsError) {
-              returnValue = deserializeError(returnValue);
-            }
-
-            (event.data.resolution === FULFILLED ? resolve : reject)(returnValue);
-          }
-        };
-
-        local.addEventListener(MESSAGE, handleMessageEvent);
-        remote.postMessage({
-          penpal: CALL,
-          id: id,
-          methodName: methodName,
-          args: args
-        }, remoteOrigin);
-      });
-    };
-  };
-
-  destructionPromise.then(function () {
-    destroyed = true;
-  });
-  methodNames.reduce(function (api, methodName) {
-    api[methodName] = createMethodProxy(methodName);
-    return api;
-  }, callSender);
-};
-/**
- * Listens for "call" messages coming from the remote, executes the corresponding method, and
- * responds with the return value.
- * @param {Object} info Information about the local and remote windows.
- * @param {Object} methods The keys are the names of the methods that can be called by the remote
- * while the values are the method functions.
- * @param {Promise} destructionPromise A promise resolved when destroy() is called on the penpal
- * connection.
- * @returns {Function} A function that may be called to disconnect the receiver.
- */
-
-
-var connectCallReceiver = function connectCallReceiver(info, methods, destructionPromise) {
-  var localName = info.localName,
-      local = info.local,
-      remote = info.remote,
-      remoteOrigin = info.remoteOrigin;
-  var destroyed = false;
-  log("".concat(localName, ": Connecting call receiver"));
-
-  var handleMessageEvent = function handleMessageEvent(event) {
-    if (event.source === remote && event.origin === remoteOrigin && event.data.penpal === CALL) {
-      var _event$data = event.data,
-          methodName = _event$data.methodName,
-          args = _event$data.args,
-          id = _event$data.id;
-      log("".concat(localName, ": Received ").concat(methodName, "() call"));
-
-      if (methodName in methods) {
-        var createPromiseHandler = function createPromiseHandler(resolution) {
-          return function (returnValue) {
-            log("".concat(localName, ": Sending ").concat(methodName, "() reply"));
-
-            if (destroyed) {
-              // It's possible to throw an error here, but it would need to be thrown asynchronously
-              // and would only be catchable using window.onerror. This is because the consumer
-              // is merely returning a value from their method and not calling any function
-              // that they could wrap in a try-catch. Even if the consumer were to catch the error,
-              // the value of doing so is questionable. Instead, we'll just log a message.
-              log("".concat(localName, ": Unable to send ").concat(methodName, "() reply due to destroyed connection"));
-              return;
-            }
-
-            var message = {
-              penpal: REPLY,
-              id: id,
-              resolution: resolution,
-              returnValue: returnValue
-            };
-
-            if (resolution === REJECTED && returnValue instanceof Error) {
-              message.returnValue = serializeError(returnValue);
-              message.returnValueIsError = true;
-            }
-
-            try {
-              remote.postMessage(message, remoteOrigin);
-            } catch (err) {
-              // If a consumer attempts to send an object that's not cloneable (e.g., window),
-              // we want to ensure the receiver's promise gets rejected.
-              if (err.name === DATA_CLONE_ERROR) {
-                remote.postMessage({
-                  penpal: REPLY,
-                  id: id,
-                  resolution: REJECTED,
-                  returnValue: serializeError(err),
-                  returnValueIsError: true
-                }, remoteOrigin);
-              }
-
-              throw err;
-            }
-          };
-        };
-
-        new Penpal.Promise(function (resolve) {
-          return resolve(methods[methodName].apply(methods, args));
-        }).then(createPromiseHandler(FULFILLED), createPromiseHandler(REJECTED));
-      }
-    }
-  };
-
-  local.addEventListener(MESSAGE, handleMessageEvent);
-  destructionPromise.then(function () {
-    destroyed = true;
-    local.removeEventListener(MESSAGE, handleMessageEvent);
-  });
-};
-/**
- * @typedef {Object} Child
- * @property {Promise} promise A promise which will be resolved once a connection has
- * been established.
- * @property {HTMLIframeElement} iframe The created iframe element.
- * @property {Function} destroy A method that, when called, will remove the iframe element from
- * the DOM and clean up event listeners.
- */
-
-/**
- * Creates an iframe, loads a webpage into the URL, and attempts to establish communication with
- * the iframe.
- * @param {Object} options
- * @param {string} options.url The URL of the webpage that should be loaded into the created iframe.
- * @param {HTMLElement} [options.appendTo] The container to which the iframe should be appended.
- * @param {Object} [options.methods={}] Methods that may be called by the iframe.
- * @param {Number} [options.timeout] The amount of time, in milliseconds, Penpal should wait
- * for the child to respond before rejecting the connection promise.
- * @return {Child}
- */
-
-
-Penpal.connectToChild = function (_ref2) {
-  var url = _ref2.url,
-      appendTo = _ref2.appendTo,
-      iframe = _ref2.iframe,
-      _ref2$methods = _ref2.methods,
-      methods = _ref2$methods === void 0 ? {} : _ref2$methods,
-      timeout = _ref2.timeout;
-
-  if (iframe && iframe.parentNode) {
-    var error = new Error('connectToChild() must not be called with an iframe already attached to DOM');
-    error.code = ERR_IFRAME_ALREADY_ATTACHED_TO_DOM;
-    throw error;
-  }
-
-  var destroy;
-  var connectionDestructionPromise = new DestructionPromise(function (resolveConnectionDestructionPromise) {
-    destroy = resolveConnectionDestructionPromise;
-  });
-  var parent = window;
-  iframe = iframe || document.createElement('iframe');
-  iframe.src = url;
-  var childOrigin = getOriginFromUrl(url);
-  var promise = new Penpal.Promise(function (resolveConnectionPromise, reject) {
-    var connectionTimeoutId;
-
-    if (timeout !== undefined) {
-      connectionTimeoutId = setTimeout(function () {
-        var error = new Error("Connection to child timed out after ".concat(timeout, "ms"));
-        error.code = ERR_CONNECTION_TIMEOUT;
-        reject(error);
-        destroy();
-      }, timeout);
-    } // We resolve the promise with the call sender. If the child reconnects (for example, after
-    // refreshing or navigating to another page that uses Penpal, we'll update the call sender
-    // with methods that match the latest provided by the child.
-
-
-    var callSender = {};
-    var receiverMethodNames;
-    var destroyCallReceiver;
-
-    var handleMessage = function handleMessage(event) {
-      var child = iframe.contentWindow;
-
-      if (event.source === child && event.origin === childOrigin && event.data.penpal === HANDSHAKE) {
-        log('Parent: Received handshake, sending reply'); // If event.origin is "null", the remote protocol is file:
-        // and we must post messages with "*" as targetOrigin [1]
-        // [1] https://developer.mozilla.org/fr/docs/Web/API/Window/postMessage#Utiliser_window.postMessage_dans_les_extensions
-
-        var remoteOrigin = event.origin === "null" ? "*" : event.origin;
-        event.source.postMessage({
-          penpal: HANDSHAKE_REPLY,
-          methodNames: Object.keys(methods)
-        }, remoteOrigin);
-        var info = {
-          localName: 'Parent',
-          local: parent,
-          remote: child,
-          remoteOrigin: remoteOrigin
-        }; // If the child reconnected, we need to destroy the previous call receiver before setting
-        // up a new one.
-
-        if (destroyCallReceiver) {
-          destroyCallReceiver();
-        } // When this promise is resolved, it will destroy the call receiver (stop listening to
-        // method calls from the child) and delete its methods off the call sender.
-
-
-        var callReceiverDestructionPromise = new DestructionPromise(function (resolveCallReceiverDestructionPromise) {
-          connectionDestructionPromise.then(resolveCallReceiverDestructionPromise);
-          destroyCallReceiver = resolveCallReceiverDestructionPromise;
-        });
-        connectCallReceiver(info, methods, callReceiverDestructionPromise); // If the child reconnected, we need to remove the methods from the previous call receiver
-        // off the sender.
-
-        if (receiverMethodNames) {
-          receiverMethodNames.forEach(function (receiverMethodName) {
-            delete callSender[receiverMethodName];
-          });
-        }
-
-        receiverMethodNames = event.data.methodNames;
-        connectCallSender(callSender, info, receiverMethodNames, destroy, connectionDestructionPromise);
-        clearTimeout(connectionTimeoutId);
-        resolveConnectionPromise(callSender);
-      }
-    };
-
-    parent.addEventListener(MESSAGE, handleMessage);
-    log('Parent: Loading iframe');
-    (appendTo || document.body).appendChild(iframe); // This is to prevent memory leaks when the iframe is removed
-    // from the document and the consumer hasn't called destroy().
-    // Without this, event listeners attached to the window would
-    // stick around and since the event handlers have a reference
-    // to the iframe in their closures, the iframe would stick around
-    // too.
-
-    var checkIframeInDocIntervalId = setInterval(function () {
-      if (!document.body.contains(iframe)) {
-        clearInterval(checkIframeInDocIntervalId);
-        destroy();
-      }
-    }, CHECK_IFRAME_IN_DOC_INTERVAL);
-    connectionDestructionPromise.then(function () {
-      if (iframe.parentNode) {
-        iframe.parentNode.removeChild(iframe);
-      }
-
-      parent.removeEventListener(MESSAGE, handleMessage);
-      clearInterval(checkIframeInDocIntervalId);
-      var error = new Error('Connection destroyed');
-      error.code = ERR_CONNECTION_DESTROYED;
-      reject(error);
-    });
-  });
-  return {
-    promise: promise,
-    iframe: iframe,
-    destroy: destroy
-  };
-};
-/**
- * @typedef {Object} Parent
- * @property {Promise} promise A promise which will be resolved once a connection has
- * been established.
- */
-
-/**
- * Attempts to establish communication with the parent window.
- * @param {Object} options
- * @param {string} [options.parentOrigin=*] Valid parent origin used to restrict communication.
- * @param {Object} [options.methods={}] Methods that may be called by the parent window.
- * @param {Number} [options.timeout] The amount of time, in milliseconds, Penpal should wait
- * for the parent to respond before rejecting the connection promise.
- * @return {Parent}
- */
-
-
-Penpal.connectToParent = function () {
-  var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-      _ref3$parentOrigin = _ref3.parentOrigin,
-      parentOrigin = _ref3$parentOrigin === void 0 ? '*' : _ref3$parentOrigin,
-      _ref3$methods = _ref3.methods,
-      methods = _ref3$methods === void 0 ? {} : _ref3$methods,
-      timeout = _ref3.timeout;
-
-  if (window === window.top) {
-    var error = new Error('connectToParent() must be called within an iframe');
-    error.code = ERR_NOT_IN_IFRAME;
-    throw error;
-  }
-
-  var destroy;
-  var connectionDestructionPromise = new DestructionPromise(function (resolveConnectionDestructionPromise) {
-    destroy = resolveConnectionDestructionPromise;
-  });
-  var child = window;
-  var parent = child.parent;
-  var promise = new Penpal.Promise(function (resolveConnectionPromise, reject) {
-    var connectionTimeoutId;
-
-    if (timeout !== undefined) {
-      connectionTimeoutId = setTimeout(function () {
-        var error = new Error("Connection to parent timed out after ".concat(timeout, "ms"));
-        error.code = ERR_CONNECTION_TIMEOUT;
-        reject(error);
-        destroy();
-      }, timeout);
-    }
-
-    var handleMessageEvent = function handleMessageEvent(event) {
-      if ((parentOrigin === '*' || parentOrigin === event.origin) && event.source === parent && event.data.penpal === HANDSHAKE_REPLY) {
-        log('Child: Received handshake reply');
-        child.removeEventListener(MESSAGE, handleMessageEvent);
-        var info = {
-          localName: 'Child',
-          local: child,
-          remote: parent,
-          remoteOrigin: event.origin
-        };
-        var callSender = {};
-        connectCallReceiver(info, methods, connectionDestructionPromise);
-        connectCallSender(callSender, info, event.data.methodNames, destroy, connectionDestructionPromise);
-        clearTimeout(connectionTimeoutId);
-        resolveConnectionPromise(callSender);
-      }
-    };
-
-    child.addEventListener(MESSAGE, handleMessageEvent);
-    connectionDestructionPromise.then(function () {
-      child.removeEventListener(MESSAGE, handleMessageEvent);
-      var error = new Error('Connection destroyed');
-      error.code = ERR_CONNECTION_DESTROYED;
-      reject(error);
-    });
-    log('Child: Sending handshake');
-    parent.postMessage({
-      penpal: HANDSHAKE,
-      methodNames: Object.keys(methods)
-    }, parentOrigin);
-  });
-  return {
-    promise: promise,
-    destroy: destroy
-  };
-};
-
-var _default = Penpal;
-exports["default"] = _default;
 
 /***/ }),
 
@@ -10836,7 +8910,7 @@ var __webpack_exports__ = {};
   !*** ./scripts/entries/elementor.ts ***!
   \**************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _elementor_elementoWidget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elementor/elementoWidget */ "./scripts/elementor/elementoWidget.ts");
+/* harmony import */ var _elementor_elementorWidget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elementor/elementorWidget */ "./scripts/elementor/elementorWidget.ts");
 /* harmony import */ var _elementor_FormWidget_registerFormWidget__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../elementor/FormWidget/registerFormWidget */ "./scripts/elementor/FormWidget/registerFormWidget.ts");
 /* harmony import */ var _utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/backgroundAppUtils */ "./scripts/utils/backgroundAppUtils.ts");
 /* harmony import */ var _elementor_MeetingWidget_registerMeetingWidget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../elementor/MeetingWidget/registerMeetingWidget */ "./scripts/elementor/MeetingWidget/registerMeetingWidget.ts");
@@ -10848,7 +8922,7 @@ window.addEventListener('elementor/init', function () {
   (0,_utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_2__.initBackgroundApp)(function () {
     var FormWidget;
     var MeetingsWidget;
-    var leadinSelectFormItemView = (0,_elementor_elementoWidget__WEBPACK_IMPORTED_MODULE_0__["default"])( //@ts-expect-error global
+    var leadinSelectFormItemView = (0,_elementor_elementorWidget__WEBPACK_IMPORTED_MODULE_0__["default"])( //@ts-expect-error global
     window.elementor, {
       widgetName: 'hubspot-form',
       controlSelector: '.elementor-hbspt-form-selector',
@@ -10859,7 +8933,7 @@ window.addEventListener('elementor/init', function () {
     }, function () {
       FormWidget.done();
     });
-    var leadinSelectMeetingItemView = (0,_elementor_elementoWidget__WEBPACK_IMPORTED_MODULE_0__["default"])( //@ts-expect-error global
+    var leadinSelectMeetingItemView = (0,_elementor_elementorWidget__WEBPACK_IMPORTED_MODULE_0__["default"])( //@ts-expect-error global
     window.elementor, {
       widgetName: 'hubspot-meeting',
       controlSelector: '.elementor-hbspt-meeting-selector',

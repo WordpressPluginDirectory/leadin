@@ -9,7 +9,7 @@ interface Routes {
 interface LeadinConfig {
   accountName: string;
   adminUrl: string;
-  backgroundIframeUrl: string;
+  activationTime: string;
   connectionStatus?: 'Connected' | 'NotConnected';
   deviceId: string;
   didDisconnect: '1' | '0';
@@ -19,13 +19,13 @@ interface LeadinConfig {
   formsScriptPayload: string;
   hublet: string;
   hubspotBaseUrl: string;
+  hubspotNonce: string;
   iframeUrl: string;
   impactLink?: string;
   leadinPluginVersion: string;
-  leadinQueryParamsKeys: string[];
+  leadinQueryParams: KeyStringObject;
   loginUrl: string;
   locale: string;
-  oauth?: 'true';
   phpVersion: string;
   pluginPath: string;
   plugins: KeyStringObject;
@@ -36,8 +36,7 @@ interface LeadinConfig {
   restNonce: string;
   restUrl: string;
   reviewSkippedDate: string;
-  routeNonce: string;
-  routes: Routes;
+  refreshToken?: string;
   theme: string;
   trackConsent?: boolean;
   wpVersion: string;
@@ -46,7 +45,7 @@ interface LeadinConfig {
 const {
   accountName,
   adminUrl,
-  backgroundIframeUrl,
+  activationTime,
   connectionStatus,
   deviceId,
   didDisconnect,
@@ -56,13 +55,13 @@ const {
   formsScriptPayload,
   hublet,
   hubspotBaseUrl,
+  hubspotNonce,
   iframeUrl,
   impactLink,
   leadinPluginVersion,
-  leadinQueryParamsKeys,
+  leadinQueryParams,
   locale,
   loginUrl,
-  oauth,
   phpVersion,
   pluginPath,
   plugins,
@@ -72,9 +71,8 @@ const {
   redirectNonce,
   restNonce,
   restUrl,
+  refreshToken,
   reviewSkippedDate,
-  routeNonce,
-  routes,
   theme,
   trackConsent,
   wpVersion,
@@ -84,7 +82,7 @@ LeadinConfig = window.leadinConfig;
 export {
   accountName,
   adminUrl,
-  backgroundIframeUrl,
+  activationTime,
   connectionStatus,
   deviceId,
   didDisconnect,
@@ -94,13 +92,13 @@ export {
   formsScriptPayload,
   hublet,
   hubspotBaseUrl,
+  hubspotNonce,
   iframeUrl,
   impactLink,
   leadinPluginVersion,
-  leadinQueryParamsKeys,
+  leadinQueryParams,
   loginUrl,
   locale,
-  oauth,
   phpVersion,
   pluginPath,
   plugins,
@@ -110,9 +108,8 @@ export {
   redirectNonce,
   restNonce,
   restUrl,
+  refreshToken,
   reviewSkippedDate,
-  routeNonce,
-  routes,
   theme,
   trackConsent,
   wpVersion,

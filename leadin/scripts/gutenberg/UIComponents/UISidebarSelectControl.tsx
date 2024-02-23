@@ -2,7 +2,11 @@ import React from 'react';
 
 import { SelectControl } from '@wordpress/components';
 import withMetaData from '../../utils/withMetaData';
-import { monitorSidebarMetaChange } from '../../api/hubspotPluginApi';
+import {
+  useBackgroundAppContext,
+  usePostBackgroundMessage,
+} from '../../iframe/useBackgroundApp';
+import { ProxyMessages } from '../../iframe/integratedMessages';
 
 interface IOption {
   label: string;
@@ -20,6 +24,10 @@ interface IUISidebarSelectControlProps {
 }
 
 const UISidebarSelectControl = (props: IUISidebarSelectControlProps) => {
+  const isBackgroundAppReady = useBackgroundAppContext();
+
+  const monitorSidebarMetaChange = usePostBackgroundMessage();
+
   return (
     <SelectControl
       value={props.metaValue}
@@ -27,7 +35,13 @@ const UISidebarSelectControl = (props: IUISidebarSelectControlProps) => {
         if (props.setMetaValue) {
           props.setMetaValue(content);
         }
-        monitorSidebarMetaChange(props.metaKey);
+        isBackgroundAppReady &&
+          monitorSidebarMetaChange({
+            key: ProxyMessages.TrackSidebarMetaChange,
+            payload: {
+              metaKey: props.metaKey,
+            },
+          });
       }}
       {...props}
     />

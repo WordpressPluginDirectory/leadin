@@ -195,21 +195,25 @@ class LeadinAdmin {
 	 */
 	public function build_menu() {
 		if ( Connection::is_connected() ) {
-				add_menu_page( __( 'HubSpot', 'leadin' ), __( 'HubSpot', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::ROOT, array( $this, 'build_app' ), 'dashicons-sprocket', '25.100713' );
-				add_submenu_page( MenuConstants::ROOT, __( 'User Guide', 'leadin' ), __( 'User Guide', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::USER_GUIDE, array( $this, 'build_app' ) );
-				add_submenu_page( MenuConstants::ROOT, __( 'Contacts', 'leadin' ), __( 'Contacts', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::CONTACTS, array( $this, 'build_app' ) );
+				add_menu_page( __( 'HubSpot', 'leadin' ), __( 'HubSpot', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::ROOT, array( $this, 'build_integrated_app' ), 'dashicons-sprocket', '25.100713' );
 
-				add_submenu_page( MenuConstants::ROOT, __( 'Forms', 'leadin' ), __( 'Forms', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::FORMS, array( $this, 'build_form_app' ) );
-				add_submenu_page( MenuConstants::ROOT, __( 'Live Chat', 'leadin' ), __( 'Live Chat', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::CHATFLOWS, array( $this, 'build_livechat_app' ) );
-				add_submenu_page( MenuConstants::ROOT, __( 'Email', 'leadin' ), __( 'Email', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::EMAIL, array( $this, 'build_app' ) );
-				add_submenu_page( MenuConstants::ROOT, __( 'Settings', 'leadin' ), __( 'Settings', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::SETTINGS, array( $this, 'build_app' ) );
+				add_submenu_page( MenuConstants::ROOT, __( 'User Guide', 'leadin' ), __( 'User Guide', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::USER_GUIDE, array( $this, 'build_integrated_app' ) );
+				add_submenu_page( MenuConstants::ROOT, __( 'Forms', 'leadin' ), __( 'Forms', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::FORMS, array( $this, 'build_integrated_app' ) );
+				add_submenu_page( MenuConstants::ROOT, __( 'Live Chat', 'leadin' ), __( 'Live Chat', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::CHATFLOWS, array( $this, 'build_integrated_app' ) );
+
+				add_submenu_page( MenuConstants::ROOT, __( 'Contacts', 'leadin' ), self::make_external_link( Links::get_iframe_src( MenuConstants::CONTACTS ), __( 'Contacts', 'leadin' ), 'leadin_contacts_link' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::CONTACTS, array( $this, 'build_app' ) );
+				add_submenu_page( MenuConstants::ROOT, __( 'Email', 'leadin' ), self::make_external_link( Links::get_iframe_src( MenuConstants::EMAIL ), __( 'Email', 'leadin' ), 'leadin_email_link' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::EMAIL, array( $this, 'build_app' ) );
 				add_submenu_page( MenuConstants::ROOT, __( 'Lists', 'leadin' ), self::make_external_link( Links::get_iframe_src( MenuConstants::LISTS ), __( 'Lists', 'leadin' ), 'leadin_lists_link' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::LISTS, array( $this, 'build_app' ) );
 				add_submenu_page( MenuConstants::ROOT, __( 'Reporting', 'leadin' ), self::make_external_link( Links::get_iframe_src( MenuConstants::REPORTING ), __( 'Reporting', 'leadin' ), 'leadin_reporting_link' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::REPORTING, array( $this, 'build_app' ) );
+
+				add_submenu_page( MenuConstants::ROOT, __( 'Settings', 'leadin' ), __( 'Settings', 'leadin' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::SETTINGS, array( $this, 'build_integrated_app' ) );
+
 				add_submenu_page( MenuConstants::ROOT, __( 'Upgrade', 'leadin' ), self::make_external_link( Links::get_iframe_src( MenuConstants::PRICING ), __( 'Upgrade', 'leadin' ), 'leadin_pricing_link' ), Filters::apply_view_plugin_menu_capability_filters(), MenuConstants::PRICING, array( $this, 'build_app' ) );
+
 				remove_submenu_page( MenuConstants::ROOT, MenuConstants::ROOT );
 		} else {
 			$notification_icon = ' <span class="update-plugins count-1"><span class="plugin-count">!</span></span>';
-			add_menu_page( __( 'HubSpot', 'leadin' ), __( 'HubSpot', 'leadin' ) . $notification_icon, Filters::apply_connect_plugin_capability_filters(), MenuConstants::ROOT, array( $this, 'build_app' ), 'dashicons-sprocket', '25.100713' );
+			add_menu_page( __( 'HubSpot', 'leadin' ), __( 'HubSpot', 'leadin' ) . $notification_icon, Filters::apply_connect_plugin_capability_filters(), MenuConstants::ROOT, array( $this, 'build_integrated_app' ), 'dashicons-sprocket', '25.100713' );
 		}
 	}
 
@@ -236,16 +240,8 @@ class LeadinAdmin {
 	/**
 	 * Renders the integrated forms app.
 	 */
-	public function build_form_app() {
-		AssetsManager::enqueue_form_app_assets();
-		self::render_app();
-	}
-
-	/**
-	 * Renders the integrated live chat app.
-	 */
-	public function build_livechat_app() {
-		AssetsManager::enqueue_livechat_app_assets();
+	public function build_integrated_app() {
+		AssetsManager::enqueue_integrated_app_assets();
 		self::render_app();
 	}
 

@@ -1,19 +1,17 @@
 import React from 'react';
 import UIAlert from '../UIComponents/UIAlert';
 import UIButton from '../UIComponents/UIButton';
-import { leadinConnectCalendar } from '../../api/hubspotPluginApi';
-import { portalId, hubspotBaseUrl } from '../../constants/leadinConfig';
 import { CURRENT_USER_CALENDAR_MISSING } from './constants';
 import { __ } from '@wordpress/i18n';
 
 interface IMeetingWarningProps {
-  triggerReload: Function;
   status: string;
+  onConnectCalendar: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function MeetingWarning({
-  triggerReload,
   status,
+  onConnectCalendar,
 }: IMeetingWarningProps) {
   const isMeetingOwner = status === CURRENT_USER_CALENDAR_MISSING;
   const titleText = isMeetingOwner
@@ -34,9 +32,7 @@ export default function MeetingWarning({
         <UIButton
           use="tertiary"
           id="meetings-connect-calendar"
-          onClick={() =>
-            leadinConnectCalendar({ hubspotBaseUrl, portalId, triggerReload })
-          }
+          onClick={onConnectCalendar}
         >
           {__('Connect calendar', 'leadin')}
         </UIButton>

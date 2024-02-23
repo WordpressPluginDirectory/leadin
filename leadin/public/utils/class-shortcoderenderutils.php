@@ -107,7 +107,7 @@ class ShortcodeRenderUtils {
 		</a>
 		</span>
 		<' . 'script charset="utf-8" src="//js.hubspot.com/cta/current.js"></script>
-		<script type="text/javascript">
+		<script>
 		hbspt.cta.load(' . $portal_id . ', \'' . $id . '\', {});
 		</script>
 		</span>

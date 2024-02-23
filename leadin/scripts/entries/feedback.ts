@@ -3,8 +3,12 @@ import Raven from '../lib/Raven';
 import { domElements } from '../constants/selectors';
 import ThickBoxModal from '../feedback/ThickBoxModal';
 import { submitFeedbackForm } from '../feedback/feedbackFormApi';
-import { initBackgroundApp } from '../utils/backgroundAppUtils';
-import { monitorPluginDeactivation } from '../api/hubspotPluginApi';
+import {
+  getOrCreateBackgroundApp,
+  initBackgroundApp,
+} from '../utils/backgroundAppUtils';
+import { refreshToken } from '../constants/leadinConfig';
+import { ProxyMessages } from '../iframe/integratedMessages';
 
 function deactivatePlugin() {
   const href = $(domElements.deactivatePluginButton).attr('href');
@@ -26,10 +30,14 @@ function submitAndDeactivate(e: Event) {
 
   submitFeedbackForm(domElements.deactivateFeedbackForm)
     .then(() => {
-      if (feedback) {
-        monitorPluginDeactivation(
-          feedback.value.trim().replace(/[\s']+/g, '_')
-        );
+      if (feedback && refreshToken) {
+        const embedder = getOrCreateBackgroundApp(refreshToken);
+        embedder.postMessage({
+          key: ProxyMessages.TrackPluginDeactivation,
+          payload: {
+            type: feedback.value.trim().replace(/[\s']+/g, '_'),
+          },
+        });
       }
     })
     .catch((err: Error) => {

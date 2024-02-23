@@ -72,22 +72,6 @@ class Routing {
 	}
 
 	/**
-	 * Reads query parameter from the frontend to report that the OAuth access token
-	 * is expired/malformed. Used to determine if we need to ask the user to re-authorise.
-	 *
-	 * @return bool True if the `leadin_expired` query parameter is set from the frontend
-	 */
-	public static function is_oauth_expired() {
-		$is_expired = QueryParameters::get_param(
-			self::EXPIRED,
-			self::REDIRECT_NONCE,
-			self::EXPIRED
-		);
-
-		return null !== $is_expired;
-	}
-
-	/**
 	 * Reads query param to see if request has review request query params
 	 *
 	 * @return bool True if the `leadin_review` query parameter is not empty

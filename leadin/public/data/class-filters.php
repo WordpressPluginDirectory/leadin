@@ -46,9 +46,11 @@ class Filters {
 
 	/**
 	 * Apply leadin_base_url filter.
+	 *
+	 * @param boolean $cross_hublet if false it's use non-hublet specific prefix. For example, "app" instead of "app-eu1".
 	 */
-	public static function apply_base_url_filters() {
-		$prefix = self::apply_app_prefix_filters();
+	public static function apply_base_url_filters( $cross_hublet = true ) {
+		$prefix = $cross_hublet ? self::apply_app_prefix_filters() : apply_filters( LEADIN_PREFIX . '_app_prefix', 'app' );
 		$domain = self::apply_hubspot_domain_filters();
 		return apply_filters( LEADIN_PREFIX . '_base_url', "https://$prefix.$domain" );
 	}

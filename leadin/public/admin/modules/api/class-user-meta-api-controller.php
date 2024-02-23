@@ -41,9 +41,9 @@ class User_Meta_Api_Controller extends Base_Api_Controller {
 	 */
 	public function track_consent( $request ) {
 		$data = json_decode( $request->get_body(), true );
-		if ( ! empty( $data['canTrack'] ) ) {
+		if ( array_key_exists( 'canTrack', $data ) ) {
 			$consent = $data['canTrack'];
-			User_Metadata::set_track_consent( $consent );
+			User_Metadata::set_track_consent( $consent ? 'true' : 'false' );
 		}
 		return new \WP_REST_Response(
 			json_encode( User_Metadata::get_track_consent(), true ),

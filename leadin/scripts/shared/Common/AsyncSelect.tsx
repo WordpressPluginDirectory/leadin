@@ -7,6 +7,7 @@ import {
   OBSIDIAN,
 } from '../UIComponents/colors';
 import UISpinner from '../UIComponents/UISpinner';
+import LoadState, { LoadStateType } from '../enums/loadState';
 
 const Container = styled.div`
   color: ${OBSIDIAN};
@@ -195,7 +196,9 @@ export default function AsyncSelect({
   const inputEl = useRef<HTMLInputElement>(null);
   const inputShadowEl = useRef<HTMLDivElement>(null);
   const [isFocused, setFocus] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [loadState, setLoadState] = useState<LoadStateType>(
+    LoadState.NotLoaded
+  );
   const [localValue, setLocalValue] = useState('');
   const [options, setOptions] = useState(defaultOptions);
 
@@ -204,14 +207,13 @@ export default function AsyncSelect({
   }px`;
 
   useEffect(() => {
-    if (loadOptions) {
-      setLoading(true);
-      loadOptions(localValue, (result: any) => {
+    if (loadOptions && loadState === LoadState.NotLoaded) {
+      loadOptions('', (result: any) => {
         setOptions(result);
-        setLoading(false);
+        setLoadState(LoadState.Idle);
       });
     }
-  }, [localValue, loadOptions]);
+  }, [loadOptions, loadState]);
 
   const renderItems = (items: any[] = [], parentKey?: number) => {
     return items.map((item, index) => {
@@ -280,6 +282,12 @@ export default function AsyncSelect({
               }}
               onChange={e => {
                 setLocalValue(e.target.value);
+                setLoadState(LoadState.Loading);
+                loadOptions &&
+                  loadOptions(e.target.value, (result: any) => {
+                    setOptions(result);
+                    setLoadState(LoadState.Idle);
+                  });
               }}
               value={localValue}
               width={inputSize}
@@ -289,7 +297,7 @@ export default function AsyncSelect({
           </InputContainer>
         </ValueContainer>
         <IndicatorContainer>
-          {isLoading && <UISpinner />}
+          {loadState === LoadState.Loading && <UISpinner />}
           <DropdownIndicator />
         </IndicatorContainer>
       </ControlContainer>

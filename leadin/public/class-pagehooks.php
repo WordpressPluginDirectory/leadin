@@ -102,7 +102,7 @@ class PageHooks {
 
 			?>
 			<!-- DO NOT COPY THIS SNIPPET! Start of Page Analytics Tracking for HubSpot WordPress plugin v<?php echo esc_html( LEADIN_PLUGIN_VERSION ); ?>-->
-			<script type="text/javascript" class="hsq-set-content-id" data-content-id="<?php echo esc_html( $content_type ); ?>">
+			<script class="hsq-set-content-id" data-content-id="<?php echo esc_html( $content_type ); ?>">
 				var _hsq = _hsq || [];
 				_hsq.push(["setContentType", "<?php echo esc_html( $content_type ); ?>"]);
 			</script>

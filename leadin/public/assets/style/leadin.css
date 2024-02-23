@@ -209,25 +209,23 @@
   margin-right: 8px;
 }
 
-#toplevel_page_leadin > ul a {
-  display: none;
-}
-
-#toplevel_page_leadin > ul a.visible {
-  display: inherit;
-}
-
 #toplevel_page_leadin a[href*='leadin_settings'],
 #toplevel_page_leadin a[href*='leadin_user_guide'],
+#toplevel_page_leadin a[href*='leadin_forms'],
+#toplevel_page_leadin a[href*='leadin_chatflows'],
 #toplevel_page_leadin a.leadin_lists_link,
 #toplevel_page_leadin a.leadin_reporting_link,
+#toplevel_page_leadin a.leadin_contacts_link,
+#toplevel_page_leadin a.leadin_email_link,
 #toplevel_page_leadin a.leadin_pricing_link {
   display: inherit;
 }
 
 #toplevel_page_leadin a[href*='leadin_lists'],
 #toplevel_page_leadin a[href*='leadin_reporting'],
-#toplevel_page_leadin a[href*='leadin_pricing'] {
+#toplevel_page_leadin a[href*='leadin_pricing'],
+#toplevel_page_leadin a[href*='leadin_contacts'],
+#toplevel_page_leadin a[href*='leadin_email'] {
   display: none !important;
 }
 

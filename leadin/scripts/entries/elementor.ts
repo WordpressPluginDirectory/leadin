@@ -1,4 +1,4 @@
-import elementorWidget from '../elementor/elementoWidget';
+import elementorWidget from '../elementor/elementorWidget';
 import registerFormWidget from '../elementor/FormWidget/registerFormWidget';
 import { initBackgroundApp } from '../utils/backgroundAppUtils';
 import registerMeetingsWidget from '../elementor/MeetingWidget/registerMeetingWidget';

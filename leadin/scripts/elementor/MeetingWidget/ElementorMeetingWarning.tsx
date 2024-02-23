@@ -1,6 +1,4 @@
 import React, { Fragment } from 'react';
-import { portalId, hubspotBaseUrl } from '../../constants/leadinConfig';
-import { leadinConnectCalendar } from '../../api/hubspotPluginApi';
 import { CURRENT_USER_CALENDAR_MISSING } from '../../shared/Meeting/constants';
 import ElementorButton from '../Common/ElementorButton';
 import ElementorBanner from '../Common/ElementorBanner';
@@ -12,12 +10,12 @@ const Container = styled.div`
 `;
 
 interface IMeetingWarningPros {
-  triggerReload: Function;
+  onConnectCalendar: React.MouseEventHandler<HTMLButtonElement>;
   status: string;
 }
 
 export default function MeetingWarning({
-  triggerReload,
+  onConnectCalendar,
   status,
 }: IMeetingWarningPros) {
   const isMeetingOwner = status === CURRENT_USER_CALENDAR_MISSING;
@@ -45,9 +43,7 @@ export default function MeetingWarning({
       {isMeetingOwner && (
         <ElementorButton
           id="meetings-connect-calendar"
-          onClick={() =>
-            leadinConnectCalendar({ hubspotBaseUrl, portalId, triggerReload })
-          }
+          onClick={onConnectCalendar}
         >
           {__('Connect calendar', 'leadin')}
         </ElementorButton>

@@ -7,6 +7,9 @@ import UISidebarSelectControl from '../UIComponents/UISidebarSelectControl';
 import SidebarSprocketIcon from '../Common/SidebarSprocketIcon';
 import styled from 'styled-components';
 import { __ } from '@wordpress/i18n';
+import { BackgroudAppContext } from '../../iframe/useBackgroundApp';
+import { refreshToken } from '../../constants/leadinConfig';
+import { getOrCreateBackgroundApp } from '../../utils/backgroundAppUtils';
 
 export function registerHubspotSidebar() {
   const ContentTypeLabelStyle = styled.div`
@@ -36,22 +39,29 @@ export function registerHubspotSidebar() {
         }
       >
         <PanelBody title={__('HubSpot Analytics', 'leadin')} initialOpen={true}>
-          <UISidebarSelectControl
-            metaKey="content-type"
-            className="select-content-type"
-            label={ContentTypeLabel}
-            options={[
-              { label: __('Detect Automatically', 'leadin'), value: '' },
-              { label: __('Blog Post', 'leadin'), value: 'blog-post' },
-              {
-                label: __('Knowledge Article', 'leadin'),
-                value: 'knowledge-article',
-              },
-              { label: __('Landing Page', 'leadin'), value: 'landing-page' },
-              { label: __('Listing Page', 'leadin'), value: 'listing-page' },
-              { label: __('Standard Page', 'leadin'), value: 'standard-page' },
-            ]}
-          />
+          <BackgroudAppContext.Provider
+            value={refreshToken && getOrCreateBackgroundApp(refreshToken)}
+          >
+            <UISidebarSelectControl
+              metaKey="content-type"
+              className="select-content-type"
+              label={ContentTypeLabel}
+              options={[
+                { label: __('Detect Automatically', 'leadin'), value: '' },
+                { label: __('Blog Post', 'leadin'), value: 'blog-post' },
+                {
+                  label: __('Knowledge Article', 'leadin'),
+                  value: 'knowledge-article',
+                },
+                { label: __('Landing Page', 'leadin'), value: 'landing-page' },
+                { label: __('Listing Page', 'leadin'), value: 'listing-page' },
+                {
+                  label: __('Standard Page', 'leadin'),
+                  value: 'standard-page',
+                },
+              ]}
+            />
+          </BackgroudAppContext.Provider>
         </PanelBody>
       </PluginSidebar>
     ) : null;

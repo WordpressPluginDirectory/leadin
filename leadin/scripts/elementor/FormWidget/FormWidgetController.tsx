@@ -2,12 +2,8 @@ import React, { Fragment } from 'react';
 import { connectionStatus } from '../../constants/leadinConfig';
 import ErrorHandler from '../../shared/Common/ErrorHandler';
 import FormEdit from '../../shared/Form/FormEdit';
+import ConnectionStatus from '../../shared/enums/connectionStatus';
 import { IFormAttributes } from './registerFormWidget';
-
-const ConnectionStatus = {
-  Connected: 'Connected',
-  NotConnected: 'NotConnected',
-};
 
 export default function FormWidgetController(
   attributes: IFormAttributes,

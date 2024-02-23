@@ -1,3 +1,11 @@
+= 11.0.3 (2024-02-20) =
+* Remove unnecessary "type" attribute from javascript resources
+
+= 11.0.0 (2024-02-13) =
+* Fix locale bug
+* Integrated Plugin App embedder
+* Remove 3rd party cookies dependency
+
 = 10.2.23 (2024-01-24) =
 * Update link of the review survey
 
@@ -299,11 +307,4 @@
 
 = 8.0.1 (2021-04-22) =
 * Fix undefined website name in the authorisation screen
-
-= 8.0.0 (2021-04-22) =
-* Created OAuth2 flows to authorize the plugin.
-* Enabled OAuth2 authorization flows for users with third party cookies disabled.
-
-= 7.52.168 (2021-04-12) =
-* Generates an array with the query parameters needed for the signup instead of a URL
 
