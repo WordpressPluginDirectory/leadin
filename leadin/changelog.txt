@@ -1,3 +1,6 @@
+= 11.0.4 (2024-02-26) =
+* Adds version info to leadin config
+
 = 11.0.3 (2024-02-20) =
 * Remove unnecessary "type" attribute from javascript resources
 
@@ -304,7 +307,4 @@
 = 8.0.140 (2021-05-17) =
 * Set required "hublet" property when connecting the plugin
 * Add plugin's version to error monitoring
-
-= 8.0.1 (2021-04-22) =
-* Fix undefined website name in the authorisation screen
 

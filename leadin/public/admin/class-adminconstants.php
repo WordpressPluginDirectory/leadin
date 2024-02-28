@@ -141,7 +141,7 @@ class AdminConstants {
 			'restUrl'             => get_rest_url(),
 			'restNonce'           => wp_create_nonce( 'wp_rest' ),
 			'redirectNonce'       => wp_create_nonce( Routing::REDIRECT_NONCE ),
-			'phpVersion'          => Versions::get_wp_version(),
+			'phpVersion'          => Versions::get_php_version(),
 			'pluginPath'          => constant( 'LEADIN_PATH' ),
 			'plugins'             => get_plugins(),
 			'portalId'            => Portal_Options::get_portal_id(),

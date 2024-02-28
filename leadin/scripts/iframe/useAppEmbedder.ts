@@ -14,6 +14,9 @@ import {
   refreshToken,
   impactLink,
   theme,
+  leadinPluginVersion,
+  phpVersion,
+  wpVersion,
 } from '../constants/leadinConfig';
 import { App, AppIframe } from './constants';
 import { messageMiddleware } from './messageMiddleware';
@@ -31,15 +34,19 @@ const getLeadinConfig = () => {
     );
   return {
     accountName,
+    admin: leadinQueryParams.admin,
     adminUrl,
     company: leadinQueryParams.company,
     deviceId,
     email: leadinQueryParams.email,
     firstName: leadinQueryParams.firstName,
     irclickid: leadinQueryParams.irclickid,
+    justConnected: leadinQueryParams.justConnected,
     lastName: leadinQueryParams.lastName,
+    leadinPluginVersion,
     mpid: leadinQueryParams.mpid,
     nonce: leadinQueryParams.nonce,
+    phpVersion,
     plugins,
     portalDomain,
     portalEmail,
@@ -48,8 +55,7 @@ const getLeadinConfig = () => {
     theme,
     trackConsent: leadinQueryParams.trackConsent,
     websiteName: leadinQueryParams.websiteName,
-    admin: leadinQueryParams.admin,
-    justConnected: leadinQueryParams.justConnected,
+    wpVersion,
     ...utm_query_params,
   };
 };

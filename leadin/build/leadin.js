@@ -702,15 +702,19 @@ var getLeadinConfig = function getLeadinConfig() {
   }, {});
   return _objectSpread({
     accountName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.accountName,
+    admin: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.admin,
     adminUrl: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.adminUrl,
     company: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.company,
     deviceId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.deviceId,
     email: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.email,
     firstName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.firstName,
     irclickid: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.irclickid,
+    justConnected: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.justConnected,
     lastName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.lastName,
+    leadinPluginVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinPluginVersion,
     mpid: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.mpid,
     nonce: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.nonce,
+    phpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.phpVersion,
     plugins: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.plugins,
     portalDomain: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalDomain,
     portalEmail: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalEmail,
@@ -719,8 +723,7 @@ var getLeadinConfig = function getLeadinConfig() {
     theme: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.theme,
     trackConsent: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.trackConsent,
     websiteName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.websiteName,
-    admin: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.admin,
-    justConnected: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.justConnected
+    wpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.wpVersion
   }, utm_query_params);
 };
 
