@@ -459,7 +459,8 @@ var PluginMessages = {
   BusinessUnitChangeError: 'BUSINESS_UNIT_CHANGE_ERROR',
   SkipReviewRequest: 'SKIP_REVIEW_REQUEST',
   SkipReviewResponse: 'SKIP_REVIEW_RESPONSE',
-  SkipReviewError: 'SKIP_REVIEW_ERROR'
+  SkipReviewError: 'SKIP_REVIEW_ERROR',
+  RemoveParentQueryParam: 'REMOVE_PARENT_QUERY_PARAM'
 };
 
 /***/ }),
@@ -510,6 +511,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../iframe/integratedMessages */ "./scripts/iframe/integratedMessages/index.ts");
 /* harmony import */ var _api_wordpressApiClient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/wordpressApiClient */ "./scripts/api/wordpressApiClient.ts");
+/* harmony import */ var _utils_queryParams__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/queryParams */ "./scripts/utils/queryParams.ts");
+
 
 
 var messageMapper = new Map([[_iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.TrackConsent, function (message) {
@@ -575,6 +578,8 @@ var messageMapper = new Map([[_iframe_integratedMessages__WEBPACK_IMPORTED_MODUL
       payload: payload
     });
   });
+}], [_iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_0__.PluginMessages.RemoveParentQueryParam, function (message) {
+  (0,_utils_queryParams__WEBPACK_IMPORTED_MODULE_2__.removeQueryParamFromLocation)(message.payload);
 }]]);
 var messageMiddleware = function messageMiddleware(embedder) {
   return function (message) {
@@ -946,12 +951,18 @@ var resizeWindow = function resizeWindow() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "addQueryObjectToUrl": () => (/* binding */ addQueryObjectToUrl)
+/* harmony export */   "addQueryObjectToUrl": () => (/* binding */ addQueryObjectToUrl),
+/* harmony export */   "removeQueryParamFromLocation": () => (/* binding */ removeQueryParamFromLocation)
 /* harmony export */ });
 function addQueryObjectToUrl(urlObject, queryParams) {
   Object.keys(queryParams).forEach(function (key) {
     urlObject.searchParams.append(key, queryParams[key]);
   });
+}
+function removeQueryParamFromLocation(key) {
+  var location = new URL(window.location.href);
+  location.searchParams["delete"](key);
+  window.history.replaceState(null, '', location.href);
 }
 
 /***/ }),

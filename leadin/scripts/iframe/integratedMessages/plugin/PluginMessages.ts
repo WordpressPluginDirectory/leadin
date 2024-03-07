@@ -15,6 +15,7 @@ export const PluginMessages = {
   SkipReviewRequest: 'SKIP_REVIEW_REQUEST',
   SkipReviewResponse: 'SKIP_REVIEW_RESPONSE',
   SkipReviewError: 'SKIP_REVIEW_ERROR',
+  RemoveParentQueryParam: 'REMOVE_PARENT_QUERY_PARAM',
 } as const;
 
 export type PluginMessageType = typeof PluginMessages[keyof typeof PluginMessages];

@@ -226,7 +226,8 @@ var PluginMessages = {
   BusinessUnitChangeError: 'BUSINESS_UNIT_CHANGE_ERROR',
   SkipReviewRequest: 'SKIP_REVIEW_REQUEST',
   SkipReviewResponse: 'SKIP_REVIEW_RESPONSE',
-  SkipReviewError: 'SKIP_REVIEW_ERROR'
+  SkipReviewError: 'SKIP_REVIEW_ERROR',
+  RemoveParentQueryParam: 'REMOVE_PARENT_QUERY_PARAM'
 };
 
 /***/ }),
@@ -3656,17 +3657,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var REVIEW_BANNER_INTRO_PERIOD_DAYS = 15;
+
+var userIsAfterIntroductoryPeriod = function userIsAfterIntroductoryPeriod() {
+  var activationDate = new Date(+_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__.activationTime * 1000);
+  var currentDate = new Date();
+  var timeElapsed = new Date(currentDate.getTime() - activationDate.getTime());
+  return timeElapsed.getUTCDate() - 1 >= REVIEW_BANNER_INTRO_PERIOD_DAYS;
+};
 /**
  * Adds some methods to window when review banner is
  * displayed to monitor events
  */
+
 
 function initMonitorReviewBanner() {
   if (_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__.refreshToken) {
     var embedder = (0,_utils_backgroundAppUtils__WEBPACK_IMPORTED_MODULE_1__.getOrCreateBackgroundApp)(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_3__.refreshToken);
     var container = jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_2__.domElements.reviewBannerContainer);
 
-    if (container) {
+    if (container && userIsAfterIntroductoryPeriod()) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()(_constants_selectors__WEBPACK_IMPORTED_MODULE_2__.domElements.reviewBannerLeaveReviewLink).off('click').on('click', function () {
         embedder.postMessage({
           key: _iframe_integratedMessages__WEBPACK_IMPORTED_MODULE_4__.ProxyMessages.TrackReviewBannerInteraction

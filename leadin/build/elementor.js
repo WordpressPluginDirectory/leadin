@@ -1153,7 +1153,8 @@ var PluginMessages = {
   BusinessUnitChangeError: 'BUSINESS_UNIT_CHANGE_ERROR',
   SkipReviewRequest: 'SKIP_REVIEW_REQUEST',
   SkipReviewResponse: 'SKIP_REVIEW_RESPONSE',
-  SkipReviewError: 'SKIP_REVIEW_ERROR'
+  SkipReviewError: 'SKIP_REVIEW_ERROR',
+  RemoveParentQueryParam: 'REMOVE_PARENT_QUERY_PARAM'
 };
 
 /***/ }),

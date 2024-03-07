@@ -7,6 +7,7 @@ import {
   setBusinessUnitId,
   skipReview,
 } from '../api/wordpressApiClient';
+import { removeQueryParamFromLocation } from '../utils/queryParams';
 
 export type Message = { key: MessageType; payload?: any };
 
@@ -105,6 +106,12 @@ const messageMapper: Map<MessageType, Function> = new Map([
             payload,
           });
         });
+    },
+  ],
+  [
+    PluginMessages.RemoveParentQueryParam,
+    (message: Message) => {
+      removeQueryParamFromLocation(message.payload);
     },
   ],
 ]);
