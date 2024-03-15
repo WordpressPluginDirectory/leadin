@@ -204,7 +204,7 @@ function ConnectPluginBanner() {
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ElementorBanner__WEBPACK_IMPORTED_MODULE_1__["default"], {
     children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("b", {
       dangerouslySetInnerHTML: {
-        __html: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('The HubSpot plugin isn’t connected right now. To use HubSpot tools on your WordPress site, %1$sconnect the plugin now%2$s.').replace('%1$s', '<a class="leadin-banner__link" href="admin.php?page=leadin&bannerClick=true">').replace('%2$s', '</a>')
+        __html: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("The HubSpot plugin isn't connected right now. To use HubSpot tools on your WordPress site, %1$sconnect the plugin now%2$s.").replace('%1$s', '<a class="leadin-banner__link" href="admin.php?page=leadin&bannerClick=true">').replace('%2$s', '</a>')
       }
     })
   });

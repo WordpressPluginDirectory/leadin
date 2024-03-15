@@ -852,10 +852,13 @@ function registerHubspotSidebar() {
       postType: data && data.getCurrentPostType() && data.getEditedPostAttribute('meta')
     };
   })(LeadinPluginSidebar);
-  (0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__.registerPlugin)('leadin', {
-    render: LeadinPluginSidebarWrapper,
-    icon: _Common_SidebarSprocketIcon__WEBPACK_IMPORTED_MODULE_6__["default"]
-  });
+
+  if (_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__) {
+    _wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__.registerPlugin('leadin', {
+      render: LeadinPluginSidebarWrapper,
+      icon: _Common_SidebarSprocketIcon__WEBPACK_IMPORTED_MODULE_6__["default"]
+    });
+  }
 }
 
 /***/ }),

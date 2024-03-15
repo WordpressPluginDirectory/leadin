@@ -1,5 +1,5 @@
 import React from 'react';
-import { registerPlugin } from '@wordpress/plugins';
+import * as WpPluginsLib from '@wordpress/plugins';
 import { PluginSidebar } from '@wordpress/edit-post';
 import { PanelBody, Icon } from '@wordpress/components';
 import { withSelect } from '@wordpress/data';
@@ -74,9 +74,10 @@ export function registerHubspotSidebar() {
         data.getEditedPostAttribute('meta'),
     };
   })(LeadinPluginSidebar);
-
-  registerPlugin('leadin', {
-    render: LeadinPluginSidebarWrapper,
-    icon: SidebarSprocketIcon,
-  });
+  if (WpPluginsLib) {
+    WpPluginsLib.registerPlugin('leadin', {
+      render: LeadinPluginSidebarWrapper,
+      icon: SidebarSprocketIcon,
+    });
+  }
 }

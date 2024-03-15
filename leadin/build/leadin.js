@@ -683,10 +683,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./scripts/iframe/constants.ts");
-/* harmony import */ var _messageMiddleware__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./messageMiddleware */ "./scripts/iframe/messageMiddleware.ts");
-/* harmony import */ var _utils_iframe__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/iframe */ "./scripts/utils/iframe.ts");
+/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/Raven */ "./scripts/lib/Raven.ts");
+/* harmony import */ var _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/leadinConfig */ "./scripts/constants/leadinConfig.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./scripts/iframe/constants.ts");
+/* harmony import */ var _messageMiddleware__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./messageMiddleware */ "./scripts/iframe/messageMiddleware.ts");
+/* harmony import */ var _utils_iframe__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/iframe */ "./scripts/utils/iframe.ts");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -699,36 +700,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var getLeadinConfig = function getLeadinConfig() {
-  var utm_query_params = Object.keys(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams).filter(function (x) {
+  var utm_query_params = Object.keys(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams).filter(function (x) {
     return /^utm/.test(x);
   }).reduce(function (p, c) {
-    return _objectSpread(_defineProperty({}, c, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams[c]), p);
+    return _objectSpread(_defineProperty({}, c, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams[c]), p);
   }, {});
   return _objectSpread({
-    accountName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.accountName,
-    admin: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.admin,
-    adminUrl: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.adminUrl,
-    company: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.company,
-    deviceId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.deviceId,
-    email: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.email,
-    firstName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.firstName,
-    irclickid: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.irclickid,
-    justConnected: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.justConnected,
-    lastName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.lastName,
-    leadinPluginVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinPluginVersion,
-    mpid: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.mpid,
-    nonce: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.nonce,
-    phpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.phpVersion,
-    plugins: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.plugins,
-    portalDomain: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalDomain,
-    portalEmail: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalEmail,
-    portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalId,
-    reviewSkippedDate: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.reviewSkippedDate,
-    theme: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.theme,
-    trackConsent: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.trackConsent,
-    websiteName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.leadinQueryParams.websiteName,
-    wpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.wpVersion
+    accountName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.accountName,
+    admin: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.admin,
+    adminUrl: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.adminUrl,
+    company: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.company,
+    deviceId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.deviceId,
+    email: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.email,
+    firstName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.firstName,
+    irclickid: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.irclickid,
+    justConnected: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.justConnected,
+    lastName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.lastName,
+    leadinPluginVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinPluginVersion,
+    mpid: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.mpid,
+    nonce: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.nonce,
+    phpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.phpVersion,
+    plugins: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.plugins,
+    portalDomain: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalDomain,
+    portalEmail: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalEmail,
+    portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
+    reviewSkippedDate: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.reviewSkippedDate,
+    theme: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.theme,
+    trackConsent: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.trackConsent,
+    websiteName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.websiteName,
+    wpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.wpVersion
   }, utm_query_params);
 };
 
@@ -742,15 +744,15 @@ var getAppOptions = function getAppOptions(app) {
   var options;
 
   switch (app) {
-    case _constants__WEBPACK_IMPORTED_MODULE_2__.App.Plugin:
+    case _constants__WEBPACK_IMPORTED_MODULE_3__.App.Plugin:
       options = new PluginAppOptions().setLeadinConfig(getLeadinConfig());
       break;
 
-    case _constants__WEBPACK_IMPORTED_MODULE_2__.App.PluginSettings:
+    case _constants__WEBPACK_IMPORTED_MODULE_3__.App.PluginSettings:
       options = new PluginAppOptions().setLeadinConfig(getLeadinConfig()).setPluginSettingsInit();
       break;
 
-    case _constants__WEBPACK_IMPORTED_MODULE_2__.App.Forms:
+    case _constants__WEBPACK_IMPORTED_MODULE_3__.App.Forms:
       options = new FormsAppOptions();
 
       if (createRoute) {
@@ -759,7 +761,7 @@ var getAppOptions = function getAppOptions(app) {
 
       break;
 
-    case _constants__WEBPACK_IMPORTED_MODULE_2__.App.LiveChat:
+    case _constants__WEBPACK_IMPORTED_MODULE_3__.App.LiveChat:
       options = new LiveChatAppOptions();
 
       if (createRoute) {
@@ -776,21 +778,44 @@ var getAppOptions = function getAppOptions(app) {
 };
 
 function useAppEmbedder(app, createRoute, container) {
-  var iframeNotRendered = (0,_utils_iframe__WEBPACK_IMPORTED_MODULE_4__.useIframeNotRendered)(_constants__WEBPACK_IMPORTED_MODULE_2__.AppIframe[app]);
+  console.info('HubSpot plugin - starting app embedder for:', _constants__WEBPACK_IMPORTED_MODULE_3__.AppIframe[app], container);
+  var iframeNotRendered = (0,_utils_iframe__WEBPACK_IMPORTED_MODULE_5__.useIframeNotRendered)(_constants__WEBPACK_IMPORTED_MODULE_3__.AppIframe[app]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var _window2 = window,
         IntegratedAppEmbedder = _window2.IntegratedAppEmbedder;
 
     if (IntegratedAppEmbedder) {
-      var options = getAppOptions(app, createRoute).setLocale(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.locale).setDeviceId(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.deviceId).setRefreshToken(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.refreshToken);
-      var embedder = new IntegratedAppEmbedder(_constants__WEBPACK_IMPORTED_MODULE_2__.AppIframe[app], _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.portalId, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.hubspotBaseUrl, _utils_iframe__WEBPACK_IMPORTED_MODULE_4__.resizeWindow, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.refreshToken ? '' : _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_1__.impactLink).setOptions(options);
-      embedder.subscribe((0,_messageMiddleware__WEBPACK_IMPORTED_MODULE_3__.messageMiddleware)(embedder));
+      var options = getAppOptions(app, createRoute).setLocale(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.locale).setDeviceId(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.deviceId).setRefreshToken(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshToken);
+      var embedder = new IntegratedAppEmbedder(_constants__WEBPACK_IMPORTED_MODULE_3__.AppIframe[app], _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.hubspotBaseUrl, _utils_iframe__WEBPACK_IMPORTED_MODULE_5__.resizeWindow, _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshToken ? '' : _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.impactLink).setOptions(options);
+      embedder.subscribe((0,_messageMiddleware__WEBPACK_IMPORTED_MODULE_4__.messageMiddleware)(embedder));
       embedder.attachTo(container, true);
       embedder.postStartAppMessage(); // lets the app know all all data has been passed to it
 
       window.embedder = embedder;
     }
   }, []);
+
+  if (iframeNotRendered) {
+    console.error('HubSpot plugin Iframe not rendered', {
+      portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
+      container: container,
+      appName: _constants__WEBPACK_IMPORTED_MODULE_3__.AppIframe[app],
+      hasIntegratedAppEmbedder: !!window.IntegratedAppEmbedder
+    });
+    _lib_Raven__WEBPACK_IMPORTED_MODULE_1__["default"].captureException(new Error('Leadin Iframe not rendered'), {
+      fingerprint: ['USE_APP_EMBEDDER', 'IFRAME_SETUP_ERROR'],
+      extra: {
+        portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
+        container: container,
+        app: app,
+        hubspotBaseUrl: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.hubspotBaseUrl,
+        impactLink: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.impactLink,
+        appName: _constants__WEBPACK_IMPORTED_MODULE_3__.AppIframe[app],
+        hasRefreshToken: !!_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshToken
+      }
+    });
+  }
+
   return iframeNotRendered;
 }
 
@@ -885,7 +910,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _lib_Raven__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/Raven */ "./scripts/lib/Raven.ts");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -897,7 +921,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 
 
 var IFRAME_DISPLAY_TIMEOUT = 5000;
@@ -912,9 +935,6 @@ function useIframeNotRendered(app) {
       var iframe = document.getElementById(app);
 
       if (!iframe) {
-        _lib_Raven__WEBPACK_IMPORTED_MODULE_1__["default"].captureException(new Error("Leadin Iframe blocked"), {
-          fingerprint: ['IFRAME_SETUP_ERROR']
-        });
         setIframeNotRendered(true);
       }
     }, IFRAME_DISPLAY_TIMEOUT);

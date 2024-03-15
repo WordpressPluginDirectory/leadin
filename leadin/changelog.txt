@@ -1,3 +1,12 @@
+= 11.0.23 (2024-03-14) =
+* Fix error when adding the wordpress sidebar
+
+= 11.0.15 (2024-03-13) =
+* Add better error logging
+
+= 11.0.9 (2024-03-12) =
+* Translations fixed
+
 = 11.0.8 (2024-03-04) =
 * Update review banner display logic
 
@@ -297,13 +306,4 @@
 
 = 8.1.0 (2021-06-17) =
 * Hide side menu items when the user is not authenticated
-
-= 8.0.287 (2021-06-15) =
-* Pass the deviceId param to the plugin in the query parameters
-
-= 8.0.266 (2021-06-09) =
-* Always stringify payload for POST ajax request
-
-= 8.0.227 (2021-05-28) =
-* Add support for new affiliate links
 

@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import Raven from '../lib/Raven';
+
 import {
   accountName,
   adminUrl,
@@ -102,6 +104,11 @@ export default function useAppEmbedder(
   createRoute: boolean,
   container: HTMLElement | null
 ) {
+  console.info(
+    'HubSpot plugin - starting app embedder for:',
+    AppIframe[app],
+    container
+  );
   const iframeNotRendered = useIframeNotRendered(AppIframe[app]);
 
   useEffect(() => {
@@ -128,6 +135,27 @@ export default function useAppEmbedder(
       (window as any).embedder = embedder;
     }
   }, []);
+
+  if (iframeNotRendered) {
+    console.error('HubSpot plugin Iframe not rendered', {
+      portalId,
+      container,
+      appName: AppIframe[app],
+      hasIntegratedAppEmbedder: !!(window as any).IntegratedAppEmbedder,
+    });
+    Raven.captureException(new Error('Leadin Iframe not rendered'), {
+      fingerprint: ['USE_APP_EMBEDDER', 'IFRAME_SETUP_ERROR'],
+      extra: {
+        portalId,
+        container,
+        app,
+        hubspotBaseUrl,
+        impactLink,
+        appName: AppIframe[app],
+        hasRefreshToken: !!refreshToken,
+      },
+    });
+  }
 
   return iframeNotRendered;
 }
