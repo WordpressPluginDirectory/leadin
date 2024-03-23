@@ -6,7 +6,7 @@ Tags: CRM, Marketing, Live Chat, Forms, Analytics, popups, newsletter, contact m
 Requires at least: 5.8
 Tested up to: 6.4.1
 Requires PHP: 7.2
-Stable tag: 11.0.23
+Stable tag: 11.0.28
 
 The CRM, Sales, and Marketing WordPress plugin to grow your business better.
 
@@ -418,12 +418,12 @@ Please visit the <a href="https://community.hubspot.com/?utm_source=wordpress-pl
 == Changelog ==
 
 <a href="http://plugins.svn.wordpress.org/leadin/trunk/changelog.txt" target="_blank">Full changelog here</a>
-- Current version: 11.0.23
-- Version release date: 2024-03-14
+- Current version: 11.0.28
+- Version release date: 2024-03-22
+
+= 11.0.28 (2024-03-22) =
+* Fix for the HubSpot gutenberg blogs rendered in the wordpress customizer context
 
 = 11.0.23 (2024-03-14) =
 * Fix error when adding the wordpress sidebar
-
-= 11.0.15 (2024-03-13) =
-* Add better error logging
 

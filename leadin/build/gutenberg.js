@@ -462,6 +462,10 @@ function FormSaveBlock(_ref) {
   var portalId = attributes.portalId,
       formId = attributes.formId;
 
+  if (!_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__) {
+    return null;
+  }
+
   if (portalId && formId) {
     return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.RawHTML, _objectSpread(_objectSpread({}, _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save()), {}, {
       children: "[hubspot portal=\"".concat(portalId, "\" id=\"").concat(formId, "\" type=\"form\"]")
@@ -559,7 +563,11 @@ function registerFormBlock() {
     }
   };
 
-  (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('leadin/hubspot-form-block', {
+  if (!_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__) {
+    return null;
+  }
+
+  _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType('leadin/hubspot-form-block', {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('HubSpot Form', 'leadin'),
     description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Select and embed a HubSpot form', 'leadin'),
     icon: _Common_SprocketIcon__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -655,6 +663,10 @@ function MeetingSaveBlock(_ref) {
   var attributes = _ref.attributes;
   var url = attributes.url;
 
+  if (!_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__) {
+    return null;
+  }
+
   if (url) {
     return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.RawHTML, _objectSpread(_objectSpread({}, _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save()), {}, {
       children: "[hubspot url=\"".concat(url, "\" type=\"meeting\"]")
@@ -723,7 +735,11 @@ function registerMeetingBlock() {
     }
   };
 
-  (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType)('leadin/hubspot-meeting-block', {
+  if (!_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__) {
+    return null;
+  }
+
+  _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType('leadin/hubspot-meeting-block', {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Hubspot Meetings Scheduler', 'leadin'),
     description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Schedule meetings faster and forget the back-and-forth emails. Your calendar stays full, and you stay productive', 'leadin'),
     icon: _Common_CalendarIcon__WEBPACK_IMPORTED_MODULE_2__["default"],

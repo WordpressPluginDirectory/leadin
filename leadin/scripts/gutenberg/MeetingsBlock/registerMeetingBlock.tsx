@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlockAttribute, registerBlockType } from '@wordpress/blocks';
+import * as WpBlocksApi from '@wordpress/blocks';
 import CalendarIcon from '../Common/CalendarIcon';
 import { connectionStatus } from '../../constants/leadinConfig';
 import MeetingGutenbergPreview from './MeetingGutenbergPreview';
@@ -36,7 +36,11 @@ export default function registerMeetingBlock() {
     }
   };
 
-  registerBlockType('leadin/hubspot-meeting-block', {
+  if (!WpBlocksApi) {
+    return null;
+  }
+
+  WpBlocksApi.registerBlockType('leadin/hubspot-meeting-block', {
     title: __('Hubspot Meetings Scheduler', 'leadin'),
     description: __(
       'Schedule meetings faster and forget the back-and-forth emails. Your calendar stays full, and you stay productive',
@@ -48,11 +52,11 @@ export default function registerMeetingBlock() {
       url: {
         type: 'string',
         default: '',
-      } as BlockAttribute<string>,
+      } as WpBlocksApi.BlockAttribute<string>,
       preview: {
         type: 'boolean',
         default: false,
-      } as BlockAttribute<boolean>,
+      } as WpBlocksApi.BlockAttribute<boolean>,
     },
     example: {
       attributes: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlockAttribute, registerBlockType } from '@wordpress/blocks';
+import * as WpBlocksApi from '@wordpress/blocks';
 import SprocketIcon from '../Common/SprocketIcon';
 import FormBlockSave from './FormBlockSave';
 import { connectionStatus } from '../../constants/leadinConfig';
@@ -34,7 +34,11 @@ export default function registerFormBlock() {
     }
   };
 
-  registerBlockType('leadin/hubspot-form-block', {
+  if (!WpBlocksApi) {
+    return null;
+  }
+
+  WpBlocksApi.registerBlockType('leadin/hubspot-form-block', {
     title: __('HubSpot Form', 'leadin'),
     description: __('Select and embed a HubSpot form', 'leadin'),
     icon: SprocketIcon,
@@ -43,17 +47,17 @@ export default function registerFormBlock() {
       portalId: {
         type: 'string',
         default: '',
-      } as BlockAttribute<string>,
+      } as WpBlocksApi.BlockAttribute<string>,
       formId: {
         type: 'string',
-      } as BlockAttribute<string>,
+      } as WpBlocksApi.BlockAttribute<string>,
       formName: {
         type: 'string',
-      } as BlockAttribute<string>,
+      } as WpBlocksApi.BlockAttribute<string>,
       preview: {
         type: 'boolean',
         default: false,
-      } as BlockAttribute<boolean>,
+      } as WpBlocksApi.BlockAttribute<boolean>,
     },
     example: {
       attributes: {

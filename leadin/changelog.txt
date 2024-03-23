@@ -1,3 +1,6 @@
+= 11.0.28 (2024-03-22) =
+* Fix for the HubSpot gutenberg blogs rendered in the wordpress customizer context
+
 = 11.0.23 (2024-03-14) =
 * Fix error when adding the wordpress sidebar
 
@@ -303,7 +306,4 @@
 
 = 8.2.0 (2021-06-17) =
 * Add endpoint that returns the OAuth2 token info
-
-= 8.1.0 (2021-06-17) =
-* Hide side menu items when the user is not authenticated
 
