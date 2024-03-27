@@ -1,3 +1,6 @@
+= 11.0.32 (2024-03-27) =
+* Update the gutenberg save blocks for wordpress customizer compatibility
+
 = 11.0.28 (2024-03-22) =
 * Fix for the HubSpot gutenberg blogs rendered in the wordpress customizer context
 
@@ -303,7 +306,4 @@
 
 = 8.3.0 (2021-06-18) =
 * Hide menu items that rely on third-party cookies when they are disabled
-
-= 8.2.0 (2021-06-17) =
-* Add endpoint that returns the OAuth2 token info
 

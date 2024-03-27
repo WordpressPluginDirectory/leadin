@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-22T14:42:39+00:00\n"
+"POT-Creation-Date: 2024-03-27T09:38:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language: \n"
 "X-Generator: WP-CLI 2.10.0\n"
@@ -163,7 +163,7 @@ msgstr "HubSpot All-In-One Marketing %1$s krever PHP %2$s eller høyere. Vennlig
 
 #: public/admin/class-noticemanager.php:34
 msgid "The HubSpot plugin isn't connected right now. To use HubSpot tools on your WordPress site, %1$sconnect the plugin now%2$s."
-msgstr "HubSpot-plugin er ikke tilkoblet akkurat nå. For å bruke HubSpot-verktøy på WordPress-nettstedet ditt, må du %1$skoble til plugin nå%2$s."
+msgstr "HubSpot-pluginen er ikke tilkoblet akkurat nå. For å bruke HubSpot-verktøy på WordPress-nettstedet ditt, må du %1$skoble til pluginen nå%2$s."
 
 #: public/admin/class-reviewbanner.php:26
 msgid "Dismiss this notice."
