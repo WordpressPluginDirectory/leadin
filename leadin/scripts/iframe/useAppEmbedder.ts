@@ -19,6 +19,8 @@ import {
   leadinPluginVersion,
   phpVersion,
   wpVersion,
+  contentEmbed,
+  requiresContentEmbedScope,
 } from '../constants/leadinConfig';
 import { App, AppIframe } from './constants';
 import { messageMiddleware } from './messageMiddleware';
@@ -58,6 +60,8 @@ const getLeadinConfig = () => {
     trackConsent: leadinQueryParams.trackConsent,
     websiteName: leadinQueryParams.websiteName,
     wpVersion,
+    contentEmbed,
+    requiresContentEmbedScope,
     ...utm_query_params,
   };
 };
@@ -70,7 +74,6 @@ const getAppOptions = (app: App, createRoute = false) => {
     PluginAppOptions,
   }: any = window;
   let options;
-
   switch (app) {
     case App.Plugin:
       options = new PluginAppOptions().setLeadinConfig(getLeadinConfig());

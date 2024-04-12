@@ -6,6 +6,14 @@ interface Routes {
   [key: string]: string | KeyStringObject;
 }
 
+export type ContentEmbedDetails = {
+  activated: boolean;
+  installed: boolean;
+  canActivate: boolean;
+  canInstall: boolean;
+  nonce: string;
+};
+
 interface LeadinConfig {
   accountName: string;
   adminUrl: string;
@@ -40,6 +48,8 @@ interface LeadinConfig {
   theme: string;
   trackConsent?: boolean;
   wpVersion: string;
+  contentEmbed: ContentEmbedDetails;
+  requiresContentEmbedScope?: boolean;
 }
 
 const {
@@ -76,6 +86,8 @@ const {
   theme,
   trackConsent,
   wpVersion,
+  contentEmbed,
+  requiresContentEmbedScope,
 }: //@ts-expect-error global
 LeadinConfig = window.leadinConfig;
 
@@ -113,4 +125,6 @@ export {
   theme,
   trackConsent,
   wpVersion,
+  contentEmbed,
+  requiresContentEmbedScope,
 };

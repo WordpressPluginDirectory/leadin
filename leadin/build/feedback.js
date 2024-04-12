@@ -14,6 +14,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "activationTime": () => (/* binding */ activationTime),
 /* harmony export */   "adminUrl": () => (/* binding */ adminUrl),
 /* harmony export */   "connectionStatus": () => (/* binding */ connectionStatus),
+/* harmony export */   "contentEmbed": () => (/* binding */ contentEmbed),
 /* harmony export */   "deviceId": () => (/* binding */ deviceId),
 /* harmony export */   "didDisconnect": () => (/* binding */ didDisconnect),
 /* harmony export */   "env": () => (/* binding */ env),
@@ -37,6 +38,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "portalId": () => (/* binding */ portalId),
 /* harmony export */   "redirectNonce": () => (/* binding */ redirectNonce),
 /* harmony export */   "refreshToken": () => (/* binding */ refreshToken),
+/* harmony export */   "requiresContentEmbedScope": () => (/* binding */ requiresContentEmbedScope),
 /* harmony export */   "restNonce": () => (/* binding */ restNonce),
 /* harmony export */   "restUrl": () => (/* binding */ restUrl),
 /* harmony export */   "reviewSkippedDate": () => (/* binding */ reviewSkippedDate),
@@ -77,7 +79,9 @@ var _window$leadinConfig = window.leadinConfig,
     reviewSkippedDate = _window$leadinConfig.reviewSkippedDate,
     theme = _window$leadinConfig.theme,
     trackConsent = _window$leadinConfig.trackConsent,
-    wpVersion = _window$leadinConfig.wpVersion;
+    wpVersion = _window$leadinConfig.wpVersion,
+    contentEmbed = _window$leadinConfig.contentEmbed,
+    requiresContentEmbedScope = _window$leadinConfig.requiresContentEmbedScope;
 
 
 /***/ }),
@@ -337,7 +341,13 @@ var PluginMessages = {
   SkipReviewRequest: 'SKIP_REVIEW_REQUEST',
   SkipReviewResponse: 'SKIP_REVIEW_RESPONSE',
   SkipReviewError: 'SKIP_REVIEW_ERROR',
-  RemoveParentQueryParam: 'REMOVE_PARENT_QUERY_PARAM'
+  RemoveParentQueryParam: 'REMOVE_PARENT_QUERY_PARAM',
+  ContentEmbedInstallRequest: 'CONTENT_EMBED_INSTALL_REQUEST',
+  ContentEmbedInstallResponse: 'CONTENT_EMBED_INSTALL_RESPONSE',
+  ContentEmbedInstallError: 'CONTENT_EMBED_INSTALL_ERROR',
+  ContentEmbedActivationRequest: 'CONTENT_EMBED_ACTIVATION_REQUEST',
+  ContentEmbedActivationResponse: 'CONTENT_EMBED_ACTIVATION_RESPONSE',
+  ContentEmbedActivationError: 'CONTENT_EMBED_ACTIVATION_ERROR'
 };
 
 /***/ }),

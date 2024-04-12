@@ -114,6 +114,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "activationTime": () => (/* binding */ activationTime),
 /* harmony export */   "adminUrl": () => (/* binding */ adminUrl),
 /* harmony export */   "connectionStatus": () => (/* binding */ connectionStatus),
+/* harmony export */   "contentEmbed": () => (/* binding */ contentEmbed),
 /* harmony export */   "deviceId": () => (/* binding */ deviceId),
 /* harmony export */   "didDisconnect": () => (/* binding */ didDisconnect),
 /* harmony export */   "env": () => (/* binding */ env),
@@ -137,6 +138,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "portalId": () => (/* binding */ portalId),
 /* harmony export */   "redirectNonce": () => (/* binding */ redirectNonce),
 /* harmony export */   "refreshToken": () => (/* binding */ refreshToken),
+/* harmony export */   "requiresContentEmbedScope": () => (/* binding */ requiresContentEmbedScope),
 /* harmony export */   "restNonce": () => (/* binding */ restNonce),
 /* harmony export */   "restUrl": () => (/* binding */ restUrl),
 /* harmony export */   "reviewSkippedDate": () => (/* binding */ reviewSkippedDate),
@@ -177,7 +179,9 @@ var _window$leadinConfig = window.leadinConfig,
     reviewSkippedDate = _window$leadinConfig.reviewSkippedDate,
     theme = _window$leadinConfig.theme,
     trackConsent = _window$leadinConfig.trackConsent,
-    wpVersion = _window$leadinConfig.wpVersion;
+    wpVersion = _window$leadinConfig.wpVersion,
+    contentEmbed = _window$leadinConfig.contentEmbed,
+    requiresContentEmbedScope = _window$leadinConfig.requiresContentEmbedScope;
 
 
 /***/ }),
@@ -204,7 +208,7 @@ function ConnectPluginBanner() {
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ElementorBanner__WEBPACK_IMPORTED_MODULE_1__["default"], {
     children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("b", {
       dangerouslySetInnerHTML: {
-        __html: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("The HubSpot plugin isn't connected right now. To use HubSpot tools on your WordPress site, %1$sconnect the plugin now%2$s.").replace('%1$s', '<a class="leadin-banner__link" href="admin.php?page=leadin&bannerClick=true">').replace('%2$s', '</a>')
+        __html: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('The HubSpot plugin is not connected right now To use HubSpot tools on your WordPress site, %1$sconnect the plugin now%2$s').replace('%1$s', '<a class="leadin-banner__link" href="admin.php?page=leadin&bannerClick=true">').replace('%2$s', '</a>')
       }
     })
   });
@@ -342,7 +346,7 @@ function ElementorFormSelect(_ref) {
     children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_4__["default"], {})
   }) : hasError ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_3__["default"], {
     type: "danger",
-    children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please refresh your forms or try again in a few minutes.', 'leadin')
+    children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please refresh your forms or try again in a few minutes', 'leadin')
   }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", {
     value: formId,
     onChange: function onChange(event) {
@@ -724,7 +728,7 @@ function ElementorMeetingSelect(_ref) {
       children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_shared_UIComponents_UISpinner__WEBPACK_IMPORTED_MODULE_3__["default"], {})
     }) : error ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_2__["default"], {
       type: "danger",
-      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Please refresh your meetings or try again in a few minutes.', 'leadin')
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Please refresh your meetings or try again in a few minutes', 'leadin')
     }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
       children: [selectedMeetingCalendar && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ElementorMeetingWarning__WEBPACK_IMPORTED_MODULE_4__["default"], {
         status: selectedMeetingCalendar,
@@ -808,8 +812,8 @@ function MeetingWarning(_ref) {
   var onConnectCalendar = _ref.onConnectCalendar,
       status = _ref.status;
   var isMeetingOwner = status === _shared_Meeting_constants__WEBPACK_IMPORTED_MODULE_2__.CURRENT_USER_CALENDAR_MISSING;
-  var titleText = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Your calendar is not connected.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Calendar is not connected.', 'leadin');
-  var titleMessage = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please connect your calendar to activate your scheduling pages.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Make sure that everybody in this meeting has connected their calendar from the Meetings page in HubSpot.', 'leadin');
+  var titleText = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Your calendar is not connected', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Calendar is not connected', 'leadin');
+  var titleMessage = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please connect your calendar to activate your scheduling pages', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Make sure that everybody in this meeting has connected their calendar from the Meetings page in HubSpot', 'leadin');
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
     children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(Container, {
       children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_Common_ElementorBanner__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -1154,7 +1158,13 @@ var PluginMessages = {
   SkipReviewRequest: 'SKIP_REVIEW_REQUEST',
   SkipReviewResponse: 'SKIP_REVIEW_RESPONSE',
   SkipReviewError: 'SKIP_REVIEW_ERROR',
-  RemoveParentQueryParam: 'REMOVE_PARENT_QUERY_PARAM'
+  RemoveParentQueryParam: 'REMOVE_PARENT_QUERY_PARAM',
+  ContentEmbedInstallRequest: 'CONTENT_EMBED_INSTALL_REQUEST',
+  ContentEmbedInstallResponse: 'CONTENT_EMBED_INSTALL_RESPONSE',
+  ContentEmbedInstallError: 'CONTENT_EMBED_INSTALL_ERROR',
+  ContentEmbedActivationRequest: 'CONTENT_EMBED_ACTIVATION_REQUEST',
+  ContentEmbedActivationResponse: 'CONTENT_EMBED_ACTIVATION_RESPONSE',
+  ContentEmbedActivationError: 'CONTENT_EMBED_ACTIVATION_ERROR'
 };
 
 /***/ }),
@@ -1594,7 +1604,7 @@ function ErrorHandler(_ref) {
   } : _ref$errorInfo;
   var isUnauthorized = status === 401 || status === 403;
   var errorHeader = isUnauthorized ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)("Your plugin isn't authorized", 'leadin') : errorInfo.header;
-  var errorMessage = isUnauthorized ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Reauthorize your plugin to access your free HubSpot tools.', 'leadin') : errorInfo.message;
+  var errorMessage = isUnauthorized ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Reauthorize your plugin to access your free HubSpot tools', 'leadin') : errorInfo.message;
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_HubspotWrapper__WEBPACK_IMPORTED_MODULE_3__["default"], {
     pluginPath: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_4__.pluginPath,
     children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_UIComponents_UIContainer__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -1861,7 +1871,7 @@ function FormSelect(_ref) {
     },
     errorInfo: {
       header: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('There was a problem retrieving your forms', 'leadin'),
-      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Please refresh your forms or try again in a few minutes.', 'leadin'),
+      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Please refresh your forms or try again in a few minutes', 'leadin'),
       action: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Refresh forms', 'leadin')
     }
   }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_FormSelector__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -2275,7 +2285,7 @@ function MeetingController(_ref) {
       },
       errorInfo: {
         header: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('There was a problem retrieving your meetings', 'leadin'),
-        message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Please refresh your meetings or try again in a few minutes.', 'leadin'),
+        message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Please refresh your meetings or try again in a few minutes', 'leadin'),
         action: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Refresh meetings', 'leadin')
       }
     }) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_Common_HubspotWrapper__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -2450,8 +2460,8 @@ function MeetingWarning(_ref) {
   var status = _ref.status,
       onConnectCalendar = _ref.onConnectCalendar;
   var isMeetingOwner = status === _constants__WEBPACK_IMPORTED_MODULE_3__.CURRENT_USER_CALENDAR_MISSING;
-  var titleText = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Your calendar is not connected.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Calendar is not connected.', 'leadin');
-  var titleMessage = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Please connect your calendar to activate your scheduling pages.', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Make sure that everybody in this meeting has connected their calendar from the Meetings page in HubSpot.', 'leadin');
+  var titleText = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Your calendar is not connected', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Calendar is not connected', 'leadin');
+  var titleMessage = isMeetingOwner ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Please connect your calendar to activate your scheduling pages', 'leadin') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Make sure that everybody in this meeting has connected their calendar from the Meetings page in HubSpot', 'leadin');
   return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_UIComponents_UIAlert__WEBPACK_IMPORTED_MODULE_1__["default"], {
     titleText: titleText,
     titleMessage: titleMessage,

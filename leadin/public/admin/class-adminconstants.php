@@ -1,4 +1,5 @@
 <?php
+
 namespace Leadin\admin;
 
 use Leadin\data\Filters;
@@ -16,6 +17,7 @@ use Leadin\data\User_Metadata;
  * Class containing all the constants used for admin script localization.
  */
 class AdminConstants {
+
 
 
 	/**
@@ -122,37 +124,59 @@ class AdminConstants {
 	}
 
 	/**
+	 * Returns information about Content embed plugin necessary for user guide to determine if/how to install & activate
+	 */
+	public static function get_content_embed_config() {
+		$content_embed_config = array_merge(
+			array(
+				'userCanInstall'  => current_user_can( 'install_plugins' ),
+				'userCanActivate' => current_user_can( 'activate_plugins' ),
+				'nonce'           => wp_create_nonce( ContentEmbedInstaller::INSTALL_ARG ),
+			),
+			ContentEmbedInstaller::is_content_embed_active_installed()
+		);
+
+		return $content_embed_config;
+	}
+
+	/**
 	 * Returns a minimal version of leadinConfig, containing the data needed by the background iframe.
 	 */
 	public static function get_background_leadin_config() {
 		$wp_user_id = get_current_user_id();
 
 		$background_config = array(
-			'adminUrl'            => admin_url(),
-			'activationTime'      => Portal_Options::get_activation_time(),
-			'deviceId'            => Portal_Options::get_device_id(),
-			'formsScript'         => Filters::apply_forms_script_url_filters(),
-			'formsScriptPayload'  => Filters::apply_forms_payload_filters(),
-			'meetingsScript'      => Filters::apply_meetings_script_url_filters(),
-			'hublet'              => Filters::apply_hublet_filters(),
-			'hubspotBaseUrl'      => Filters::apply_base_url_filters( Connection::is_connected() ),
-			'leadinPluginVersion' => constant( 'LEADIN_PLUGIN_VERSION' ),
-			'locale'              => get_locale(),
-			'restUrl'             => get_rest_url(),
-			'restNonce'           => wp_create_nonce( 'wp_rest' ),
-			'redirectNonce'       => wp_create_nonce( Routing::REDIRECT_NONCE ),
-			'phpVersion'          => Versions::get_php_version(),
-			'pluginPath'          => constant( 'LEADIN_PATH' ),
-			'plugins'             => get_plugins(),
-			'portalId'            => Portal_Options::get_portal_id(),
-			'accountName'         => Portal_Options::get_account_name(),
-			'portalDomain'        => Portal_Options::get_portal_domain(),
-			'portalEmail'         => get_user_meta( $wp_user_id, 'leadin_email', true ),
-			'reviewSkippedDate'   => User_Metadata::get_skip_review(),
-			'theme'               => get_option( 'stylesheet' ),
-			'wpVersion'           => Versions::get_wp_version(),
-			'leadinQueryParams'   => self::get_hubspot_query_params_array(),
-			'connectionStatus'    => Connection::is_connected() ? 'Connected' : 'NotConnected',
+			'adminUrl'                  => admin_url(),
+			'activationTime'            => Portal_Options::get_activation_time(),
+			'deviceId'                  => Portal_Options::get_device_id(),
+			'formsScript'               => Filters::apply_forms_script_url_filters(),
+			'formsScriptPayload'        => Filters::apply_forms_payload_filters(),
+			'meetingsScript'            => Filters::apply_meetings_script_url_filters(),
+			'hublet'                    => Filters::apply_hublet_filters(),
+			'hubspotBaseUrl'            => Filters::apply_base_url_filters( Connection::is_connected() ),
+			'leadinPluginVersion'       => constant( 'LEADIN_PLUGIN_VERSION' ),
+			'locale'                    => get_locale(),
+			'restUrl'                   => get_rest_url(),
+			'restNonce'                 => wp_create_nonce( 'wp_rest' ),
+			'redirectNonce'             => wp_create_nonce( Routing::REDIRECT_NONCE ),
+			'phpVersion'                => Versions::get_php_version(),
+			'pluginPath'                => constant( 'LEADIN_PATH' ),
+			'plugins'                   => get_plugins(),
+			'portalId'                  => Portal_Options::get_portal_id(),
+			'accountName'               => Portal_Options::get_account_name(),
+			'portalDomain'              => Portal_Options::get_portal_domain(),
+			'portalEmail'               => get_user_meta( $wp_user_id, 'leadin_email', true ),
+			'reviewSkippedDate'         => User_Metadata::get_skip_review(),
+			'theme'                     => get_option( 'stylesheet' ),
+			'wpVersion'                 => Versions::get_wp_version(),
+			'leadinQueryParams'         => self::get_hubspot_query_params_array(),
+			'connectionStatus'          => Connection::is_connected() ? 'Connected' : 'NotConnected',
+			'contentEmbed'              => self::get_content_embed_config(),
+			'requiresContentEmbedScope' => is_plugin_active( 'hubspot-content-embed/content-embed.php' ) ? '1' : '0',
+			'lastAuthorizeTime'         => Portal_Options::get_last_authorize_time(),
+			'lastDeauthorizeTime'       => Portal_Options::get_last_deauthorize_time(),
+			'lastDisconnectTime'        => Portal_Options::get_last_disconnect_time(),
+			'refreshTokenError'         => Portal_Options::get_refresh_token_error(),
 		);
 
 		if ( Connection::is_connected() ) {
@@ -179,5 +203,4 @@ class AdminConstants {
 
 		return $leadin_config;
 	}
-
 }

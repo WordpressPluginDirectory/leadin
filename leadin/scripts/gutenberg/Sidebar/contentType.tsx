@@ -20,7 +20,7 @@ export function registerHubspotSidebar() {
   const ContentTypeLabel = (
     <ContentTypeLabelStyle>
       {__(
-        'Select the content type HubSpot Analytics uses to track this page.',
+        'Select the content type HubSpot Analytics uses to track this page',
         'leadin'
       )}
     </ContentTypeLabelStyle>

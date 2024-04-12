@@ -1,3 +1,9 @@
+= 11.0.37 (2024-04-10) =
+* Fix translation keys
+
+= 11.0.36 (2024-04-09) =
+* Refactor connection function and add extra leadin config
+
 = 11.0.32 (2024-03-27) =
 * Update the gutenberg save blocks for wordpress customizer compatibility
 
@@ -300,10 +306,4 @@
 
 = 8.3.16 (2021-06-22) =
 * Fix urls pointing to the wrong domain from region NA1
-
-= 8.3.15 (2021-06-22) =
-* Pass the connection nonce to leadinConfig variable. This change does not have impact on users
-
-= 8.3.0 (2021-06-18) =
-* Hide menu items that rely on third-party cookies when they are disabled
 
