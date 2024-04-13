@@ -6,7 +6,7 @@ Tags: CRM, Marketing, Live Chat, Forms, Analytics, popups, newsletter, contact m
 Requires at least: 5.8
 Tested up to: 6.4.1
 Requires PHP: 7.2
-Stable tag: 11.0.53
+Stable tag: 11.0.55
 
 The CRM, Sales, and Marketing WordPress plugin to grow your business better.
 
@@ -418,12 +418,12 @@ Please visit the <a href="https://community.hubspot.com/?utm_source=wordpress-pl
 == Changelog ==
 
 <a href="http://plugins.svn.wordpress.org/leadin/trunk/changelog.txt" target="_blank">Full changelog here</a>
-- Current version: 11.0.53
-- Version release date: 2024-04-11
+- Current version: 11.0.55
+- Version release date: 2024-04-12
+
+= 11.0.55 (2024-04-12) =
+* Remove support for full site editor for forms and meetings blocks
 
 = 11.0.37 (2024-04-10) =
 * Fix translation keys
-
-= 11.0.36 (2024-04-09) =
-* Refactor connection function and add extra leadin config
 

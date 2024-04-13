@@ -8,6 +8,7 @@ import ErrorHandler from '../../shared/Common/ErrorHandler';
 import FormEdit from '../../shared/Form/FormEdit';
 import ConnectionStatus from '../../shared/enums/connectionStatus';
 import { __ } from '@wordpress/i18n';
+import { isFullSiteEditor } from '../../utils/withMetaData';
 
 export interface IFormBlockAttributes {
   attributes: {
@@ -21,6 +22,7 @@ export interface IFormBlockAttributes {
 export interface IFormBlockProps extends IFormBlockAttributes {
   setAttributes: Function;
   isSelected: boolean;
+  context?: any;
 }
 
 export default function registerFormBlock() {
@@ -34,7 +36,8 @@ export default function registerFormBlock() {
     }
   };
 
-  if (!WpBlocksApi) {
+  // We do not support the full site editor: https://issues.hubspotcentral.com/browse/WP-1033
+  if (!WpBlocksApi || isFullSiteEditor()) {
     return null;
   }
 

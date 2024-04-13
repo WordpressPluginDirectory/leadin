@@ -1,3 +1,6 @@
+= 11.0.55 (2024-04-12) =
+* Remove support for full site editor for forms and meetings blocks
+
 = 11.0.37 (2024-04-10) =
 * Fix translation keys
 
@@ -303,7 +306,4 @@
 
 = 8.3.20 (2021-06-23) =
 * Correctly render forms on non-NA1 regions
-
-= 8.3.16 (2021-06-22) =
-* Fix urls pointing to the wrong domain from region NA1
 

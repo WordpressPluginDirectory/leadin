@@ -7,6 +7,7 @@ import MeetingSaveBlock from './MeetingSaveBlock';
 import MeetingEdit from '../../shared/Meeting/MeetingEdit';
 import ErrorHandler from '../../shared/Common/ErrorHandler';
 import { __ } from '@wordpress/i18n';
+import { isFullSiteEditor } from '../../utils/withMetaData';
 
 const ConnectionStatus = {
   Connected: 'Connected',
@@ -36,7 +37,8 @@ export default function registerMeetingBlock() {
     }
   };
 
-  if (!WpBlocksApi) {
+  // We do not support the full site editor: https://issues.hubspotcentral.com/browse/WP-1033
+  if (!WpBlocksApi || isFullSiteEditor()) {
     return null;
   }
 

@@ -523,11 +523,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_enums_connectionStatus__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../shared/enums/connectionStatus */ "./scripts/shared/enums/connectionStatus.ts");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _utils_withMetaData__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utils/withMetaData */ "./scripts/utils/withMetaData.ts");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -553,9 +555,10 @@ function registerFormBlock() {
         status: 401
       });
     }
-  };
+  }; // We do not support the full site editor: https://issues.hubspotcentral.com/browse/WP-1033
 
-  if (!_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__) {
+
+  if (!_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ || (0,_utils_withMetaData__WEBPACK_IMPORTED_MODULE_10__.isFullSiteEditor)()) {
     return null;
   }
 
@@ -680,11 +683,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_Common_ErrorHandler__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../shared/Common/ErrorHandler */ "./scripts/shared/Common/ErrorHandler.tsx");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _utils_withMetaData__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../utils/withMetaData */ "./scripts/utils/withMetaData.ts");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -713,9 +718,10 @@ function registerMeetingBlock() {
         status: 401
       });
     }
-  };
+  }; // We do not support the full site editor: https://issues.hubspotcentral.com/browse/WP-1033
 
-  if (!_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__) {
+
+  if (!_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ || (0,_utils_withMetaData__WEBPACK_IMPORTED_MODULE_9__.isFullSiteEditor)()) {
     return null;
   }
 
@@ -3242,13 +3248,18 @@ var getOrCreateBackgroundApp = function getOrCreateBackgroundApp(refreshToken) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "isFullSiteEditor": () => (/* binding */ isFullSiteEditor)
 /* harmony export */ });
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+ // from answer here: https://github.com/WordPress/gutenberg/issues/44477#issuecomment-1263026599
 
+var isFullSiteEditor = function isFullSiteEditor() {
+  return !!(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.select)('core/edit-site');
+};
 var applyWithSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.withSelect)(function (select, props) {
   return {
     metaValue: select('core/editor').getEditedPostAttribute('meta')[props.metaKey]
