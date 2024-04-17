@@ -1,3 +1,9 @@
+= 11.1.0 (2024-04-16) =
+* Addressing issue with our SVN tagging
+
+= 11.0.57 (2024-04-16) =
+* Update logic that is used to disable blocks in the full site editor
+
 = 11.0.55 (2024-04-12) =
 * Remove support for full site editor for forms and meetings blocks
 
@@ -300,10 +306,4 @@
 * New portals created in the EU now have their data kept in EU datacentres.
 * Ungated the OAuth connection flow for all users.
 * Updated deprecated block_categories hook for WordPress 5.8
-
-= 8.3.67 (2021-07-12) =
-* Remove leadin_affiliate_code filter. This filter is not used and should not have any user-facing consequence
-
-= 8.3.20 (2021-06-23) =
-* Correctly render forms on non-NA1 regions
 

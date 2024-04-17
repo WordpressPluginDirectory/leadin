@@ -3258,7 +3258,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  // from answer here: https://github.com/WordPress/gutenberg/issues/44477#issuecomment-1263026599
 
 var isFullSiteEditor = function isFullSiteEditor() {
-  return !!(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.select)('core/edit-site');
+  return _wordpress_data__WEBPACK_IMPORTED_MODULE_0__.select && !!(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.select)('core/edit-site');
 };
 var applyWithSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.withSelect)(function (select, props) {
   return {
