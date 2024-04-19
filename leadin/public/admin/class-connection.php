@@ -123,7 +123,10 @@ class Connection {
 
 		self::delete_portal_info();
 
-		$users = get_users( array( 'fields' => array( 'ID' ) ) );
+		$users = get_users(
+			array( 'role__in' => array( 'administrator', 'editor' ) ),
+			array( 'fields' => array( 'ID' ) )
+		);
 		foreach ( $users as $user ) {
 			delete_user_meta( $user->ID, 'leadin_email' );
 			delete_user_meta( $user->ID, 'leadin_skip_review' );
