@@ -1,3 +1,6 @@
+= 11.1.5 (2024-04-19) =
+* Pushing new plugin version with tagging mechanism working correctly.
+
 = 11.1.3 (2024-04-17) =
 * Optimize metadata update on connection
 
@@ -301,7 +304,4 @@
 
 = 8.4.60 (2021-08-05) =
 * Added development backdoor for the new odyssey signup flow
-
-= 8.4.33 (2021-07-30) =
-* Check refresh token exists before attempting to make the refresh token API call.
 
