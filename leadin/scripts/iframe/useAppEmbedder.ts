@@ -4,6 +4,7 @@ import Raven from '../lib/Raven';
 import {
   accountName,
   adminUrl,
+  connectionStatus,
   deviceId,
   hubspotBaseUrl,
   leadinQueryParams,
@@ -16,17 +17,68 @@ import {
   refreshToken,
   impactLink,
   theme,
+  lastAuthorizeTime,
+  lastDeauthorizeTime,
+  lastDisconnectTime,
   leadinPluginVersion,
   phpVersion,
   wpVersion,
   contentEmbed,
   requiresContentEmbedScope,
+  LeadinConfig,
 } from '../constants/leadinConfig';
 import { App, AppIframe } from './constants';
 import { messageMiddleware } from './messageMiddleware';
 import { resizeWindow, useIframeNotRendered } from '../utils/iframe';
 
-const getLeadinConfig = () => {
+type PartialLeadinConfig = Pick<
+  LeadinConfig,
+  | 'accountName'
+  | 'adminUrl'
+  | 'connectionStatus'
+  | 'deviceId'
+  | 'plugins'
+  | 'portalDomain'
+  | 'portalEmail'
+  | 'portalId'
+  | 'reviewSkippedDate'
+  | 'refreshToken'
+  | 'impactLink'
+  | 'theme'
+  | 'trackConsent'
+  | 'lastAuthorizeTime'
+  | 'lastDeauthorizeTime'
+  | 'lastDisconnectTime'
+  | 'leadinPluginVersion'
+  | 'phpVersion'
+  | 'wpVersion'
+  | 'contentEmbed'
+  | 'requiresContentEmbedScope'
+>;
+
+/**
+ * A modified version of the original leadinConfig that is passed to some integrated apps.
+ *
+ * Important:
+ * Try not to add new fields here.
+ * This config is already too large and broad in scope.
+ * It tightly couples the apps that use it with the WordPress plugin.
+ * Consider instead passing new required fields as new entry to PluginAppOptions or app-specific options.
+ */
+type AppLeadinConfig = {
+  admin: string;
+  company: string;
+  email: string;
+  firstName: string;
+  irclickid: string;
+  justConnected: string;
+  lastName: string;
+  mpid: string;
+  nonce: string;
+  websiteName: string;
+} & PartialLeadinConfig;
+
+const getLeadinConfig = (): AppLeadinConfig => {
   const utm_query_params = Object.keys(leadinQueryParams)
     .filter(x => /^utm/.test(x))
     .reduce(
@@ -41,12 +93,16 @@ const getLeadinConfig = () => {
     admin: leadinQueryParams.admin,
     adminUrl,
     company: leadinQueryParams.company,
+    connectionStatus,
     deviceId,
     email: leadinQueryParams.email,
     firstName: leadinQueryParams.firstName,
     irclickid: leadinQueryParams.irclickid,
     justConnected: leadinQueryParams.justConnected,
     lastName: leadinQueryParams.lastName,
+    lastAuthorizeTime,
+    lastDeauthorizeTime,
+    lastDisconnectTime,
     leadinPluginVersion,
     mpid: leadinQueryParams.mpid,
     nonce: leadinQueryParams.nonce,

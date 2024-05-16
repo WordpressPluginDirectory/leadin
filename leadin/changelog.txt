@@ -1,3 +1,9 @@
+= 11.1.10 (2024-05-15) =
+* fix race condition with our Elementor widgets which would occasionally prevent them from loading.
+
+= 11.1.9 (2024-05-15) =
+* Add extra data to integrated app config
+
 = 11.1.5 (2024-04-19) =
 * Pushing new plugin version with tagging mechanism working correctly.
 
@@ -298,10 +304,4 @@
 
 = 8.4.301 (2021-10-21) =
 * Fix side navigation option highlight for list
-
-= 8.4.90 (2021-08-10) =
-* Add EU prefix to scripts domains for EU portals
-
-= 8.4.60 (2021-08-05) =
-* Added development backdoor for the new odyssey signup flow
 
