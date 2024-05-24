@@ -1,3 +1,9 @@
+= 11.1.13 (2024-05-23) =
+* Add error labels for connection process
+
+= 11.1.11 (2024-05-16) =
+* Add another field to integrated app config
+
 = 11.1.10 (2024-05-15) =
 * fix race condition with our Elementor widgets which would occasionally prevent them from loading.
 
@@ -298,10 +304,4 @@
 * Replace jQuery .unbind with .off
 * Replace rand with wp_rand
 * Fix Gutenberg block not showing due to a js error
-
-= 8.4.302 (2021-10-21) =
-* Fix for search function in HubSpot Gutenberg block
-
-= 8.4.301 (2021-10-21) =
-* Fix side navigation option highlight for list
 

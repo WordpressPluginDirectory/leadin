@@ -172,6 +172,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "contentEmbed": () => (/* binding */ contentEmbed),
 /* harmony export */   "deviceId": () => (/* binding */ deviceId),
 /* harmony export */   "didDisconnect": () => (/* binding */ didDisconnect),
+/* harmony export */   "encryptionError": () => (/* binding */ encryptionError),
 /* harmony export */   "env": () => (/* binding */ env),
 /* harmony export */   "formsScript": () => (/* binding */ formsScript),
 /* harmony export */   "formsScriptPayload": () => (/* binding */ formsScriptPayload),
@@ -196,6 +197,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "portalId": () => (/* binding */ portalId),
 /* harmony export */   "redirectNonce": () => (/* binding */ redirectNonce),
 /* harmony export */   "refreshToken": () => (/* binding */ refreshToken),
+/* harmony export */   "refreshTokenError": () => (/* binding */ refreshTokenError),
 /* harmony export */   "requiresContentEmbedScope": () => (/* binding */ requiresContentEmbedScope),
 /* harmony export */   "restNonce": () => (/* binding */ restNonce),
 /* harmony export */   "restUrl": () => (/* binding */ restUrl),
@@ -242,7 +244,9 @@ var _window$leadinConfig = window.leadinConfig,
     trackConsent = _window$leadinConfig.trackConsent,
     wpVersion = _window$leadinConfig.wpVersion,
     contentEmbed = _window$leadinConfig.contentEmbed,
-    requiresContentEmbedScope = _window$leadinConfig.requiresContentEmbedScope;
+    requiresContentEmbedScope = _window$leadinConfig.requiresContentEmbedScope,
+    refreshTokenError = _window$leadinConfig.refreshTokenError,
+    encryptionError = _window$leadinConfig.encryptionError;
 
 
 /***/ }),
@@ -778,7 +782,9 @@ var getLeadinConfig = function getLeadinConfig() {
     websiteName: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.websiteName,
     wpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.wpVersion,
     contentEmbed: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.contentEmbed,
-    requiresContentEmbedScope: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.requiresContentEmbedScope
+    requiresContentEmbedScope: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.requiresContentEmbedScope,
+    refreshTokenError: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshTokenError,
+    encryptionError: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.encryptionError
   }, utm_query_params);
 };
 

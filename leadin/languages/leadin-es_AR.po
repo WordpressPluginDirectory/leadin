@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-15T13:50:19+00:00\n"
+"POT-Creation-Date: 2024-05-23T11:43:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language: \n"
 "X-Generator: WP-CLI 2.10.0\n"
@@ -159,7 +159,7 @@ msgstr "Adquirir versión superior"
 #: public/admin/class-leadinadmin.php:258
 #: public/admin/class-leadinadmin.php:264
 msgid "HubSpot All-In-One Marketing %1$s requires PHP %2$s or higher Please upgrade WordPress first"
-msgstr "HubSpot Marketing todo en uno %1$s requiere PHP %2$s o superior. Actualiza WordPress primero."
+msgstr "HubSpot Marketing todo en uno %1$s requiere PHP %2$s o una edición superior. Primero, cámbiate a una edición superior de WordPress."
 
 #: public/admin/class-noticemanager.php:35
 msgid "The HubSpot plugin is not connected right now To use HubSpot tools on your WordPress site, %1$sconnect the plugin now%2$s"

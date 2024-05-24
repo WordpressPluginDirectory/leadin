@@ -18,6 +18,7 @@ class Portal_Options {
 	const LAST_DEAUTHORIZE_TIME     = LEADIN_PREFIX . '_last_deauthorize_time';
 	const LAST_DISCONNECT_TIME      = LEADIN_PREFIX . '_last_disconnect_time';
 	const REFRESH_TOKEN_ERROR       = LEADIN_PREFIX . '_refresh_token_error';
+	const ENCRYPTION_ERROR          = LEADIN_PREFIX . '_encryption_error';
 
 	/**
 	 * Return portal id.
@@ -240,6 +241,15 @@ class Portal_Options {
 	}
 
 	/**
+	 * Set if the refresh token encryption failed.
+	 *
+	 * @param string $error the error message.
+	 */
+	public static function set_encryption_error( $error = 'unknown' ) {
+		return update_option( self::ENCRYPTION_ERROR, $error );
+	}
+
+	/**
 	 * Get the last time authorization was performed.
 	 *
 	 * @return mixed The last authorization time, or false if not set.
@@ -275,4 +285,12 @@ class Portal_Options {
 		return get_option( self::REFRESH_TOKEN_ERROR, 'unknown' );
 	}
 
+	/**
+	 * Get the last error message that was set when trying to encrypt the refresh token.
+	 *
+	 * @return string The error message, or 'unknown' if not set.
+	 */
+	public static function get_encryption_error() {
+		return get_option( self::ENCRYPTION_ERROR, 'unknown' );
+	}
 }
