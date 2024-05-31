@@ -55,13 +55,13 @@ class OAuth {
 
 			$refresh_token = OAuthCrypto::decrypt( $encrypted_refresh_token );
 
-			if ( ! self::is_error_message( $refresh_token ) ) {
-					return $refresh_token;
-			} else {
-					Portal_Options::set_refresh_token_error( $refresh_token );
+			if ( ! self::is_valid_value( $refresh_token ) ) {
+					Portal_Options::set_refresh_token_error( 'Decryption failed' );
 					self::retry_delay();
 					continue;
 			}
+
+			return $refresh_token;
 		}
 
 		return '';
@@ -75,16 +75,6 @@ class OAuth {
 	 */
 	private static function is_valid_value( $value ) {
 		return false !== $value && null !== $value && '' !== $value;
-	}
-
-	/**
-	 * Checks if the value is an error message.
-	 *
-	 * @param mixed $value The value to check.
-	 * @return bool Whether the value is an error message.
-	 */
-	private static function is_error_message( $value ) {
-		return is_string( $value ) && strpos( $value, 'Error:' ) === 0;
 	}
 
 	/**

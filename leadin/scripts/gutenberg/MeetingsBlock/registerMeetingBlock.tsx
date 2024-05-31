@@ -43,6 +43,7 @@ export default function registerMeetingBlock() {
   }
 
   WpBlocksApi.registerBlockType('leadin/hubspot-meeting-block', {
+    apiVersion: 2,
     title: __('Hubspot Meetings Scheduler', 'leadin'),
     description: __(
       'Schedule meetings faster and forget the back-and-forth emails Your calendar stays full, and you stay productive',

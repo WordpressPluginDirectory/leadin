@@ -50,7 +50,6 @@ export interface LeadinConfig {
   contentEmbed: ContentEmbedDetails;
   requiresContentEmbedScope?: boolean;
   refreshTokenError?: string;
-  encryptionError?: string;
 }
 
 const {
@@ -93,7 +92,6 @@ const {
   contentEmbed,
   requiresContentEmbedScope,
   refreshTokenError,
-  encryptionError,
 }: //@ts-expect-error global
 LeadinConfig = window.leadinConfig;
 
@@ -137,5 +135,4 @@ export {
   contentEmbed,
   requiresContentEmbedScope,
   refreshTokenError,
-  encryptionError,
 };

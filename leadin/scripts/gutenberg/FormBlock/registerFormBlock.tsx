@@ -42,6 +42,7 @@ export default function registerFormBlock() {
   }
 
   WpBlocksApi.registerBlockType('leadin/hubspot-form-block', {
+    apiVersion: 2,
     title: __('HubSpot Form', 'leadin'),
     description: __('Select and embed a HubSpot form', 'leadin'),
     icon: SprocketIcon,

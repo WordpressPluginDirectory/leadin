@@ -1,3 +1,9 @@
+= 11.1.15 (2024-05-30) =
+* Revert breaking changes in 11.1.13 related to the oauth connection
+
+= 11.1.14 (2024-05-30) =
+* Add apiVersion to gutenberg blocks
+
 = 11.1.13 (2024-05-23) =
 * Add error labels for connection process
 
@@ -296,12 +302,4 @@
 
 = 8.4.463 (2021-12-16) =
 * Store activation time in the database. This will be needed to show contextual suggestions at the right time in the future.
-
-= 8.4.353 (2021-11-29) =
-* Add rel='noopener' to target _blank link
-
-= 8.4.344 (2021-11-23) =
-* Replace jQuery .unbind with .off
-* Replace rand with wp_rand
-* Fix Gutenberg block not showing due to a js error
 

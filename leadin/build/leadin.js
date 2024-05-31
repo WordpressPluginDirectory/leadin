@@ -172,7 +172,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "contentEmbed": () => (/* binding */ contentEmbed),
 /* harmony export */   "deviceId": () => (/* binding */ deviceId),
 /* harmony export */   "didDisconnect": () => (/* binding */ didDisconnect),
-/* harmony export */   "encryptionError": () => (/* binding */ encryptionError),
 /* harmony export */   "env": () => (/* binding */ env),
 /* harmony export */   "formsScript": () => (/* binding */ formsScript),
 /* harmony export */   "formsScriptPayload": () => (/* binding */ formsScriptPayload),
@@ -245,8 +244,7 @@ var _window$leadinConfig = window.leadinConfig,
     wpVersion = _window$leadinConfig.wpVersion,
     contentEmbed = _window$leadinConfig.contentEmbed,
     requiresContentEmbedScope = _window$leadinConfig.requiresContentEmbedScope,
-    refreshTokenError = _window$leadinConfig.refreshTokenError,
-    encryptionError = _window$leadinConfig.encryptionError;
+    refreshTokenError = _window$leadinConfig.refreshTokenError;
 
 
 /***/ }),
@@ -783,8 +781,7 @@ var getLeadinConfig = function getLeadinConfig() {
     wpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.wpVersion,
     contentEmbed: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.contentEmbed,
     requiresContentEmbedScope: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.requiresContentEmbedScope,
-    refreshTokenError: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshTokenError,
-    encryptionError: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.encryptionError
+    refreshTokenError: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshTokenError
   }, utm_query_params);
 };
 

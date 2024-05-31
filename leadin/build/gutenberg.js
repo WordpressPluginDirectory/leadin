@@ -237,7 +237,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "contentEmbed": () => (/* binding */ contentEmbed),
 /* harmony export */   "deviceId": () => (/* binding */ deviceId),
 /* harmony export */   "didDisconnect": () => (/* binding */ didDisconnect),
-/* harmony export */   "encryptionError": () => (/* binding */ encryptionError),
 /* harmony export */   "env": () => (/* binding */ env),
 /* harmony export */   "formsScript": () => (/* binding */ formsScript),
 /* harmony export */   "formsScriptPayload": () => (/* binding */ formsScriptPayload),
@@ -310,8 +309,7 @@ var _window$leadinConfig = window.leadinConfig,
     wpVersion = _window$leadinConfig.wpVersion,
     contentEmbed = _window$leadinConfig.contentEmbed,
     requiresContentEmbedScope = _window$leadinConfig.requiresContentEmbedScope,
-    refreshTokenError = _window$leadinConfig.refreshTokenError,
-    encryptionError = _window$leadinConfig.encryptionError;
+    refreshTokenError = _window$leadinConfig.refreshTokenError;
 
 
 /***/ }),
@@ -573,6 +571,7 @@ function registerFormBlock() {
   }
 
   _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType('leadin/hubspot-form-block', {
+    apiVersion: 2,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('HubSpot Form', 'leadin'),
     description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Select and embed a HubSpot form', 'leadin'),
     icon: _Common_SprocketIcon__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -736,6 +735,7 @@ function registerMeetingBlock() {
   }
 
   _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType('leadin/hubspot-meeting-block', {
+    apiVersion: 2,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Hubspot Meetings Scheduler', 'leadin'),
     description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Schedule meetings faster and forget the back-and-forth emails Your calendar stays full, and you stay productive', 'leadin'),
     icon: _Common_CalendarIcon__WEBPACK_IMPORTED_MODULE_2__["default"],

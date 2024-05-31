@@ -177,7 +177,6 @@ class AdminConstants {
 			'lastDeauthorizeTime'       => Portal_Options::get_last_deauthorize_time(),
 			'lastDisconnectTime'        => Portal_Options::get_last_disconnect_time(),
 			'refreshTokenError'         => Portal_Options::get_refresh_token_error(),
-			'encryptionError'           => Portal_Options::get_encryption_error(),
 		);
 
 		if ( Connection::is_connected() ) {
