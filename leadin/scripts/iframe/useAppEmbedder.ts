@@ -58,6 +58,14 @@ type PartialLeadinConfig = Pick<
   | 'refreshTokenError'
 >;
 
+type AppIntegrationConfig = Pick<LeadinConfig, 'adminUrl'>;
+
+const getIntegrationConfig = (): AppIntegrationConfig => {
+  return {
+    adminUrl: leadinQueryParams.adminUrl,
+  };
+};
+
 /**
  * A modified version of the original leadinConfig that is passed to some integrated apps.
  *
@@ -143,7 +151,9 @@ const getAppOptions = (app: App, createRoute = false) => {
         .setPluginSettingsInit();
       break;
     case App.Forms:
-      options = new FormsAppOptions();
+      options = new FormsAppOptions().setIntegratedAppConfig(
+        getIntegrationConfig()
+      );
       if (createRoute) {
         options = options.setCreateFormAppInit();
       }

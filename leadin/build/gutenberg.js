@@ -571,7 +571,6 @@ function registerFormBlock() {
   }
 
   _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType('leadin/hubspot-form-block', {
-    apiVersion: 2,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('HubSpot Form', 'leadin'),
     description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Select and embed a HubSpot form', 'leadin'),
     icon: _Common_SprocketIcon__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -735,7 +734,6 @@ function registerMeetingBlock() {
   }
 
   _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.registerBlockType('leadin/hubspot-meeting-block', {
-    apiVersion: 2,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Hubspot Meetings Scheduler', 'leadin'),
     description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__.__)('Schedule meetings faster and forget the back-and-forth emails Your calendar stays full, and you stay productive', 'leadin'),
     icon: _Common_CalendarIcon__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -985,7 +983,8 @@ var CoreMessages = {
   ReloadParentFrame: 'INTEGRATED_APP_EMBEDDER_RELOAD_PARENT_FRAME',
   RedirectParentFrame: 'INTEGRATED_APP_EMBEDDER_REDIRECT_PARENT_FRAME',
   SendLocale: 'INTEGRATED_APP_EMBEDDER_SEND_LOCALE',
-  SendDeviceId: 'INTEGRATED_APP_EMBEDDER_SEND_DEVICE_ID'
+  SendDeviceId: 'INTEGRATED_APP_EMBEDDER_SEND_DEVICE_ID',
+  SendIntegratedAppConfig: 'INTEGRATED_APP_EMBEDDER_CONFIG'
 };
 
 /***/ }),

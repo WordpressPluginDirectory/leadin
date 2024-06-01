@@ -377,7 +377,8 @@ var CoreMessages = {
   ReloadParentFrame: 'INTEGRATED_APP_EMBEDDER_RELOAD_PARENT_FRAME',
   RedirectParentFrame: 'INTEGRATED_APP_EMBEDDER_REDIRECT_PARENT_FRAME',
   SendLocale: 'INTEGRATED_APP_EMBEDDER_SEND_LOCALE',
-  SendDeviceId: 'INTEGRATED_APP_EMBEDDER_SEND_DEVICE_ID'
+  SendDeviceId: 'INTEGRATED_APP_EMBEDDER_SEND_DEVICE_ID',
+  SendIntegratedAppConfig: 'INTEGRATED_APP_EMBEDDER_CONFIG'
 };
 
 /***/ }),
@@ -745,6 +746,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+var getIntegrationConfig = function getIntegrationConfig() {
+  return {
+    adminUrl: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams.adminUrl
+  };
+};
+
 var getLeadinConfig = function getLeadinConfig() {
   var utm_query_params = Object.keys(_constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.leadinQueryParams).filter(function (x) {
     return /^utm/.test(x);
@@ -804,7 +811,7 @@ var getAppOptions = function getAppOptions(app) {
       break;
 
     case _constants__WEBPACK_IMPORTED_MODULE_3__.App.Forms:
-      options = new FormsAppOptions();
+      options = new FormsAppOptions().setIntegratedAppConfig(getIntegrationConfig());
 
       if (createRoute) {
         options = options.setCreateFormAppInit();
