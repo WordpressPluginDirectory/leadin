@@ -13,9 +13,6 @@ use Leadin\admin\MenuConstants;
  */
 class OAuth {
 
-	const MAX_RETRIES              = 3;
-	const RETRY_DELAY_MICROSECONDS = 100000; // 100ms converted to microseconds
-
 	/**
 	 * Authorizes the plugin with given oauth credentials by storing them in the options DB.
 	 *
@@ -38,33 +35,30 @@ class OAuth {
 	}
 
 	/**
-	 * Attempts to get and decrypt the refresh token with retries.
+	 * Attempts to get and decrypt the refresh token.
 	 * Records an error if decryption fails or if the token is invalid.
 	 *
-	 * @return string The decrypted refresh token, or an empty string on failure.
+	 * Note: WordPress sites that are missing keys and salts will have the refresh token stored in plaintext.
+	 * The decrypt function will return the plaintext token in this case.
+	 *
+	 * @return string The result of decrypt function, or an empty string on failure.
 	 */
 	public static function get_refresh_token() {
-		for ( $attempt = 0; $attempt < self::MAX_RETRIES; $attempt++ ) {
-			$encrypted_refresh_token = Portal_Options::get_refresh_token();
+		$encrypted_refresh_token = Portal_Options::get_refresh_token();
 
-			if ( ! self::is_valid_value( $encrypted_refresh_token ) ) {
-					Portal_Options::set_refresh_token_error( 'Token is invalid or missing' );
-					self::retry_delay();
-					continue;
-			}
-
-			$refresh_token = OAuthCrypto::decrypt( $encrypted_refresh_token );
-
-			if ( ! self::is_valid_value( $refresh_token ) ) {
-					Portal_Options::set_refresh_token_error( 'Decryption failed' );
-					self::retry_delay();
-					continue;
-			}
-
-			return $refresh_token;
+		if ( ! self::is_valid_value( $encrypted_refresh_token ) ) {
+			Portal_Options::set_refresh_token_error( 'Token is invalid or missing' );
+			return '';
 		}
 
-		return '';
+		$refresh_token = OAuthCrypto::decrypt( $encrypted_refresh_token );
+
+		if ( ! self::is_valid_value( $refresh_token ) ) {
+			Portal_Options::set_refresh_token_error( 'Decryption failed' );
+			return '';
+		}
+
+		return $refresh_token;
 	}
 
 	/**

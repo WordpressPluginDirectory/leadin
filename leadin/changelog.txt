@@ -1,3 +1,6 @@
+= 11.1.21 (2024-06-04) =
+* Improve load performance by removing redundant retry logic
+
 = 11.1.20 (2024-05-31) =
 * Remove extra logs
 
@@ -299,7 +302,4 @@
 
 = 8.5.50 (2022-02-22) =
 * Increase WP tested up to version
-
-= 8.5.0 (2022-02-11) =
-* Add api to hide review banner
 
