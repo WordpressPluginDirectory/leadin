@@ -25,7 +25,7 @@ import {
   wpVersion,
   contentEmbed,
   requiresContentEmbedScope,
-  refreshTokenError,
+  decryptError,
   LeadinConfig,
 } from '../constants/leadinConfig';
 import { App, AppIframe } from './constants';
@@ -55,7 +55,7 @@ type PartialLeadinConfig = Pick<
   | 'wpVersion'
   | 'contentEmbed'
   | 'requiresContentEmbedScope'
-  | 'refreshTokenError'
+  | 'decryptError'
 >;
 
 type AppIntegrationConfig = Pick<LeadinConfig, 'adminUrl'>;
@@ -128,7 +128,7 @@ const getLeadinConfig = (): AppLeadinConfig => {
     wpVersion,
     contentEmbed,
     requiresContentEmbedScope,
-    refreshTokenError,
+    decryptError,
     ...utm_query_params,
   };
 };

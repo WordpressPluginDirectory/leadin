@@ -170,6 +170,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "adminUrl": () => (/* binding */ adminUrl),
 /* harmony export */   "connectionStatus": () => (/* binding */ connectionStatus),
 /* harmony export */   "contentEmbed": () => (/* binding */ contentEmbed),
+/* harmony export */   "decryptError": () => (/* binding */ decryptError),
 /* harmony export */   "deviceId": () => (/* binding */ deviceId),
 /* harmony export */   "didDisconnect": () => (/* binding */ didDisconnect),
 /* harmony export */   "env": () => (/* binding */ env),
@@ -196,7 +197,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "portalId": () => (/* binding */ portalId),
 /* harmony export */   "redirectNonce": () => (/* binding */ redirectNonce),
 /* harmony export */   "refreshToken": () => (/* binding */ refreshToken),
-/* harmony export */   "refreshTokenError": () => (/* binding */ refreshTokenError),
 /* harmony export */   "requiresContentEmbedScope": () => (/* binding */ requiresContentEmbedScope),
 /* harmony export */   "restNonce": () => (/* binding */ restNonce),
 /* harmony export */   "restUrl": () => (/* binding */ restUrl),
@@ -244,7 +244,7 @@ var _window$leadinConfig = window.leadinConfig,
     wpVersion = _window$leadinConfig.wpVersion,
     contentEmbed = _window$leadinConfig.contentEmbed,
     requiresContentEmbedScope = _window$leadinConfig.requiresContentEmbedScope,
-    refreshTokenError = _window$leadinConfig.refreshTokenError;
+    decryptError = _window$leadinConfig.decryptError;
 
 
 /***/ }),
@@ -788,7 +788,7 @@ var getLeadinConfig = function getLeadinConfig() {
     wpVersion: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.wpVersion,
     contentEmbed: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.contentEmbed,
     requiresContentEmbedScope: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.requiresContentEmbedScope,
-    refreshTokenError: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.refreshTokenError
+    decryptError: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.decryptError
   }, utm_query_params);
 };
 

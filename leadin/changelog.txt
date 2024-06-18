@@ -1,3 +1,6 @@
+= 11.1.22 (2024-06-17) =
+* Add error labels to help diagnose connection issues
+
 = 11.1.21 (2024-06-04) =
 * Improve load performance by removing redundant retry logic
 
@@ -299,7 +302,4 @@
 
 = 8.6.0 (2022-03-09) =
 * Add banner to ask the user to leave a review
-
-= 8.5.50 (2022-02-22) =
-* Increase WP tested up to version
 
