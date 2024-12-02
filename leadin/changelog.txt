@@ -1,3 +1,6 @@
+= 11.1.75 (2024-11-29) =
+* Add Salt/key config global to avoid disconnection in case secret changes
+
 = 11.1.73 (2024-11-19) =
 * Remove unknow wp_json_decode function
 
@@ -297,7 +300,4 @@
 
 = 8.9.20 (2022-04-13) =
 * Fix security issue related to sanitizing inputs
-
-= 8.9.14 (2022-04-12) =
-* Fix security issue related to form inputs
 
