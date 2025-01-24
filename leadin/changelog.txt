@@ -1,3 +1,6 @@
+= 11.1.82 (2025-01-23) =
+* Change Raven URL for error capture
+
 = 11.1.75 (2024-11-29) =
 * Add Salt/key config global to avoid disconnection in case secret changes
 
@@ -297,7 +300,4 @@
 
 = 8.9.22 (2022-04-13) =
 * Prevent script to be loaded while Elementor Edit mode is on/or admin
-
-= 8.9.20 (2022-04-13) =
-* Fix security issue related to sanitizing inputs
 

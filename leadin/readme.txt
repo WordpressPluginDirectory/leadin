@@ -4,9 +4,9 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: CRM, Marketing, Live Chat, Forms, Analytics, popups, newsletter, contact management, chat, contact form, marketing automation
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 6.7.1
 Requires PHP: 7.2
-Stable tag: 11.1.75
+Stable tag: 11.1.82
 
 The CRM, Sales, and Marketing WordPress plugin to grow your business better.
 
@@ -418,12 +418,12 @@ Please visit the <a href="https://community.hubspot.com/?utm_source=wordpress-pl
 == Changelog ==
 
 <a href="http://plugins.svn.wordpress.org/leadin/trunk/changelog.txt" target="_blank">Full changelog here</a>
-- Current version: 11.1.75
-- Version release date: 2024-11-29
+- Current version: 11.1.82
+- Version release date: 2025-01-23
+
+= 11.1.82 (2025-01-23) =
+* Change Raven URL for error capture
 
 = 11.1.75 (2024-11-29) =
 * Add Salt/key config global to avoid disconnection in case secret changes
-
-= 11.1.73 (2024-11-19) =
-* Remove unknow wp_json_decode function
 
