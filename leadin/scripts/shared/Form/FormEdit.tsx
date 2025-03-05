@@ -12,6 +12,7 @@ import {
 import { ProxyMessages } from '../../iframe/integratedMessages';
 import LoadingBlock from '../Common/LoadingBlock';
 import { getOrCreateBackgroundApp } from '../../utils/backgroundAppUtils';
+import { isRefreshTokenAvailable } from '../../utils/isRefreshTokenAvailable';
 
 interface IFormEditProps extends IFormBlockProps {
   preview: boolean;
@@ -81,7 +82,9 @@ function FormEdit({
 export default function FormEditContainer(props: IFormEditProps) {
   return (
     <BackgroudAppContext.Provider
-      value={refreshToken && getOrCreateBackgroundApp(refreshToken)}
+      value={
+        isRefreshTokenAvailable() && getOrCreateBackgroundApp(refreshToken)
+      }
     >
       <FormEdit {...props} />
     </BackgroudAppContext.Provider>

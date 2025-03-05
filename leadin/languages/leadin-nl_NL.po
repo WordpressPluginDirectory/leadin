@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-23T12:45:49+00:00\n"
+"POT-Creation-Date: 2025-03-05T10:37:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language: \n"
 "X-Generator: WP-CLI 2.11.0\n"
@@ -86,7 +86,7 @@ msgid "Skip & deactivate"
 msgstr "Overslaan en deactiveren"
 
 #: public/admin/class-leadinadmin.php:72
-#: public/class-leadin.php:41
+#: public/class-leadin.php:43
 msgid "Hubspot"
 msgstr "Hubspot"
 
@@ -208,3 +208,7 @@ msgstr "Formulier"
 #: public/admin/widgets/class-elementormeeting.php:84
 msgid "Meetings Scheduler"
 msgstr "Meetingplanner"
+
+#: public/data/class-filters.php:216
+msgid "Fetch Proxy Maps Schedule"
+msgstr "Fetch Proxy Maps schedule"

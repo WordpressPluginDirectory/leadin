@@ -9,6 +9,9 @@ import {
 } from '../constants/leadinConfig';
 
 export function configureRaven() {
+  if (hubspotBaseUrl.indexOf('local') !== -1) {
+    return;
+  }
   const domain = hubspotBaseUrl.replace(/https?:\/\/app/, '');
   Raven.config(
     `https://a9f08e536ef66abb0bf90becc905b09e@exceptions${domain}/v2/1`,

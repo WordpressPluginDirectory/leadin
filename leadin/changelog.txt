@@ -1,3 +1,9 @@
+= 11.2.0 (2025-03-05) =
+* Add reverse proxy to HubSpot domain feature
+
+= 11.1.83 (2025-01-24) =
+* Validate refreshToken value before starting app
+
 = 11.1.82 (2025-01-23) =
 * Change Raven URL for error capture
 
@@ -294,10 +300,4 @@
 
 = 8.10.25 (2022-04-25) =
 * Fix Gutenberg block breaking after user disconnects plugin
-
-= 8.10.0 (2022-04-21) =
-* Add templates options to gutenberg form
-
-= 8.9.22 (2022-04-13) =
-* Prevent script to be loaded while Elementor Edit mode is on/or admin
 
