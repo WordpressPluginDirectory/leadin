@@ -536,11 +536,12 @@ var DefaultCssClasses = 'wp-block-leadin-hubspot-form-block';
 function FormSaveBlock(_ref) {
   var attributes = _ref.attributes;
   var portalId = attributes.portalId,
-    formId = attributes.formId;
+    formId = attributes.formId,
+    embedVersion = attributes.embedVersion;
   var blockProps = (0,_Common_useCustomCssBlockProps__WEBPACK_IMPORTED_MODULE_2__["default"])(DefaultCssClasses);
   if (portalId && formId) {
     return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.RawHTML, _objectSpread(_objectSpread({}, blockProps), {}, {
-      children: "[hubspot portal=\"".concat(portalId, "\" id=\"").concat(formId, "\" type=\"form\"]")
+      children: "[hubspot portal=\"".concat(portalId, "\" id=\"").concat(formId, "\" version=\"").concat(embedVersion, "\" type=\"form\"]")
     }));
   }
   return null;
@@ -654,6 +655,9 @@ function registerFormBlock() {
         type: 'string'
       },
       formName: {
+        type: 'string'
+      },
+      embedVersion: {
         type: 'string'
       },
       preview: {
@@ -1762,7 +1766,8 @@ function FormEdit(_ref) {
     origin = _ref$origin === void 0 ? 'gutenberg' : _ref$origin,
     fullSiteEditor = _ref.fullSiteEditor;
   var formId = attributes.formId,
-    formName = attributes.formName;
+    formName = attributes.formName,
+    embedVersion = attributes.embedVersion;
   var formSelected = _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId && formId;
   var isBackgroundAppReady = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__.useBackgroundAppContext)();
   var monitorFormPreviewRender = (0,_iframe_useBackgroundApp__WEBPACK_IMPORTED_MODULE_6__.usePostBackgroundMessage)();
@@ -1770,7 +1775,8 @@ function FormEdit(_ref) {
     setAttributes({
       portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
       formId: selectedForm.value,
-      formName: selectedForm.label
+      formName: selectedForm.label,
+      embedVersion: selectedForm.embedVersion
     });
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
@@ -1786,7 +1792,8 @@ function FormEdit(_ref) {
       formId: formId,
       formName: formName,
       handleChange: handleChange,
-      origin: origin
+      origin: origin,
+      embedVersion: embedVersion
     }), formSelected && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
       children: [isSelected && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_UIComponents_UISpacer__WEBPACK_IMPORTED_MODULE_3__["default"], {}), preview && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_PreviewForm__WEBPACK_IMPORTED_MODULE_4__["default"], {
         portalId: _constants_leadinConfig__WEBPACK_IMPORTED_MODULE_2__.portalId,
@@ -1838,7 +1845,8 @@ function FormSelect(_ref) {
     formName = _ref.formName,
     handleChange = _ref.handleChange,
     _ref$origin = _ref.origin,
-    origin = _ref$origin === void 0 ? 'gutenberg' : _ref$origin;
+    origin = _ref$origin === void 0 ? 'gutenberg' : _ref$origin,
+    embedVersion = _ref.embedVersion;
   var _useForms = (0,_hooks_useForms__WEBPACK_IMPORTED_MODULE_4__["default"])(),
     search = _useForms.search,
     formApiError = _useForms.formApiError,
@@ -1851,7 +1859,8 @@ function FormSelect(_ref) {
     createApiError = _useCreateFormFromTem.formApiError;
   var value = formId && formName ? {
     label: formName,
-    value: formId
+    value: formId,
+    embedVersion: embedVersion
   } : null;
   var handleLocalChange = function handleLocalChange(option) {
     if ((0,_constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_6__.isDefaultForm)(option.value)) {
@@ -2121,7 +2130,8 @@ function useForms() {
       callback([].concat(_toConsumableArray(forms.map(function (form) {
         return {
           label: form.name,
-          value: form.guid
+          value: form.guid,
+          embedVersion: form.embedVersion
         };
       })), [_constants_defaultFormOptions__WEBPACK_IMPORTED_MODULE_3__.DEFAULT_OPTIONS]));
     })["catch"](function (error) {

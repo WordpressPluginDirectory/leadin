@@ -204,20 +204,4 @@ class Filters {
 		return apply_filters( LEADIN_PREFIX . '_sites_proxy_cdn', "https://$portal_id.$domain.net" );
 	}
 
-	/**
-	 * Adds a custom cron schedule for every 30 minutes.
-	 */
-	public static function add_proxy_cache_ttl_filters() {
-		add_filter(
-			'cron_schedules',
-			function( $schedules ) {
-				$schedules[ Proxy_Mappings::PROXY_MAPS_CACHE_TTL_FILTER ] = array(
-					'interval' => 1800, // 30 minutes.
-					'display'  => __( 'Fetch Proxy Maps Schedule', 'leadin' ),
-				);
-				return $schedules;
-			}
-		);
-	}
-
 }

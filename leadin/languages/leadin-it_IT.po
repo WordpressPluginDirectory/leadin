@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-05T10:37:44+00:00\n"
+"POT-Creation-Date: 2025-03-20T11:35:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language: \n"
 "X-Generator: WP-CLI 2.11.0\n"
@@ -209,6 +209,6 @@ msgstr "Modulo"
 msgid "Meetings Scheduler"
 msgstr "Strumento di pianificazione delle riunioni"
 
-#: public/data/class-filters.php:216
+#: public/class-proxy-mappings.php:47
 msgid "Fetch Proxy Maps Schedule"
-msgstr "Fetch Proxy Maps schedule"
+msgstr "Recupera pianificazione mappe proxy"

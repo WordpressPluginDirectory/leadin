@@ -26,12 +26,29 @@ class Proxy_Mappings {
 	 * Proxy_Mappings constructor, register callback for template redirect and scheduler.
 	 */
 	public function __construct() {
-		Filters::add_proxy_cache_ttl_filters();
-
+		add_action( 'init', array( $this, 'register_custom_schedule' ) );
 		add_action( 'template_redirect', array( $this, 'proxy_requests' ) );
 		add_action( 'wp', array( $this, 'schedule_and_fetch_mapping_update' ) );
 		add_action( 'leadin_update_proxy_mappings', array( $this, 'fetch_and_cache_mappings' ) );
 		add_action( 'leadin_reset_wp_mappings_cache', array( $this, 'refetch_proxy_mapping' ) );
+	}
+
+	/**
+	 * Registers the custom cron schedule which schedules and fetches the mapping update
+	 *
+	 * @return void
+	 */
+	public function register_custom_schedule() {
+			add_filter(
+				'cron_schedules',
+				function( $schedules ) {
+					$schedules[ self::PROXY_MAPS_CACHE_TTL_FILTER ] = array(
+						'interval' => 1800,
+						'display'  => __( 'Fetch Proxy Maps Schedule', 'leadin' ),
+					);
+					return $schedules;
+				}
+			);
 	}
 
 	/**

@@ -6,7 +6,7 @@ Tags: CRM, Marketing, Live Chat, Forms, Analytics, popups, newsletter, contact m
 Requires at least: 5.8
 Tested up to: 6.7.1
 Requires PHP: 7.2
-Stable tag: 11.2.0
+Stable tag: 11.2.9
 
 The CRM, Sales, and Marketing WordPress plugin to grow your business better.
 
@@ -418,12 +418,12 @@ Please visit the <a href="https://community.hubspot.com/?utm_source=wordpress-pl
 == Changelog ==
 
 <a href="http://plugins.svn.wordpress.org/leadin/trunk/changelog.txt" target="_blank">Full changelog here</a>
-- Current version: 11.2.0
-- Version release date: 2025-03-05
+- Current version: 11.2.9
+- Version release date: 2025-03-20
+
+= 11.2.8 (2025-03-17) =
+* Move cron schedule action to proxy mapping class
 
 = 11.2.0 (2025-03-05) =
 * Add reverse proxy to HubSpot domain feature
-
-= 11.1.83 (2025-01-24) =
-* Validate refreshToken value before starting app
 

@@ -28,17 +28,22 @@ function FormEdit({
   origin = 'gutenberg',
   fullSiteEditor,
 }: IFormEditProps) {
-  const { formId, formName } = attributes;
+  const { formId, formName, embedVersion } = attributes;
   const formSelected = portalId && formId;
 
   const isBackgroundAppReady = useBackgroundAppContext();
   const monitorFormPreviewRender = usePostBackgroundMessage();
 
-  const handleChange = (selectedForm: { value: string; label: string }) => {
+  const handleChange = (selectedForm: {
+    value: string;
+    label: string;
+    embedVersion?: string;
+  }) => {
     setAttributes({
       portalId,
       formId: selectedForm.value,
       formName: selectedForm.label,
+      embedVersion: selectedForm.embedVersion,
     });
   };
 
@@ -61,6 +66,7 @@ function FormEdit({
           formName={formName}
           handleChange={handleChange}
           origin={origin}
+          embedVersion={embedVersion}
         />
       )}
       {formSelected && (

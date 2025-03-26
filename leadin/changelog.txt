@@ -1,3 +1,6 @@
+= 11.2.8 (2025-03-17) =
+* Move cron schedule action to proxy mapping class
+
 = 11.2.0 (2025-03-05) =
 * Add reverse proxy to HubSpot domain feature
 
@@ -297,7 +300,4 @@
 
 = 8.11.0 (2022-04-27) =
 * Add option to disable HS analytics tracking for internal WP users
-
-= 8.10.25 (2022-04-25) =
-* Fix Gutenberg block breaking after user disconnects plugin
 
