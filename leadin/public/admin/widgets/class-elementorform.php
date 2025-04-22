@@ -137,7 +137,7 @@ class ElementorForm extends Widget_Base {
 		if ( ! empty( $content ) ) {
 				$portal_id = $content['portalId'];
 				$form_id   = $content['formId'];
-				$version   = $content['embedVersion'];
+				$version   = isset( $content['embedVersion'] ) ? $content['embedVersion'] : '';
 				echo do_shortcode( '[hubspot portal="' . $portal_id . '" id="' . $form_id . '" type="form" version="' . $version . '"]' );
 		}
 	}
