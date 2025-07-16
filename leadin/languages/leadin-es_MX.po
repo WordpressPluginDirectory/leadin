@@ -7,10 +7,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-22T08:44:51+00:00\n"
+"POT-Creation-Date: 2025-07-15T15:11:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language: \n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: leadin\n"
 
 #. Plugin Name of the plugin
@@ -158,16 +158,19 @@ msgstr "Adquirir nivel superior"
 
 #. translators: %1$s: Plugin current version %2$s: PHP required version
 #: public/admin/class-leadinadmin.php:259
+#, php-format
 msgid "HubSpot All-In-One Marketing %1$s requires PHP %2$s or higher Please upgrade WordPress first"
 msgstr "HubSpot Marketing todo en uno %1$s requiere PHP %2$s o una edición superior. Primero, cámbiate a una edición superior de WordPress."
 
 #. translators: %1$s: Plugin current version %2$s: WordPress required version
 #: public/admin/class-leadinadmin.php:266
+#, php-format
 msgid "HubSpot All-In-One Marketing %1$s requires WordPress %2$s or higher Please upgrade WordPress first"
 msgstr "HubSpot Marketing todo en uno %1$s requiere WordPress %2$s o una versión superior. Primero, cámbiate a una versión superior de WordPress."
 
 #. translators: %1$s: HTML anchor opening tag %2$s: HTML anchor closing tag
 #: public/admin/class-noticemanager.php:36
+#, php-format
 msgid "The HubSpot plugin is not connected right now To use HubSpot tools on your WordPress site, %1$sconnect the plugin now%2$s"
 msgstr "El plugin de HubSpot no está conectado. %1$sConéctalo%2$s para usar las herramientas de HubSpot en tu portal de WordPress."
 
@@ -177,11 +180,13 @@ msgstr "Ignorar esta notificación."
 
 #. translators: %1$s: Current user name or nickname
 #: public/admin/class-reviewbanner.php:31
+#, php-format
 msgid "Hey %1$s,"
 msgstr "Hola, %1$s:"
 
 #. translators: %1$s: HTML anchor opening tag %2$s: HTML anchor closing tag
 #: public/admin/class-reviewbanner.php:36
+#, php-format
 msgid "Have you got 2 minutes to complete %1$sthis survey%2$s about the HubSpot for WordPress plugin?"
 msgstr "¿Tienes 2 minutos para responder %1$sesta encuesta%2$s acerca del plugin de HubSpot para WordPress?"
 

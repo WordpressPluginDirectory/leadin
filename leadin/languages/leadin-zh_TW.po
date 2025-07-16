@@ -7,10 +7,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-22T08:44:51+00:00\n"
+"POT-Creation-Date: 2025-07-15T15:11:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language: \n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: leadin\n"
 
 #. Plugin Name of the plugin
@@ -158,16 +158,19 @@ msgstr "升級"
 
 #. translators: %1$s: Plugin current version %2$s: PHP required version
 #: public/admin/class-leadinadmin.php:259
+#, php-format
 msgid "HubSpot All-In-One Marketing %1$s requires PHP %2$s or higher Please upgrade WordPress first"
 msgstr "HubSpot 一站式行銷%1$s需要 PHP %2$s 或更新版本。請先升級 WordPress。"
 
 #. translators: %1$s: Plugin current version %2$s: WordPress required version
 #: public/admin/class-leadinadmin.php:266
+#, php-format
 msgid "HubSpot All-In-One Marketing %1$s requires WordPress %2$s or higher Please upgrade WordPress first"
 msgstr "HubSpot 一站式行銷%1$s需要 WordPress %2$s 或更新版本。請先升級 WordPress。"
 
 #. translators: %1$s: HTML anchor opening tag %2$s: HTML anchor closing tag
 #: public/admin/class-noticemanager.php:36
+#, php-format
 msgid "The HubSpot plugin is not connected right now To use HubSpot tools on your WordPress site, %1$sconnect the plugin now%2$s"
 msgstr "目前並未連結 HubSpot 外掛程式。若要在你的 WordPress 網站上使用 HubSpot 工具，請%1$s立即連結外掛程式%2$s。"
 
@@ -177,11 +180,13 @@ msgstr "關閉這則通知。"
 
 #. translators: %1$s: Current user name or nickname
 #: public/admin/class-reviewbanner.php:31
+#, php-format
 msgid "Hey %1$s,"
 msgstr "%1$s 你好，"
 
 #. translators: %1$s: HTML anchor opening tag %2$s: HTML anchor closing tag
 #: public/admin/class-reviewbanner.php:36
+#, php-format
 msgid "Have you got 2 minutes to complete %1$sthis survey%2$s about the HubSpot for WordPress plugin?"
 msgstr "你有 2 分鐘時間來完成關於 HubSpot for WordPress 外掛程式的%1$s這份問卷%2$s嗎？"
 

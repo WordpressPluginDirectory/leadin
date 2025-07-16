@@ -124,7 +124,12 @@ class Proxy_Mappings {
 		if ( ! Portal_Options::get_proxy_mappings_enabled() ) {
 			return;
 		}
-		if ( $force_fetch || ! wp_next_scheduled( 'leadin_update_proxy_mappings' ) ) {
+
+		if ( $force_fetch ) {
+			$this->fetch_and_cache_mappings();
+		}
+
+		if ( !wp_next_scheduled( 'leadin_update_proxy_mappings' ) ) {
 			$this->fetch_and_cache_mappings();
 			wp_schedule_event( time() + self::PROXY_MAPS_CACHE_TTL, self::PROXY_MAPS_CACHE_TTL_FILTER, 'leadin_update_proxy_mappings' );
 			ProxyUtils::info_log( 'Scheduled mapping update event.' );
