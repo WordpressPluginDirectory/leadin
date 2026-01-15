@@ -186,6 +186,7 @@ class Proxy_Mappings {
 			$http_code = wp_remote_retrieve_response_code( $response );
 
 			status_header( $http_code );
+			header( 'X-HS-WP-Plugin-Proxy-URL: ' . $target_url );
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $body;
 			exit;
@@ -224,6 +225,9 @@ class Proxy_Mappings {
 
 				$pattern = $this->get_wp_path_pattern( $wp_path );
 				if ( ! is_null( $pattern ) && preg_match( $pattern, rtrim( $request_uri, '/' ), $matches ) ) {
+					if ( isset( $mapping['id'] ) ) {
+						header( 'X-HS-WP-Plugin-Proxy-Mapping-ID: ' . $mapping['id'] );
+					}
 					return $this->get_new_hs_path( $hs_path, $matches, $request_uri );
 				}
 			}
@@ -286,7 +290,7 @@ class Proxy_Mappings {
 		if ( strpos( $hs_path, '*' ) !== false ) {
 			// If there's a captured value, use it; otherwise use an empty string.
 			$replacement = ( isset( $matches[1] ) && ! empty( $matches[1] ) )
-				? parse_url( $matches[1], PHP_URL_PATH )
+				? wp_parse_url( $matches[1], PHP_URL_PATH )
 				: '';
 
 			// Replace '*' with the captured value (or empty string).

@@ -1,16 +1,16 @@
-=== HubSpot - CRM, Email Marketing, Live Chat, Forms & Analytics ===
+=== HubSpot All-In-One Marketing - Forms, Popups, Live Chat ===
 Contributors: HubSpotDev, leadin
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
-Tags: CRM, Marketing, Live Chat, Forms, Analytics, popups, newsletter, contact management, chat, contact form, marketing automation
+Tags: CRM, Marketing, Live Chat, Forms, Analytics
 Requires at least: 5.8
-Tested up to: 6.7.1
+Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 11.3.16
+Stable tag: 11.3.37
 
 The CRM, Sales, and Marketing WordPress plugin to grow your business better.
 
-Capture, organize, and engage web visitors with free live chat, forms, CRM (contact management), email marketing, and analytics. Easy to use, no coding.
+Capture and engage web visitors with free live chat, forms, CRM, email marketing, and analytics. Easy to use, no coding required.
 
 == Description ==
 
@@ -418,12 +418,15 @@ Please visit the <a href="https://community.hubspot.com/?utm_source=wordpress-pl
 == Changelog ==
 
 <a href="http://plugins.svn.wordpress.org/leadin/trunk/changelog.txt" target="_blank">Full changelog here</a>
-- Current version: 11.3.16
-- Version release date: 2025-07-15
+- Current version: 11.3.37
+- Version release date: 2026-01-14
 
-= 11.3.16 (2025-07-15) =
-* Fix bug causing duplicate scheduled cron events
+= 11.3.33 (2025-12-03) =
+* Fix CVE-2025-11762: Remove sensitive plugin data exposure to low-privilege users
+* Replace parse_url with wp_parse_url for WordPress compatibility
+* Remove deprecated load_plugin_textdomain function
+* Update tested up to WordPress 6.9
 
-= 11.3.6 (2025-04-22) =
-* Have default embedVersion for elementor
+= 11.3.20 (2025-08-26) =
+* Update error handling to avoid serialization problems
 
